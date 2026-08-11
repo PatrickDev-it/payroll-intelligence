@@ -34,6 +34,7 @@
   --info-trigger-inset: calc(var(--p) * 10);
   --control-trailing-space: calc(var(--p) * 15);
   --field-label-opacity: 0.77;
+  --field-label-background: linear-gradient(to bottom, var(--canvas) 0%, var(--surface) 100%);
 
   /* Responsive roles. Header and main consume the same gutter. The distance
      from the final parameter row to the first card is the exact same value as
@@ -592,7 +593,7 @@
     overflow: hidden;
     align-items: center;
     padding: 0 var(--p);
-    background: var(--canvas);
+    background: var(--field-label-background);
     color: var(--ink);
     text-overflow: ellipsis;
     white-space: nowrap;

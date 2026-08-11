@@ -125,7 +125,7 @@ test("the form is usable: labelled controls and comfortable tap targets", async 
   await expect(page.locator("#field-language")).toContainText("IT");
 });
 
-test("floating label text defers without fading its mask and chevrons mirror borders", async ({ page }) => {
+test("floating labels bridge canvas and controls while chevrons mirror borders", async ({ page }) => {
   await page.goto(URL);
 
   const labels = page.getByTestId("profile-form").locator(".field-floating-label");
@@ -138,10 +138,20 @@ test("floating label text defers without fading its mask and chevrons mirror bor
   const bodyBackground = await page.locator("body").evaluate((body) =>
     getComputedStyle(body).backgroundColor,
   );
-  const labelBackgrounds = await labels.evaluateAll((items) =>
-    items.map((item) => getComputedStyle(item).backgroundColor),
+  const controlBackground = await page.locator("#field-country").evaluate((control) =>
+    getComputedStyle(control).backgroundColor,
   );
-  expect(new Set(labelBackgrounds)).toEqual(new Set([bodyBackground]));
+  const labelBackgrounds = await labels.evaluateAll((items) =>
+    items.map((item) => getComputedStyle(item).backgroundImage),
+  );
+  expect(
+    labelBackgrounds.every(
+      (background) =>
+        background.startsWith("linear-gradient(") &&
+        background.includes(bodyBackground) &&
+        background.includes(controlBackground),
+    ),
+  ).toBe(true);
 
   const country = page.locator("#field-country");
   const chevron = country.locator(".select-chevron");
