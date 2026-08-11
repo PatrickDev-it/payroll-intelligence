@@ -13,13 +13,13 @@ type ProjectionSnapshot = {
 /**
  * Every parameter has one authoritative real-time path: change the control,
  * read the live projection, then reload the privacy-safe tab session and compare
- * it. This catches controls that fail to feed state or fail to persist without
- * putting salary and profile attributes into browser history.
+ * it. Each country owns an independent test budget so a slow two-core runner
+ * cannot turn the complete four-country pass into one nondeterministic timeout.
  */
-test("every country parameter recalculates live with no submit action", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "desktop", "one exhaustive interaction pass is sufficient");
+for (const country of COUNTRIES) {
+  test(`${country}: every parameter recalculates live with no submit action`, async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "desktop", "one exhaustive interaction pass is sufficient");
 
-  for (const country of COUNTRIES) {
     const baseUrl = `/?country=${country}&gross=45000`;
     await page.goto(baseUrl);
 
@@ -77,8 +77,8 @@ test("every country parameter recalculates live with no submit action", async ({
         .poll(() => projectionSnapshot(page), { message: `${country}/${id}: restored projection` })
         .toEqual(live);
     }
-  }
-});
+  });
+}
 
 test("legacy profile links are consumed once, then reduced to a privacy-safe URL", async ({ page }) => {
   await page.goto("/?country=DE&gross=50000&steuerklasse=III");
