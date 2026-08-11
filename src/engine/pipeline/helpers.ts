@@ -11,7 +11,13 @@ import { MissingRuleError } from "../errors.ts";
 import type { CalculationLine } from "../model/calculation.ts";
 import type { Rule, RuleId, RuleSet } from "../model/rule.ts";
 import type { Money } from "../money/money.ts";
-import { fromCents, negate } from "../money/money.ts";
+import {
+  applyRate,
+  negate,
+  parseDeclaredPercentage,
+  toMoney,
+  toPrecise,
+} from "../money/money.ts";
 import { applyPrimitive } from "../primitives/apply.ts";
 
 export type Sign = 1 | -1;
@@ -44,6 +50,7 @@ export type ApplyOptions = {
   readonly key?: string;
   readonly label?: string;
   readonly children?: readonly CalculationLine[];
+  readonly taxRole?: CalculationLine["taxRole"];
 };
 
 export function applyRule(
@@ -66,6 +73,8 @@ export function applyRule(
       formula: result.formula,
       ruleIds: [rule.id],
       confidence: rule.verification.status,
+      valueOrigin: "computed_rule",
+      ...(options.taxRole ? { taxRole: options.taxRole } : {}),
       ...(options.children ? { children: options.children } : {}),
     },
   };
@@ -80,23 +89,15 @@ export function applyDeclaredPercentageRule(
   rules: RuleSet,
   id: RuleId,
   base: Money,
-  percent: number,
-  options: Pick<ApplyOptions, "sign" | "label"> = {},
+  percent: string | number,
+  options: Pick<ApplyOptions, "sign" | "label" | "taxRole"> = {},
 ): Applied {
   const rule = ruleOf(rules, id);
   if (rule.config.kind !== "formula") {
     throw new TypeError(`Rule ${id} must be a formula for a declared employer rate`);
   }
-  if (!Number.isFinite(percent) || percent < 0 || percent > 100) {
-    throw new RangeError(`Declared percentage for ${id} must be between 0 and 100`);
-  }
-
-  const scale = 1_000_000;
-  const scaledPercent = Math.round(percent * scale);
-  const amount = fromCents(
-    Math.round((base.cents * scaledPercent) / (100 * scale)),
-    base.currency,
-  );
+  const declared = parseDeclaredPercentage(percent);
+  const amount = toMoney(applyRate(toPrecise(base), declared.rate), base.currency);
   const sign = options.sign ?? -1;
 
   return {
@@ -106,9 +107,11 @@ export function applyDeclaredPercentageRule(
       label: options.label ?? rule.label,
       amount: sign === -1 ? negate(amount) : amount,
       basis: base,
-      formula: `${(base.cents / 100).toFixed(2)} × ${percent.toFixed(6).replace(/0+$/, "").replace(/\.$/, "")}% (tasso aziendale dichiarato)`,
+      formula: `${(base.cents / 100).toFixed(2)} × ${declared.decimal}% (tasso aziendale dichiarato)`,
       ruleIds: [rule.id],
       confidence: rule.verification.status,
+      valueOrigin: "declared_input",
+      ...(options.taxRole ? { taxRole: options.taxRole } : {}),
     },
   };
 }
@@ -122,6 +125,7 @@ export function derivedLine(
   ruleIds: readonly RuleId[],
   confidence: CalculationLine["confidence"],
   children?: readonly CalculationLine[],
+  semantics: Pick<CalculationLine, "taxRole" | "valueOrigin"> = {},
 ): CalculationLine {
   return {
     id,
@@ -130,6 +134,8 @@ export function derivedLine(
     formula,
     ruleIds,
     confidence,
+    valueOrigin: semantics.valueOrigin ?? "computed_rule",
+    ...(semantics.taxRole ? { taxRole: semantics.taxRole } : {}),
     ...(children ? { children } : {}),
   };
 }

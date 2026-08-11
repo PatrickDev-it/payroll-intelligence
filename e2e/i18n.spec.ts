@@ -28,7 +28,7 @@ test("all five locales translate the complete product surface and number formats
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
       useGrouping: true,
-    }).format(2145.32);
+    }).format(2140.46);
     await expect(page.getByTestId("net-per-period")).toHaveText(expectedMoney);
 
     await page.locator("#field-language").click();

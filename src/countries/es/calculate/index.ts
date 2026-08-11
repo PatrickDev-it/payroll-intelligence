@@ -24,6 +24,7 @@ export function calculateSpain(profile: EmployeeProfile, rules: RuleSet): Payrol
     employee: computeEmployee(profile, rules),
     employer: computeEmployer(profile, rules),
     recomputeEmployee: (stepped) => computeEmployee(stepped, rules),
+    marginalRatePolicy: "hold_external_inputs",
     notes: NOTES,
   });
 }

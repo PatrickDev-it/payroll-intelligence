@@ -14,6 +14,15 @@ import type { ConfidenceTier } from "./confidence.ts";
 import type { EmployeeProfile } from "./employee-profile.ts";
 import type { RuleId, RuleRef } from "./rule.ts";
 
+/** The legal function of a tax line, not merely where it is displayed. */
+export type TaxRole = "payroll_withholding" | "annual_settlement_estimate";
+
+/** How the value on this line entered the calculation. Independent of confidence. */
+export type ValueOrigin = "computed_rule" | "declared_input";
+
+/** What the gross-income probe does with inputs supplied outside the engine. */
+export type MarginalRatePolicy = "recompute" | "hold_external_inputs" | "unavailable";
+
 export type CalculationLine = {
   readonly id: string;
   readonly label: string;
@@ -26,6 +35,10 @@ export type CalculationLine = {
   /** Non-empty. Enforced by assertCitable(). */
   readonly ruleIds: readonly RuleId[];
   readonly confidence: ConfidenceTier;
+  /** Present on tax lines when payroll withholding and annual liability must be distinguished. */
+  readonly taxRole?: TaxRole;
+  /** Does not replace confidence: a declared input can still rely on an experimental rule. */
+  readonly valueOrigin?: ValueOrigin;
   readonly children?: readonly CalculationLine[];
 };
 
@@ -50,14 +63,25 @@ export type EmployerResult = {
   readonly costOverGross: number;
 };
 
-export type Rates = {
+type EffectiveRates = {
   readonly effectiveTaxRate: number;
   readonly effectiveSocialRate: number;
   readonly totalEffectiveRate: number;
-  readonly marginalRate: number;
   /** OECD: (employerCost - net) / employerCost. The only cross-country measure. */
   readonly taxWedge: number;
 };
+
+export type Rates = EffectiveRates &
+  (
+    | {
+        readonly marginalRate: number;
+        readonly marginalRatePolicy: Exclude<MarginalRatePolicy, "unavailable">;
+      }
+    | {
+        readonly marginalRate: null;
+        readonly marginalRatePolicy: "unavailable";
+      }
+  );
 
 export type CalculationMeta = {
   readonly engineVersion: string;

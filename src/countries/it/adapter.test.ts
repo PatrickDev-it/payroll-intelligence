@@ -16,7 +16,7 @@ describe("rule set", () => {
   it("loads and validates the 2026 Italian rules at import time", () => {
     const rules = loadItalianRules(2026);
     expect(rules).toBeDefined();
-    expect(rules?.version).toBe("2026.5");
+    expect(rules?.version).toBe("2026.6");
     expect(Object.keys(rules?.rules ?? {})).toContain("IT.IRPEF.BRACKETS");
   });
 
@@ -52,7 +52,7 @@ describe("rules driving the primitives", () => {
     expect(result.amount.cents).toBe(1_068_512); // 6,440.00 + 4,245.12
   });
 
-  it("computes the TFR accrual through the formula registry, net of the guarantee fund", () => {
+  it("computes the TFR accrual through the formula registry, net of the statutory 0.50% quota", () => {
     // 45,000 / 13.5 = 3,333.33, less 0.50% (225.00) = 3,108.33
     const config = rules?.rules["IT.TFR.ACCRUAL"]?.config;
     const result = applyPrimitive(config!, { base: money(45_000, "EUR") });
@@ -155,8 +155,8 @@ describe("calculate through the registry", () => {
   it("resolves the adapter and its rules, then computes the reference case", () => {
     registerItaly();
     const result = resolveAdapter("IT").calculate(referenceProfile(45_000), resolveRuleSet("IT", 2026));
-    expect(result.employee.netAnnual.cents).toBe(3_003_441);
-    expect(result.employer.totalCost.cents).toBe(6_183_333);
+    expect(result.employee.netAnnual.cents).toBe(2_996_647);
+    expect(result.employer.totalCost.cents).toBe(6_171_183);
   });
 
   it("refuses an invalid profile rather than computing something for it", () => {
@@ -170,7 +170,7 @@ describe("calculate through the registry", () => {
 
   it("stamps the engine and rule-set versions on every result", () => {
     const result = italianAdapter.calculate(referenceProfile(45_000), loadItalianRules(2026)!);
-    expect(result.meta.rulesetVersion).toBe("2026.5");
+    expect(result.meta.rulesetVersion).toBe("2026.6");
     expect(result.meta.engineVersion).toMatch(/^\d+\.\d+\.\d+$/);
     expect(result.meta.rulesApplied.length).toBeGreaterThan(5);
   });

@@ -33,7 +33,11 @@ export function referenceProfile(grossAnnualEuros: number): EmployeeProfile {
     jobLevel: "III",
     companySize: 20,
     age: 30,
-    countryOptions: { inailRiskClass: "office", pensionCeilingStatus: "subject" },
+    countryOptions: {
+      inailRiskClass: "office",
+      pensionCeilingStatus: "subject",
+      tfrDestination: "unknown",
+    },
   };
 }
 
@@ -56,76 +60,76 @@ export const IT_FIXTURES: readonly Fixture[] = [
     // Exercises BOTH cash supplements: the trattamento integrativo passes the
     // capienza test here, and the somma integrativa lands in the 5.3% band.
     grossEuros: 15_000,
-    contributions: 137_850,
-    taxableIncome: 1_362_150,
-    irpefNet: 117_800,
-    surtaxes: 16_754,
-    supplements: 192_194, // 1,200.00 trattamento + 721.94 somma
-    netAnnual: 1_419_790,
-    netPerPayPeriod: 101_414,
-    employerCost: 2_070_711,
-    taxWedge: 0.3143,
+    contributions: 141_900,
+    taxableIncome: 1_358_100,
+    irpefNet: 116_863,
+    surtaxes: 16_705,
+    supplements: 191_979,
+    netAnnual: 1_416_511,
+    netPerPayPeriod: 101_179,
+    employerCost: 2_066_661,
+    taxWedge: 0.3145895722617304,
   },
   {
     grossEuros: 20_000,
-    contributions: 183_800,
-    taxableIncome: 1_816_200,
-    irpefNet: 136_700,
-    surtaxes: 23_446,
-    supplements: 87_178, // somma integrativa, 4.8% — non-taxable
-    netAnnual: 1_743_232,
-    netPerPayPeriod: 124_517,
-    employerCost: 2_756_148,
-    taxWedge: 0.3675,
+    contributions: 189_200,
+    taxableIncome: 1_810_800,
+    irpefNet: 134_934,
+    surtaxes: 23_361,
+    supplements: 86_918,
+    netAnnual: 1_739_423,
+    netPerPayPeriod: 124_245,
+    employerCost: 2_750_748,
+    taxWedge: 0.36765454341873555,
   },
   {
     grossEuros: 30_000,
-    contributions: 275_700,
-    taxableIncome: 2_724_300,
-    irpefNet: 322_200,
-    surtaxes: 59_588,
+    contributions: 283_800,
+    taxableIncome: 2_716_200,
+    irpefNet: 319_555,
+    surtaxes: 59_396,
     supplements: 0,
-    netAnnual: 2_342_512,
-    netPerPayPeriod: 167_322,
-    employerCost: 4_127_022,
-    taxWedge: 0.4324,
+    netAnnual: 2_337_249,
+    netPerPayPeriod: 166_946,
+    employerCost: 4_118_922,
+    taxWedge: 0.4325580819447419,
   },
   {
     // The reference case.
     grossEuros: 45_000,
-    contributions: 413_550,
-    taxableIncome: 4_086_450,
-    irpefNet: 989_200,
-    surtaxes: 93_809,
+    contributions: 425_700,
+    taxableIncome: 4_074_300,
+    irpefNet: 984_151,
+    surtaxes: 93_502,
     supplements: 0,
-    netAnnual: 3_003_441,
-    netPerPayPeriod: 214_532,
-    employerCost: 6_183_333,
-    taxWedge: 0.5143,
+    netAnnual: 2_996_647,
+    netPerPayPeriod: 214_046,
+    employerCost: 6_171_183,
+    taxWedge: 0.5144128767531282,
   },
   {
     grossEuros: 60_000,
-    contributions: 555_176,
-    taxableIncome: 5_444_824,
-    irpefNet: 1_561_300,
-    surtaxes: 128_084,
+    contributions: 571_376,
+    taxableIncome: 5_428_624,
+    irpefNet: 1_554_308,
+    surtaxes: 127_674,
     supplements: 0,
-    netAnnual: 3_755_440,
-    netPerPayPeriod: 268_246,
-    employerCost: 8_239_644,
-    taxWedge: 0.5442230271113655,
+    netAnnual: 3_746_642,
+    netPerPayPeriod: 267_617,
+    employerCost: 8_223_444,
+    taxWedge: 0.5443950247609153,
   },
   {
     grossEuros: 100_000,
-    contributions: 962_776,
-    taxableIncome: 9_037_224,
-    irpefNet: 3_106_000,
-    surtaxes: 218_972,
+    contributions: 989_776,
+    taxableIncome: 9_010_224,
+    irpefNet: 3_094_396,
+    surtaxes: 218_289,
     supplements: 0,
-    netAnnual: 5_712_252,
-    netPerPayPeriod: 408_018,
-    employerCost: 13_723_141,
-    taxWedge: 0.5837503965017922,
+    netAnnual: 5_697_539,
+    netPerPayPeriod: 406_967,
+    employerCost: 13_696_141,
+    taxWedge: 0.5840040636263893,
   },
 ];
 
@@ -149,13 +153,11 @@ export type Boundary = {
 
 export const IT_BOUNDARIES: readonly Boundary[] = [
   {
-    atEuros: 8_500,
-    why: "somma integrativa 7.1% -> 5.3%, and gross IRPEF crosses the art. 13 credit",
-    // 8,500 x 23% = 1,955.00, exactly the art. 13 plateau, so the capienza test
-    // flips here and the EUR 1,200 trattamento integrativo switches on. The two
-    // thresholds coinciding is the 2025-reform artefact described in the docs.
+    atEuros: 8_173.91,
+    why: "gross IRPEF crosses the art. 13 credit reduced by EUR 75",
     cliff: "jump",
   },
+  { atEuros: 8_500, why: "somma integrativa 7.1% -> 5.3%", cliff: "drop" },
   { atEuros: 15_000, why: "credit formula changes; trattamento integrativo full -> partial" },
   { atEuros: 20_000, why: "somma integrativa ends, ulteriore detrazione begins" },
   {
@@ -174,7 +176,7 @@ export const IT_BOUNDARIES: readonly Boundary[] = [
   { atEuros: 200_000, why: "EUR 440 deduction clawback" },
 ];
 
-/** Gross at which taxable income reaches `taxableEuros`, given the 9.19% rate. */
+/** Gross at which taxable income reaches `taxableEuros`, including ordinary FIS 0.27%. */
 export function grossForTaxable(taxableEuros: number): number {
-  return Math.round(taxableEuros / (1 - 0.0919));
+  return Math.ceil(taxableEuros / (1 - 0.0919 - 0.0027));
 }

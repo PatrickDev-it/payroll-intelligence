@@ -46,10 +46,10 @@ describe("golden fixtures — to the cent", () => {
         expect(result.employee.taxableIncome.cents).toBe(fixture.taxableIncome);
       });
 
-      it("computes IRPEF net of credits, rounded to the euro", () => {
+      it("computes IRPEF net of credits at cent precision", () => {
         const irpef = result.employee.taxes.find((l) => l.id === "IT.IRPEF");
         expect(-(irpef?.amount.cents ?? 0)).toBe(fixture.irpefNet);
-        expect(fixture.irpefNet % 100).toBe(0); // art. 11 c. 4 TUIR
+        expect(irpef?.children?.map((line) => line.id)).not.toContain("IT.IRPEF.ROUNDING");
       });
 
       it("computes both local surtaxes", () => {

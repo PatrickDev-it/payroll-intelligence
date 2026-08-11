@@ -36,6 +36,10 @@ export function integrativeTreatment(
   const cap = moneyFromDecimal(formulaParam(rule, "amount"), currency);
   const lower = moneyFromDecimal(formulaParam(rule, "lowerThreshold"), currency);
   const upper = moneyFromDecimal(formulaParam(rule, "upperThreshold"), currency);
+  const capienzaReduction = moneyFromDecimal(
+    formulaParam(rule, "capienzaCreditReduction"),
+    currency,
+  );
 
   if (compare(totalIncome, upper) > 0) return undefined;
 
@@ -43,11 +47,12 @@ export function integrativeTreatment(
   let formula: string;
 
   if (compare(totalIncome, lower) <= 0) {
-    const hasCapienza = compare(irpefGross, employmentCredit) > 0;
+    const adjustedEmploymentCredit = clampAtZero(subtract(employmentCredit, capienzaReduction));
+    const hasCapienza = compare(irpefGross, adjustedEmploymentCredit) > 0;
     amount = hasCapienza ? cap : zero(currency);
     formula = hasCapienza
-      ? `${amt(cap)} \u2014 IRPEF lorda ${amt(irpefGross)} > detrazione art. 13 ${amt(employmentCredit)}`
-      : `IRPEF lorda ${amt(irpefGross)} \u2264 detrazione art. 13 \u2192 0,00`;
+      ? `${amt(cap)} \u2014 IRPEF lorda ${amt(irpefGross)} > detrazione art. 13 ridotta ${amt(adjustedEmploymentCredit)}`
+      : `IRPEF lorda ${amt(irpefGross)} \u2264 detrazione art. 13 ridotta ${amt(adjustedEmploymentCredit)} \u2192 0,00`;
   } else {
     const excess = clampAtZero(subtract(totalTaxCredits, irpefGross));
     amount = min(cap, excess);

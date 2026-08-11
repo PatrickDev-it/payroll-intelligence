@@ -37,6 +37,58 @@ export function italianInputs(profile?: Partial<EmployeeProfile>): readonly Inpu
   const hasMinimums = ccnl.levels.some((l) => l.monthlyMinimum);
   const selectedLevel = ccnl.levels.find((level) => level.code === profile?.jobLevel);
 
+  const fisEligibilityInputs: readonly InputDescriptor[] =
+    profile?.companySize !== undefined && profile.companySize <= 5
+      ? [
+          {
+            field: "countryOptions.fisReducedRateEligible",
+            label: "Riduzione FIS",
+            kind: "select",
+            required: true,
+            group: "company",
+            options: [
+              { value: "eligible", label: "Spetta" },
+              { value: "not_eligible", label: "Non spetta" },
+            ],
+            help: "Per i datori fino a 5 dipendenti la riduzione richiede che non sia stata presentata alcuna domanda FIS nei 24 mesi precedenti. Il motore non può dedurlo dall'organico.",
+            example: "Se l'azienda ha usato il FIS negli ultimi 24 mesi, seleziona Non spetta.",
+            source: "INPS — Fondo di integrazione salariale, riduzione contributiva dal 2025.",
+          },
+        ]
+      : [];
+
+  const fixedTermInputs: readonly InputDescriptor[] =
+    profile?.contractType === "fixed_term"
+      ? [
+          {
+            field: "countryOptions.naspiApplicability",
+            label: "NASpI aggiuntiva",
+            kind: "select",
+            required: true,
+            group: "company",
+            options: [
+              { value: "ordinary", label: "Dovuta" },
+              { value: "exempt", label: "Esente" },
+            ],
+            help: "I rapporti a termine ordinari versano il contributo addizionale; alcune fattispecie sono escluse e devono essere dichiarate esplicitamente.",
+            example: "Un normale contratto a termine seleziona Dovuta; un rapporto compreso in un'esenzione di legge seleziona Esente.",
+            source: "L. 92/2012 art. 2 cc. 28-30 e istruzioni INPS NASpI.",
+          },
+          {
+            field: "countryOptions.naspiRenewalCount",
+            label: "Rinnovi a termine",
+            kind: "integer",
+            required: true,
+            group: "company",
+            min: 0,
+            max: 100,
+            help: "Ogni rinnovo aggiunge 0,50 punti percentuali al contributo addizionale NASpI. Una proroga non è un rinnovo.",
+            example: "Primo contratto: 0. Contratto cessato e poi rinnovato due volte: 2.",
+            source: "D.L. 87/2018 art. 3 c. 2 e Circolare INPS n. 121/2019.",
+          },
+        ]
+      : [];
+
   return [
     {
       field: "grossAnnual",
@@ -144,15 +196,16 @@ export function italianInputs(profile?: Partial<EmployeeProfile>): readonly Inpu
       field: "companySize",
       label: "N. dipendenti",
       kind: "integer",
-      required: false,
+      required: true,
       group: "company",
       defaultValue: 20,
       min: 1,
       max: 500_000,
-      help: "Determina l'aliquota FIS (0,50% fino a 5, 0,80% oltre) e il Fondo Tesoreria a 50.",
-      example: "Il passaggio da 49 a 50 dipendenti attiva il versamento del TFR al Fondo Tesoreria INPS.",
-      source: "INPS — Fondo di integrazione salariale e Fondo Tesoreria.",
+      help: "Media dei dipendenti del semestre precedente: determina la fascia FIS fino a 5 oppure oltre 5. Non determina la destinazione del TFR.",
+      example: "Una media semestrale di 5 usa la fascia FIS piccola; una media di 6 usa la fascia oltre 5.",
+      source: "INPS — Fondo di integrazione salariale (FIS).",
     },
+    ...fisEligibilityInputs,
     {
       field: "jobLevel",
       label: "Livello",
@@ -188,9 +241,29 @@ export function italianInputs(profile?: Partial<EmployeeProfile>): readonly Inpu
         { value: "permanent", label: "Indeterminato" },
         { value: "fixed_term", label: "Determinato" },
       ],
-      help: "Il determinato aggiunge l'1,40% NASpI al costo aziendale; il netto del dipendente non cambia.",
+      help: "Il determinato può aggiungere il contributo NASpI al costo aziendale; applicabilità e rinnovi sono richiesti nel passaggio successivo.",
       example: "Due dipendenti con la stessa RAL hanno lo stesso netto; il determinato costa di più all'azienda per il contributo addizionale.",
       source: "INPS — contributo addizionale NASpI sui rapporti a termine.",
+    },
+    ...fixedTermInputs,
+    {
+      field: "countryOptions.tfrDestination",
+      label: "Destinazione TFR",
+      kind: "select",
+      required: true,
+      group: "company",
+      advanced: true,
+      hidden: true,
+      defaultValue: "unknown",
+      options: [
+        { value: "unknown", label: "Da verificare" },
+        { value: "company", label: "Azienda" },
+        { value: "treasury", label: "Tesoreria INPS" },
+        { value: "pension_fund", label: "Fondo pensione" },
+      ],
+      help: "È un dato di destinazione e cassa: non modifica il costo economico annuo del TFR. Non viene inferito dall'organico, perché contano storia aziendale, medie legali e scelta del lavoratore.",
+      example: "Per un datore obbligato al Fondo Tesoreria seleziona Tesoreria INPS; il totale costo resta invariato.",
+      source: "Art. 2120 c.c.; L. 296/2006; Circolare INPS n. 12/2026.",
     },
     {
       field: "countryOptions.inailRiskClass",

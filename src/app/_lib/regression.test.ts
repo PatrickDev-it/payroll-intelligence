@@ -36,47 +36,47 @@ type Expected = {
 const FIXTURES: readonly Expected[] = [
   {
     params: { country: "IT", gross: "15000" },
-    netAnnual: 1_419_790,
-    netPerPayPeriod: 101_414,
-    netMonthlyEquivalent: 118_316,
-    taxableIncome: 1_362_150,
-    employerCost: 2_070_711,
-    taxWedgePpm: 314_347,
-    marginalPpm: 263_940,
-    rules: 11,
+    netAnnual: 1_416_511,
+    netPerPayPeriod: 101_179,
+    netMonthlyEquivalent: 118_043,
+    taxableIncome: 1_358_100,
+    employerCost: 2_066_661,
+    taxWedgePpm: 314_590,
+    marginalPpm: 265_980,
+    rules: 18,
   },
   {
     params: { country: "IT", gross: "45000" },
-    netAnnual: 3_003_441,
-    netPerPayPeriod: 214_532,
-    netMonthlyEquivalent: 250_287,
-    taxableIncome: 4_086_450,
-    employerCost: 6_183_333,
-    taxWedgePpm: 514_268,
-    marginalPpm: 493_780,
-    rules: 9,
+    netAnnual: 2_996_647,
+    netPerPayPeriod: 214_046,
+    netMonthlyEquivalent: 249_721,
+    taxableIncome: 4_074_300,
+    employerCost: 6_171_183,
+    taxWedgePpm: 514_413,
+    marginalPpm: 494_810,
+    rules: 16,
   },
   {
     params: { country: "IT", gross: "45000", region: "LAZIO", comune: "ROMA" },
-    netAnnual: 2_969_193,
-    netPerPayPeriod: 212_085,
-    netMonthlyEquivalent: 247_433,
-    taxableIncome: 4_086_450,
-    employerCost: 6_183_333,
-    taxWedgePpm: 519_807,
-    marginalPpm: 509_310,
-    rules: 9,
+    netAnnual: 2_962_606,
+    netPerPayPeriod: 211_615,
+    netMonthlyEquivalent: 246_884,
+    taxableIncome: 4_074_300,
+    employerCost: 6_171_183,
+    taxWedgePpm: 519_929,
+    marginalPpm: 510_290,
+    rules: 16,
   },
   {
     params: { country: "IT", gross: "150000", pensionCeilingStatus: "subject" },
-    netAnnual: 8_312_014,
-    netPerPayPeriod: 593_715,
-    netMonthlyEquivalent: 692_668,
-    taxableIncome: 13_810_038,
-    employerCost: 19_752_456,
-    taxWedgePpm: 579_191,
-    marginalPpm: 455_300,
-    rules: 10,
+    netAnnual: 8_289_938,
+    netPerPayPeriod: 592_138,
+    netMonthlyEquivalent: 690_828,
+    taxableIncome: 13_769_538,
+    employerCost: 19_877_355,
+    taxWedgePpm: 582_946,
+    marginalPpm: 456_770,
+    rules: 17,
   },
   {
     params: { country: "DE", gross: "45000" },
@@ -165,7 +165,16 @@ describe("the interface must not move a cent", () => {
       expect(result.employee.taxableIncome.cents).toBe(fixture.taxableIncome);
       expect(result.employer.totalCost.cents).toBe(fixture.employerCost);
       expect(Math.round(result.rates.taxWedge * 1e6)).toBe(fixture.taxWedgePpm);
+      expect(result.rates.marginalRate).not.toBeNull();
+      if (result.rates.marginalRate === null) {
+        throw new Error(`${name} unexpectedly has no marginal rate`);
+      }
       expect(Math.round(result.rates.marginalRate * 1e6)).toBe(fixture.marginalPpm);
+      expect(result.rates.marginalRatePolicy).toBe(
+        profile.country === "DE" || profile.country === "ES"
+          ? "hold_external_inputs"
+          : "recompute",
+      );
       expect(result.meta.rulesApplied.length).toBe(fixture.rules);
     });
   }

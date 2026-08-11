@@ -12,8 +12,8 @@ Magnitudes below are computed at **€45,000 RAL** unless stated.
 | Rank | Discriminant | Δ net at €45k | Modelled |
 | ---: | --- | ---: | :---: |
 | 1 | `Regime impatriati` (50 % exemption) | **+ € 8,900** | ❌ documented |
-| 2 | Municipality of residence | ± € 327 | ✅ 9 modelled |
-| 3 | Region of residence | ± € 553 | ✅ all 21 |
+| 2 | Municipality of residence | ± € 326 | ✅ 9 modelled |
+| 3 | Region of residence | ± € 551 | ✅ all 21 |
 | 4 | Dependants aged 21+ | up to − € 1,600 tax | ⚠️ structure only |
 | 5 | Contributory ceiling eligibility (pre/post 1996) | 0 at €45k, **± € 2,825** at €150k | ✅ flagged |
 | 6 | Number of instalments (12 / 13 / 14) | € 0 annual, **± € 358/month** | ✅ |
@@ -35,8 +35,8 @@ discriminant in consumer salary calculators.
 | `Addizionale regionale` | 1.23 % – 3.33 %, per slice **or** on the whole base depending on the region | all **21** regions and autonomous provinces |
 | `Addizionale comunale` | 0 % – 1.0 %, each with its own exemption threshold | **9** comuni; the rest refused, not approximated |
 
-**Spread €553.33/year** across the regions on an identical €45,000 salary — Basilicata against
-Campania. The comune adds up to €327 on top.
+**Spread €550.94/year** across the regions on an identical €45,000 salary — Basilicata against
+Campania. The comune adds up to about €326 on top nel profilo Milano.
 
 **The municipal threshold is a cliff, not an allowance.** Above it the rate applies to the
 *entire* taxable base: in Milan €23,000 pays €0 and €23,001 pays €184.01. See
@@ -116,7 +116,7 @@ The highest-impact discriminant in the Italian system.
 **Effect:** 50 % of employment income exempt (60 % with a child under 18), for 5 years,
 capped at €600,000 of income.
 
-At €45,000 RAL this changes net from **€30,034 to roughly €38,900** — a **+€8,900/yr**
+At €45,000 RAL this changes net from **€29,966 to roughly €38,900** — a **+€8,900/yr**
 difference, larger than every other discriminant combined.
 
 It is excluded because eligibility depends on facts payroll cannot verify (prior residence
@@ -155,7 +155,8 @@ entire amount taxable. Structurally identical to the Milan surtax threshold — 
 
 | Discriminant | Effect on employer cost |
 | --- | --- |
-| Headcount ≤ 5 / 6–49 / ≥ 50 | FIS 0.50 % vs 0.80 %; TFR to `Fondo Tesoreria` at ≥ 50 (cash flow only) |
+| Headcount ≤ 5 / > 5 | FIS 0.50% vs 0.80%; percorso ridotto 0.30% solo con requisito dichiarato |
+| Destinazione TFR dichiarata | Azienda, Fondo Tesoreria o fondo pensione cambiano il flusso finanziario, non l'accantonamento esposto |
 | INAIL risk class | 0.4 ‰ – 130 ‰ — **± €5,800/yr** at €45k between office and heavy industry |
 | CCNL | Supplementary funds: €144/yr (Terziario) to ~4 % of gross (`Cassa Edile`, construction) |
 | Region | Former `Decontribuzione Sud`, phasing out |
@@ -175,7 +176,8 @@ Family             Single, no dependants
 Special regimes    None
 Benefits           None
 INPS ceiling       Applies (post-1996 first insured)
-Employer           Private, 6–49 employees, office activity (INAIL 4 ‰)
+Employer           Private, 20 employees, office activity (INAIL 4 ‰)
+TFR destination    Unknown             →  never inferred from headcount
 Period             Full calendar year
 ```
 

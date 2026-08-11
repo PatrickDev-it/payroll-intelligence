@@ -14,6 +14,11 @@ import { loadItalianRules } from "../rules/index.ts";
 
 const RULES = loadItalianRules(2026)!;
 const runAt = (grossEuros: number) => italianAdapter.calculate(referenceProfile(grossEuros), RULES);
+const marginalRateAt = (grossEuros: number): number => {
+  const marginalRate = runAt(grossEuros).rates.marginalRate;
+  if (marginalRate === null) throw new Error("Italian marginal rate unexpectedly unavailable");
+  return marginalRate;
+};
 
 describe("monotonicity", () => {
   const MILAN_CLIFF_GROSS = grossForTaxable(23_000);
@@ -105,13 +110,13 @@ describe("the marginal rate the headline hides", () => {
     // surtaxes are counted. This gap is the reason the breakdown exists.
     expect(r.rates.effectiveTaxRate).toBeGreaterThan(0.23);
     expect(r.rates.effectiveTaxRate).toBeLessThan(0.26);
-    expect(r.rates.marginalRate).toBeGreaterThan(0.45);
-    expect(r.rates.marginalRate).toBeLessThan(0.52);
+    expect(marginalRateAt(45_000)).toBeGreaterThan(0.45);
+    expect(marginalRateAt(45_000)).toBeLessThan(0.52);
   });
 
   it("falls above the contributory ceiling, because contributions stop", () => {
-    const below = runAt(110_000).rates.marginalRate;
-    const above = runAt(130_000).rates.marginalRate;
+    const below = marginalRateAt(110_000);
+    const above = marginalRateAt(130_000);
     expect(above).toBeLessThan(below);
   });
 });
@@ -122,7 +127,7 @@ describe("explain", () => {
     const explanation = italianAdapter.explain(r, "IT.ADDIZIONALE.COMUNALE.MILANO");
     expect(explanation).toBeDefined();
     // Derivations are symbolic: the threshold shows as a comparison, not a word.
-    expect(explanation?.derivation).toBe("40.864,50 > 23.000,00 \u2192 40.864,50 \u00d7 0,8%");
+    expect(explanation?.derivation).toBe("40.743,00 > 23.000,00 \u2192 40.743,00 \u00d7 0,8%");
     expect(explanation?.rules[0]?.id).toBe("IT.ADDIZIONALE.COMUNALE.MILANO");
     expect(explanation?.rules[0]?.document).toContain("addizionale comunale");
     expect(explanation?.rules[0]?.url).toContain("comune.milano.it");
@@ -136,8 +141,8 @@ describe("explain", () => {
 describe("presentation", () => {
   it("formats the reference net the way an Italian payslip reads", () => {
     const r = runAt(45_000);
-    expect(format(r.employee.netAnnual)).toContain("30.034,41");
-    expect(subtract(r.employee.gross, r.employee.netAnnual).cents).toBe(1_496_559);
-    expect(money(45_000, "EUR").cents - r.employee.netAnnual.cents).toBe(1_496_559);
+    expect(format(r.employee.netAnnual)).toContain("29.966,47");
+    expect(subtract(r.employee.gross, r.employee.netAnnual).cents).toBe(1_503_353);
+    expect(money(45_000, "EUR").cents - r.employee.netAnnual.cents).toBe(1_503_353);
   });
 });

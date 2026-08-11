@@ -27,7 +27,7 @@ test("stamps the engine and ruleset versions on the response", async ({ request 
 
   // When a figure is disputed, the first question is which rules produced it.
   // That has to be answerable from the response alone.
-  expect(body.meta.rulesetVersion).toBe("2026.5");
+  expect(body.meta.rulesetVersion).toBe("2026.6");
   expect(body.meta.engineVersion).toMatch(/^\d+\.\d+\.\d+$/);
   expect(body.meta.confidence).toBe("experimental");
   expect(body.meta.rulesApplied.length).toBeGreaterThan(5);

@@ -73,7 +73,7 @@ for (const key of Object.keys(MUNICIPAL)) {
   });
 }
 
-test("the region really moves the number — EUR 553 across Italy", async ({ page }) => {
+test("the region really moves the number — EUR 550.94 across Italy", async ({ page }) => {
   const netFor = async (region: string) => {
     await page.goto(`/?gross=45000&location=${region}%3ANESSUNA`);
     return parseEuro(await page.getByTestId("net-annual").innerText());
@@ -82,7 +82,7 @@ test("the region really moves the number — EUR 553 across Italy", async ({ pag
   const cheapest = await netFor("VENETO"); // 1.23% statutory minimum
   const dearest = await netFor("CAMPANIA"); // per slice to 3.33%
 
-  expect(cheapest - dearest).toBeCloseTo(553.33, 2);
+  expect(cheapest - dearest).toBeCloseTo(550.94, 2);
 });
 
 test("every modelled city and every regional fallback is offered", async ({ page }) => {

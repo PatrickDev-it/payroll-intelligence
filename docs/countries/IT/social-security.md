@@ -3,6 +3,8 @@
 | Parametro | Valore |
 | --- | ---: |
 | IVS dipendente | 9,19% |
+| FIS dipendente, fino a 5 | 0,17% standard; 0,10% nel percorso ridotto dichiarato |
+| FIS dipendente, oltre 5 | 0,27% |
 | Prima fascia pensionabile | €56.224 |
 | Aggiuntivo | 1% sulla quota oltre €56.224 |
 | Massimale, quando applicabile | €122.295 |
@@ -20,4 +22,9 @@ Esempio a €150.000:
 - con massimale: €11.238,91 + €660,71 = **€11.899,62**;
 - senza massimale: €13.785,00 + €937,76 = **€14.722,76**.
 
-I test coprono €56.224 e €122.295 a ±€0,01 e verificano entrambi i percorsi.
+Il FIS resta una riga distinta dall'IVS e partecipa ai contributi deducibili che formano
+l'imponibile fiscale. Per le imprese fino a 5 dipendenti la riduzione non viene inferita:
+richiede la dichiarazione del requisito di assenza di domande FIS nei 24 mesi precedenti.
+
+I test coprono €56.224 e €122.295 a ±€0,01, verificano entrambi i percorsi del massimale e i
+tre rami FIS (fino a 5 standard, fino a 5 ridotto, oltre 5).

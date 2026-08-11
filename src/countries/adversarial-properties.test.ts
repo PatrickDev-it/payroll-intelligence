@@ -111,9 +111,22 @@ describe.each(SUBJECTS)("$code adapter — adversarial properties", (subject) =>
         expect(Number.isSafeInteger(amount.cents), `money at gross cents ${gross}`).toBe(true);
         expect(amount.currency).toBe("EUR");
       }
-      for (const rate of Object.values(result.rates)) {
+      const rates = [
+        result.rates.effectiveTaxRate,
+        result.rates.effectiveSocialRate,
+        result.rates.totalEffectiveRate,
+        result.rates.taxWedge,
+        ...(result.rates.marginalRate === null ? [] : [result.rates.marginalRate]),
+      ];
+      for (const rate of rates) {
         expect(Number.isFinite(rate), `rate at gross cents ${gross}`).toBe(true);
       }
+      expect(["recompute", "hold_external_inputs", "unavailable"]).toContain(
+        result.rates.marginalRatePolicy,
+      );
+      expect(result.rates.marginalRate === null).toBe(
+        result.rates.marginalRatePolicy === "unavailable",
+      );
       for (const line of allLines(result)) {
         expect(line.ruleIds.length, line.id).toBeGreaterThan(0);
         for (const ruleId of line.ruleIds) expect(cited.has(ruleId), `${line.id} -> ${ruleId}`).toBe(true);

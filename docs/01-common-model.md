@@ -16,7 +16,19 @@ dichiarati dall'adapter: l'interfaccia non conosce Steuerklasse, massimale IVS o
 - aliquote effettive, marginale e cuneo fiscale;
 - versione motore, versione regole, confidenza, fonti e note.
 
-Ogni `CalculationLine` porta importo firmato, base, formula, `ruleIds` e confidenza.
+Ogni `CalculationLine` porta importo firmato, base, formula, `ruleIds` e confidenza. Può inoltre
+dichiarare due semantiche indipendenti:
+
+- `taxRole`: `payroll_withholding` oppure `annual_settlement_estimate`, per non confondere
+  quanto trattenuto in busta con la stima dell'imposta finale;
+- `valueOrigin`: `computed_rule` oppure `declared_input`, per distinguere un valore calcolato
+  dal motore da un parametro comunicato da datore, autorità o utente. L'origine non modifica
+  né innalza la confidenza della regola.
+
+L'aliquota marginale è una coppia discriminata: il valore è numerico quando la policy è
+`recompute` o `hold_external_inputs`; è `null` soltanto con `unavailable`. Una percentuale
+dichiarata viene acquisita come decimale esatto (massimo sei decimali), convertita subito in
+parti per miliardo e applicata con un solo arrotondamento monetario.
 
 ## Architettura
 

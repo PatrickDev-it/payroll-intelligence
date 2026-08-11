@@ -32,9 +32,8 @@ export function splitDecimal(decimal: string): DecimalParts {
 /**
  * Integer division with an EXPLICIT rounding mode, exact for any sign.
  *
- * Explicit because the statute decides: Italian IRPEF rounds half-up to the
- * euro (art. 11 c. 4 TUIR), and a default would let that decision be made by
- * whoever wrote the call site.
+ * Explicit because the governing rule decides; a default would let that
+ * decision be made accidentally by whoever wrote the call site.
  */
 export function divideRounded(numerator: bigint, denominator: bigint, mode: Rounding): bigint {
   const quotient = numerator / denominator;

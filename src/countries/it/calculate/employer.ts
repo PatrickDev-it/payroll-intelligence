@@ -2,22 +2,26 @@
  * Italian employer cost — four categories, kept separate because they behave
  * differently as gross rises (docs/03-employer-cost.md §1).
  *
- *   ① statutory contributions   capped at the massimale, so regressive at the top
+ *   ① statutory contributions   IVS capped; the other bases remain uncapped
  *   ② mandatory insurance       priced by RISK, not by income
  *   ③ deferred compensation     TFR: real annual cost, paid at termination
  *   ④ other mandatory costs     CCNL funds
  *
- * The trap this file exists to avoid: TFR's 0.50% guarantee-fund contribution is
- * charged inside ① and DEDUCTED from ③. Adding 7.41% + 0.50% is the classic
- * double-count and overstates cost by half a point of gross.
+ * The 0.50% quota deducted from TFR under art. 3 L. 297/1982 is not the
+ * separate 0.20% employer contribution to the guarantee fund exposed in ①.
  */
 
 import type { EmployeeProfile } from "@engine/model/employee-profile.ts";
 import type { RuleSet } from "@engine/model/rule.ts";
-import { add, sum } from "@engine/money/money.ts";
+import { add, applyRate, rate, sum, toMoney, toPrecise } from "@engine/money/money.ts";
 import type { EmployerComputation } from "@engine/pipeline/assemble.ts";
-import { applyDeclaredPercentageRule, applyRule } from "@engine/pipeline/helpers.ts";
-import { isContributionCeilingApplicable } from "../profile.ts";
+import {
+  applyDeclaredPercentageRule,
+  applyRule,
+  ruleOf,
+  type Applied,
+} from "@engine/pipeline/helpers.ts";
+import { italianContributionRuleIds } from "../contributions.ts";
 
 
 export type { EmployerComputation };
@@ -29,14 +33,17 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
   const gross = profile.grossAnnual;
 
   // ① Statutory contributions.
-  const inps = applyRule(
-    rules,
-    isContributionCeilingApplicable(profile)
-      ? "IT.INPS.EMPLOYER.TOTAL"
-      : "IT.INPS.EMPLOYER.TOTAL.UNCAPPED",
-    gross,
-    { sign: 1 },
-  );
+  const contributionRules = italianContributionRuleIds(profile);
+  const ivs = applyRule(rules, contributionRules.employerIvs, gross, { sign: 1 });
+  const ordinaryContributions = [
+    "IT.INPS.EMPLOYER.CUAF",
+    "IT.INPS.EMPLOYER.MATERNITY",
+    "IT.INPS.EMPLOYER.SICKNESS",
+    "IT.INPS.EMPLOYER.NASPI_ORDINARY",
+    "IT.INPS.EMPLOYER.FONDO_GARANZIA_TFR",
+  ].map((id) => applyRule(rules, id, gross, { sign: 1 }));
+  const fis = applyRule(rules, contributionRules.employerFis, gross, { sign: 1 });
+  const additionalNaspi = fixedTermNaspi(profile, rules);
 
   // ② Mandatory insurance. The risk class is an explicit input because the real
   //    range is 0.4 to 130 per mille and no honest default exists.
@@ -59,12 +66,26 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
     key: profile.collectiveAgreement ?? "NESSUNO",
   });
 
-  const contributions = [inps.line];
+  const contributionAmounts = [
+    ivs.amount,
+    ...ordinaryContributions.map((item) => item.amount),
+    fis.amount,
+    ...additionalNaspi.map((item) => item.amount),
+  ];
+  const contributions = [
+    ivs.line,
+    ...ordinaryContributions.map((item) => item.line),
+    fis.line,
+    ...additionalNaspi.map((item) => item.line),
+  ];
   const insurance = [inail.line];
   const severanceAccrual = [tfr.line];
   const otherCosts = ccnlFund.amount.cents > 0 ? [ccnlFund.line] : [];
 
-  const onTop = sum([inps.amount, inail.amount, tfr.amount, ccnlFund.amount], currency);
+  const onTop = sum(
+    [...contributionAmounts, inail.amount, tfr.amount, ccnlFund.amount],
+    currency,
+  );
   const totalCost = add(gross, onTop);
 
   return {
@@ -76,6 +97,46 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
     totalCost,
     costOverGross: gross.cents === 0 ? 0 : totalCost.cents / gross.cents,
   };
+}
+
+function fixedTermNaspi(profile: EmployeeProfile, rules: RuleSet): readonly Applied[] {
+  if (
+    profile.contractType !== "fixed_term" ||
+    profile.countryOptions?.["naspiApplicability"] !== "ordinary"
+  ) {
+    return [];
+  }
+
+  const base = applyRule(rules, "IT.NASPI.ADDITIONAL.FIXED_TERM", profile.grossAnnual, {
+    sign: 1,
+  });
+  const renewals = Number(profile.countryOptions?.["naspiRenewalCount"] ?? 0);
+  if (renewals === 0) return [base];
+
+  const renewalRuleId = "IT.NASPI.ADDITIONAL.RENEWALS";
+  const perRenewal = applyRule(rules, renewalRuleId, profile.grossAnnual, {
+    sign: 1,
+  });
+  const renewalRule = ruleOf(rules, renewalRuleId);
+  if (renewalRule.config.kind !== "flat_rate") {
+    throw new TypeError(`${renewalRuleId} must be a flat rate`);
+  }
+  const aggregateRate = {
+    ppb: rate(renewalRule.config.rate).ppb * BigInt(renewals),
+  };
+  const amount = toMoney(
+    applyRate(toPrecise(profile.grossAnnual), aggregateRate),
+    profile.grossAnnual.currency,
+  );
+  const renewalTotal: Applied = {
+    amount,
+    line: {
+      ...perRenewal.line,
+      amount,
+      formula: `${perRenewal.line.formula} × ${renewals} rinnovi`,
+    },
+  };
+  return [base, renewalTotal];
 }
 
 function riskClassOf(profile: EmployeeProfile): string {

@@ -49,9 +49,12 @@ test("every displayed withholding matches the article that produces it", async (
     Math.abs(parseEuro(await page.getByTestId(`amount-${ruleId}`).innerText()));
 
   // art. 51 c. 2 lett. a TUIR — contributions come off before the tax base.
-  expect(await lineAmount("IT.INPS.EMPLOYEE.IVS")).toBe(expected.contributions);
+  expect(
+    (await lineAmount("IT.INPS.EMPLOYEE.IVS")) +
+      (await lineAmount("IT.FIS.EMPLOYEE.LARGE")),
+  ).toBe(expected.contributions);
 
-  // art. 11 TUIR, net of art. 13 credits, rounded to the euro.
+  // art. 11 TUIR, net of art. 13 credits, retained at cent precision.
   expect(await lineAmount("IT.IRPEF")).toBe(expected.irpefNet);
 
   // L.R. Lombardia 10/2003 art. 72 — per slice, not on the whole base.
@@ -77,19 +80,19 @@ test("the breakdown reconciles on screen: gross minus withholdings equals the ne
 test("the Milan cliff is shown, and warned about, exactly where the law puts it", async ({
   page,
 }) => {
-  // Taxable income crosses EUR 23,000 at gross 25,328.
-  const below = fromStatute(25_327);
-  const above = fromStatute(25_328);
+  // Taxable income crosses EUR 23,000 at gross 25,404 after employee FIS.
+  const below = fromStatute(25_403);
+  const above = fromStatute(25_404);
   expect(below.taxableIncome, "fixture straddles the threshold").toBeLessThanOrEqual(23_000);
   expect(above.taxableIncome).toBeGreaterThan(23_000);
   expect(below.municipalSurtax).toBe(0);
   expect(above.municipalSurtax).toBeGreaterThan(180);
 
-  await page.goto("/?gross=25327");
+  await page.goto("/?gross=25403");
   const netBelow = parseEuro(await page.getByTestId("net-annual").innerText());
   await expect(page.getByTestId("cliff-notice")).toBeVisible();
 
-  await page.goto("/?gross=25328");
+  await page.goto("/?gross=25404");
   const netAbove = parseEuro(await page.getByTestId("net-annual").innerText());
 
   // One euro more gross, about EUR 183 less in hand — and the page says so.

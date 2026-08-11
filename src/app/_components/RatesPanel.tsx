@@ -65,7 +65,7 @@ export function RatesPanel({ result }: { result: PayrollCalculation }) {
         <div className="flex flex-wrap items-baseline justify-between gap-x-[var(--space-content)] gap-y-[var(--space-label)]">
           <p className="type-label text-accent-ink">{t("marginalRate")}</p>
           <p data-testid="marginal-rate" className="type-figure text-accent-ink">
-            {percent(rates.marginalRate, locale)}
+            {rates.marginalRate === null ? "—" : percent(rates.marginalRate, locale)}
           </p>
         </div>
         <p className="type-meta mt-[var(--space-tight)] text-accent-ink">

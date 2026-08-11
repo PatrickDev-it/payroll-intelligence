@@ -14,7 +14,12 @@
  */
 
 import { ENGINE_VERSION } from "../version.ts";
-import type { CalculationLine, PayrollCalculation, Rates } from "../model/calculation.ts";
+import type {
+  CalculationLine,
+  MarginalRatePolicy,
+  PayrollCalculation,
+  Rates,
+} from "../model/calculation.ts";
 import { allLines, assertCitable } from "../model/calculation.ts";
 import { lowestConfidence, type ConfidenceTier } from "../model/confidence.ts";
 import type { EmployeeProfile } from "../model/employee-profile.ts";
@@ -51,7 +56,7 @@ export type EmployerComputation = {
   readonly costOverGross: number;
 };
 
-export type Assembly = {
+type AssemblyBase = {
   readonly profile: EmployeeProfile;
   readonly rules: RuleSet;
   readonly employee: EmployeeComputation;
@@ -61,9 +66,20 @@ export type Assembly = {
    * because the marginal rate is MEASURED, not derived from a bracket table —
    * that is the only way it can see a credit taper.
    */
-  readonly recomputeEmployee: (profile: EmployeeProfile) => EmployeeComputation;
   readonly notes: readonly string[];
 };
+
+export type Assembly = AssemblyBase &
+  (
+    | {
+        readonly marginalRatePolicy?: Exclude<MarginalRatePolicy, "unavailable">;
+        readonly recomputeEmployee: (profile: EmployeeProfile) => EmployeeComputation;
+      }
+    | {
+        readonly marginalRatePolicy: "unavailable";
+        readonly recomputeEmployee?: never;
+      }
+  );
 
 export function assembleCalculation(assembly: Assembly): PayrollCalculation {
   const { profile, rules, employee, employer, notes } = assembly;
@@ -129,24 +145,35 @@ function topLevelLines(
  * effective rate is 24% and the marginal rate on gross is 49%.
  */
 function deriveRates(assembly: Assembly): Rates {
-  const { profile, employee, employer, recomputeEmployee } = assembly;
+  const { profile, employee, employer } = assembly;
+  const grossCents = employee.gross.cents;
+  const netCents = employee.netAnnual.cents;
+  const withheldNow = grossCents - netCents;
+  const effectiveRates = {
+    effectiveTaxRate: safeRatio(employee.totalTaxes.cents, grossCents),
+    effectiveSocialRate: safeRatio(employee.totalContributions.cents, grossCents),
+    totalEffectiveRate: safeRatio(withheldNow, grossCents),
+    taxWedge: safeRatio(employer.totalCost.cents - netCents, employer.totalCost.cents),
+  };
+
+  if (assembly.marginalRatePolicy === "unavailable") {
+    return { ...effectiveRates, marginalRate: null, marginalRatePolicy: "unavailable" };
+  }
+
+  const marginalRatePolicy = assembly.marginalRatePolicy ?? "recompute";
+  const recomputeEmployee = assembly.recomputeEmployee;
   const stepped = recomputeEmployee({
     ...profile,
     grossAnnual: add(profile.grossAnnual, money(MARGINAL_STEP_UNITS, profile.grossAnnual.currency)),
   });
 
-  const grossCents = employee.gross.cents;
-  const netCents = employee.netAnnual.cents;
   const stepCents = MARGINAL_STEP_UNITS * 100;
-  const withheldNow = grossCents - netCents;
   const withheldThen = stepped.gross.cents - stepped.netAnnual.cents;
 
   return {
-    effectiveTaxRate: safeRatio(employee.totalTaxes.cents, grossCents),
-    effectiveSocialRate: safeRatio(employee.totalContributions.cents, grossCents),
-    totalEffectiveRate: safeRatio(withheldNow, grossCents),
+    ...effectiveRates,
     marginalRate: safeRatio(withheldThen - withheldNow, stepCents),
-    taxWedge: safeRatio(employer.totalCost.cents - netCents, employer.totalCost.cents),
+    marginalRatePolicy,
   };
 }
 

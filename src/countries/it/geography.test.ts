@@ -76,13 +76,13 @@ describe("every region computes", () => {
       expect(r.employee.netAnnual.cents).toBeGreaterThan(2_500_000);
       expect(r.employee.netAnnual.cents).toBeLessThan(3_200_000);
       // Contributions and IRPEF do not depend on the region; only the surtax does.
-      expect(r.employee.taxableIncome.cents).toBe(4_086_450);
+      expect(r.employee.taxableIncome.cents).toBe(4_074_300);
     });
   }
 });
 
 describe("the region is a real discriminant", () => {
-  it("spreads the net by EUR 553.33 on the reference salary", () => {
+  it("spreads the net by EUR 550.94 on the reference salary", () => {
     const nets = REGIONS.map((r) => ({
       label: r.label,
       net: at(45_000, r.key).employee.netAnnual.cents,
@@ -102,7 +102,7 @@ describe("the region is a real discriminant", () => {
     expect(nets.filter((n) => n.net === worst).map((n) => n.label)).toEqual(["Campania"]);
 
     // Documented in docs/countries/IT/discriminants.md, computed from the rules.
-    expect(best - worst).toBe(55_333);
+    expect(best - worst).toBe(55_094);
   });
 
   it("puts Lombardia below the most expensive regions and above the flat ones", () => {
@@ -115,9 +115,9 @@ describe("the region is a real discriminant", () => {
   });
 
   it("applies a flat region to the whole base, not per slice", () => {
-    // Veneto is 1.23% flat: 40,864.50 x 1.23% = 502.63
+    // Veneto is 1.23% flat: 40,743.00 x 1.23% = 501.14
     const line = at(45_000, "VENETO").employee.taxes.find((t) => t.id.includes("REGIONALE"));
-    expect(line?.amount.cents).toBe(-50_263);
+    expect(line?.amount.cents).toBe(-50_114);
   });
 
   it("applies a banded region to the whole base once the band is crossed", () => {
@@ -125,7 +125,7 @@ describe("the region is a real discriminant", () => {
     const line = at(45_000, "FRIULI_VENEZIA_GIULIA").employee.taxes.find((t) =>
       t.id.includes("REGIONALE"),
     );
-    expect(line?.amount.cents).toBe(-50_263);
+    expect(line?.amount.cents).toBe(-50_114);
   });
 });
 

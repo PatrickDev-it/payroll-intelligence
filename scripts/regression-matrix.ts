@@ -23,7 +23,10 @@ const matrix = COUNTRIES.flatMap((country) =>
       employerCostCents: result.employer.totalCost.cents,
       taxableIncomeCents: result.employee.taxableIncome.cents,
       taxWedgePpm: Math.round(result.rates.taxWedge * 1_000_000),
-      marginalRatePpm: Math.round(result.rates.marginalRate * 1_000_000),
+      marginalRatePpm:
+        result.rates.marginalRate === null
+          ? null
+          : Math.round(result.rates.marginalRate * 1_000_000),
       engineVersion: result.meta.engineVersion,
       rulesetVersion: result.meta.rulesetVersion,
       confidence: result.meta.confidence,

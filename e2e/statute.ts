@@ -7,8 +7,7 @@
  * would be checking that the code agrees with itself.
  *
  * Structure differs on purpose too: no primitives, no rule objects, no integer
- * cents — plain arithmetic in euros with rounding applied where the statute
- * says. Two implementations built differently and agreeing to the cent is a far
+ * cents — plain arithmetic in euros. Two implementations built differently and agreeing to the cent is a far
  * stronger claim than one implementation and a snapshot.
  *
  * What this proves and what it does not:
@@ -37,9 +36,6 @@ export type { Place } from "./statute-places.ts";
 /** Half-up to the cent. */
 const cents = (value: number): number => Math.round((value + Number.EPSILON) * 100) / 100;
 
-/** Half-up to the whole euro — art. 11 c. 4 TUIR. */
-const euros = (value: number): number => Math.round(value + Number.EPSILON);
-
 export type StatuteResult = {
   contributions: number;
   taxableIncome: number;
@@ -67,7 +63,9 @@ export function fromStatute(gross: number, payPeriods = 14, place: Place = {}): 
   const ivs = contributoryBase * 0.0919;
   // L. 438/1992 art. 3-ter: +1% on the slice above the first pensionable band.
   const additional = Math.max(0, contributoryBase - FIRST_BAND) * 0.01;
-  const contributions = cents(ivs + additional);
+  // FIS over five employees: 0.27% employee share, uncapped by the IVS ceiling.
+  const fisEmployee = gross * 0.0027;
+  const contributions = cents(ivs) + cents(additional) + cents(fisEmployee);
 
   // art. 51 c. 2 lett. a TUIR: contributions never enter employment income.
   const taxableIncome = cents(gross - contributions);
@@ -100,31 +98,37 @@ export function fromStatute(gross: number, payPeriods = 14, place: Place = {}): 
 
   const totalCredits = cents(employmentCredit + bonus65 + cuneoCredit);
 
-  // art. 11 c. 4 TUIR: the final tax, rounded to the euro. Never below zero.
-  const irpefNet = euros(Math.max(0, irpefGross - totalCredits));
+  // No whole-euro rounding is sourced for this payroll stage.
+  const irpefNet = cents(Math.max(0, irpefGross - totalCredits));
 
   // ── Regional surtax, on the taxable base ──────────────────────────────────
   const region = REGIONAL[place.region ?? "LOMBARDIA"];
   if (!region) throw new Error(`No statute encoded for region ${place.region}`);
-  const regionalSurtax = cents(
-    region.mode === "slice"
-      ? region.bands.reduce(
-          (total, [from, to, rate]) =>
-            total + Math.max(0, Math.min(t, to ?? t) - from) * rate,
-          0,
-        )
-      : t * (region.bands.find(([from, to]) => t >= from && (to === null || t <= to))?.[2] ?? 0),
-  );
+  const regionalSurtax =
+    irpefNet <= 0
+      ? 0
+      : cents(
+          region.mode === "slice"
+            ? region.bands.reduce(
+                (total, [from, to, rate]) =>
+                  total + Math.max(0, Math.min(t, to ?? t) - from) * rate,
+                0,
+              )
+            : t *
+                (region.bands.find(([from, to]) => t >= from && (to === null || t <= to))?.[2] ??
+                  0),
+        );
 
   // ── Municipal surtax: exempt below the threshold, then on the WHOLE base ──
   const comune = MUNICIPAL[place.municipality ?? "MILANO"];
   if (!comune) throw new Error(`No statute encoded for comune ${place.municipality}`);
-  const municipalSurtax = t <= comune.threshold ? 0 : cents(t * comune.rate);
+  const municipalSurtax =
+    irpefNet <= 0 || t <= comune.threshold ? 0 : cents(t * comune.rate);
 
   // ── D.L. 3/2020 art. 1: trattamento integrativo, capienza test ────────────
   let trattamentoIntegrativo = 0;
   if (t <= 15_000) {
-    trattamentoIntegrativo = irpefGross > employmentCredit ? 1_200 : 0;
+    trattamentoIntegrativo = irpefGross > Math.max(0, employmentCredit - 75) ? 1_200 : 0;
   } else if (t <= 28_000) {
     trattamentoIntegrativo = cents(Math.min(1_200, Math.max(0, totalCredits - irpefGross)));
   }
@@ -148,9 +152,11 @@ export function fromStatute(gross: number, payPeriods = 14, place: Place = {}): 
   const netPerPeriod = cents(Math.round(netAnnual * 100) / payPeriods / 100);
 
   // ── Employer ──────────────────────────────────────────────────────────────
-  const inpsEmployer = cents(Math.min(gross, MASSIMALE) * 0.2978);
+  const ivsEmployer = Math.min(gross, MASSIMALE) * 0.2381;
+  const employerRates = [0.0068, 0.0024, 0.0244, 0.0161, 0.002, 0.0053];
+  const inpsEmployer = cents(ivsEmployer) + employerRates.reduce((sum, rate) => sum + cents(gross * rate), 0);
   const inail = cents(gross * 0.004);
-  // art. 2120 c.c., less the 0.50% guarantee fund already charged in the INPS table.
+  // art. 2120 c.c., less the 0.50% employee TFR quota under art. 3 L. 297/1982.
   const tfr = cents(gross / 13.5 - gross * 0.005);
   const fondoEst = 144;
   const employerCost = cents(gross + inpsEmployer + inail + tfr + fondoEst);

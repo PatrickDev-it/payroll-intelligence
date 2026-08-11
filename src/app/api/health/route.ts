@@ -10,7 +10,7 @@ import { writeAuditEvent } from "../../_lib/observability.ts";
 registerAllCountries();
 
 const CANARIES = [
-  { country: "IT", params: { country: "IT", gross: "45000" }, netAnnual: 3_003_441 },
+  { country: "IT", params: { country: "IT", gross: "45000" }, netAnnual: 2_996_647 },
   { country: "DE", params: { country: "DE", gross: "45000" }, netAnnual: 2_964_250 },
   {
     country: "ES",

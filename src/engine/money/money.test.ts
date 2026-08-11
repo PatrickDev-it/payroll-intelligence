@@ -1,12 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   CurrencyMismatchError,
+  InvalidDeclaredPercentageError,
   InvalidRateError,
   add,
   applyRate,
   clampAtZero,
   fromCents,
   money,
+  parseDeclaredPercentage,
   rate,
   roundToUnit,
   subtract,
@@ -15,6 +17,24 @@ import {
   toPrecise,
   zero,
 } from "./money.ts";
+
+describe("declared percentages", () => {
+  it("parses percentage points exactly to a rate", () => {
+    expect(parseDeclaredPercentage("1.234567")).toEqual({
+      decimal: "1.234567",
+      rate: { ppb: 12_345_670n },
+    });
+    expect(parseDeclaredPercentage("100").rate.ppb).toBe(1_000_000_000n);
+    expect(parseDeclaredPercentage(9.19).rate.ppb).toBe(91_900_000n);
+  });
+
+  it("refuses implicit rounding and non-decimal spellings", () => {
+    for (const input of ["1.2345678", "1e-3", "-0.1", "100.000001", " 9.19", "9,19"]) {
+      expect(() => parseDeclaredPercentage(input)).toThrow(InvalidDeclaredPercentageError);
+    }
+    expect(() => parseDeclaredPercentage(0.0000001)).toThrow(InvalidDeclaredPercentageError);
+  });
+});
 
 describe("rate", () => {
   it("parses a decimal string exactly, without touching floating point", () => {
@@ -85,7 +105,7 @@ describe("rounding modes", () => {
 });
 
 describe("roundToUnit — statutory rounding", () => {
-  it("rounds Italian IRPEF to the nearest euro (art. 11 c. 4 TUIR)", () => {
+  it("rounds to an explicitly requested whole-unit boundary", () => {
     expect(roundToUnit(fromCents(989_216, "EUR"), 100).cents).toBe(989_200);
     expect(roundToUnit(fromCents(989_250, "EUR"), 100).cents).toBe(989_300);
     expect(roundToUnit(fromCents(989_249, "EUR"), 100).cents).toBe(989_200);

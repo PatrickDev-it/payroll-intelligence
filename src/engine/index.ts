@@ -10,9 +10,10 @@
 export { ENGINE_VERSION } from "./version.ts";
 
 // Money
-export type { Currency, Money, Precise, Rate, Rounding } from "./money/money.ts";
+export type { Currency, DeclaredPercentage, Money, Precise, Rate, Rounding } from "./money/money.ts";
 export {
   CurrencyMismatchError,
+  InvalidDeclaredPercentageError,
   InvalidRateError,
   add,
   applyRate,
@@ -28,6 +29,7 @@ export {
   money,
   moneyFromDecimal,
   negate,
+  parseDeclaredPercentage,
   rate,
   ratePercent,
   roundToUnit,
@@ -49,6 +51,9 @@ export type {
   EmployerResult,
   PayrollCalculation,
   Rates,
+  MarginalRatePolicy,
+  TaxRole,
+  ValueOrigin,
 } from "./model/calculation.ts";
 export { UncitedLineError, allLines, assertCitable } from "./model/calculation.ts";
 export type {
@@ -86,7 +91,13 @@ export { RuleSetValidationError, parseRuleSet, ruleSetSchema } from "./rules/sch
 
 // Pipeline
 export type { Applied, ApplyOptions, Sign } from "./pipeline/helpers.ts";
-export { applyRule, derivedLine, formulaParam, ruleOf } from "./pipeline/helpers.ts";
+export {
+  applyDeclaredPercentageRule,
+  applyRule,
+  derivedLine,
+  formulaParam,
+  ruleOf,
+} from "./pipeline/helpers.ts";
 export type { Assembly, EmployeeComputation, EmployerComputation } from "./pipeline/assemble.ts";
 export { assembleCalculation, reconciles, withheld } from "./pipeline/assemble.ts";
 export { explainLine } from "./pipeline/explain.ts";

@@ -99,9 +99,9 @@ describe("what the CCNL must NOT change", () => {
   it("leaves contributions, IRPEF and both surtaxes identical", () => {
     for (const code of codes) {
       const r = withCcnl(code);
-      expect(r.employee.taxableIncome.cents, code).toBe(4_086_450);
+      expect(r.employee.taxableIncome.cents, code).toBe(4_074_300);
       const irpef = r.employee.taxes.find((t) => t.id === "IT.IRPEF");
-      expect(irpef?.amount.cents, code).toBe(-989_200);
+      expect(irpef?.amount.cents, code).toBe(-984_151);
     }
   });
 });

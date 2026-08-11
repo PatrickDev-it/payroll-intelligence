@@ -9,8 +9,7 @@
  *            does not round each slice.
  *   Rate     an exact decimal in parts-per-billion (see ./rate.ts).
  *
- * On rounding. The statute decides where it happens — Italian IRPEF to the
- * nearest euro, art. 11 c. 4 TUIR — and that is `roundToUnit`, always called
+ * On rounding. The statute decides where it happens, and `roundToUnit` is always called
  * explicitly. Rounding Precise -> Money is a different thing: the cent is the
  * smallest representable unit of money and every payslip line is expressed in
  * cents, so materialising a line at cent resolution is faithful. What would be
@@ -29,7 +28,15 @@ import {
 
 export type { Precise, Rounding } from "./decimal.ts";
 export type { Rate } from "./rate.ts";
-export { InvalidRateError, applyRate, rate, ratePercent } from "./rate.ts";
+export type { DeclaredPercentage } from "./rate.ts";
+export {
+  InvalidDeclaredPercentageError,
+  InvalidRateError,
+  applyRate,
+  parseDeclaredPercentage,
+  rate,
+  ratePercent,
+} from "./rate.ts";
 
 export type Currency = "EUR" | "BGN" | "CZK" | "DKK" | "HUF" | "PLN" | "RON" | "SEK";
 
@@ -98,8 +105,7 @@ export function toMoney(p: Precise, currency: Currency, mode: Rounding = "half-u
 }
 
 /**
- * Statutory rounding. Italian IRPEF rounds to the nearest euro on the final tax
- * after credits: `roundToUnit(tax, 100, "half-up")`.
+ * Explicit statutory or presentation-unit rounding.
  */
 export function roundToUnit(m: Money, unitCents: number, mode: Rounding = "half-up"): Money {
   if (!Number.isInteger(unitCents) || unitCents <= 0) {

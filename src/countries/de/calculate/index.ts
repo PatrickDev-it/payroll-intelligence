@@ -24,6 +24,7 @@ export function calculateGermany(profile: EmployeeProfile, rules: RuleSet): Payr
     employee: computeEmployee(profile, rules),
     employer: computeEmployer(profile, rules),
     recomputeEmployee: (stepped) => computeEmployee(stepped, rules),
+    marginalRatePolicy: "hold_external_inputs",
     notes: NOTES,
   });
 }

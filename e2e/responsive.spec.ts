@@ -754,7 +754,7 @@ test("each desktop country follows its payroll task flow", async ({ page }, test
 test("the visible result updates as you type without a calculate action", async ({ page }, testInfo) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\?lang=it$/);
-  await expect(page.getByTestId("net-annual")).toHaveText("30.034,41 €");
+  await expect(page.getByTestId("net-annual")).toHaveText("29.966,47 €");
   await expect(page.getByTestId("calculate")).toHaveCount(0);
   const preview = page.getByTestId("net-per-period");
   const previousPreview = await preview.innerText();
@@ -769,7 +769,7 @@ test("the visible result updates as you type without a calculate action", async 
   // No click, no Enter: the figure follows the keystroke while the sensitive
   // salary remains out of browser history and infrastructure URL logs.
   // A calculation that takes microseconds should not ask to be requested.
-  await expect(page.getByTestId("net-annual")).toHaveText("23.425,12 €");
+  await expect(page.getByTestId("net-annual")).toHaveText("23.372,49 €");
   await expect(preview).not.toHaveText(previousPreview);
   await expect(page).toHaveURL(/\?lang=it$/);
 });
@@ -826,18 +826,18 @@ test("server rendering and native disclosures work with JavaScript disabled", as
   const page = await context.newPage();
 
   await page.goto(URL);
-  await expect(page.getByTestId("net-annual")).toHaveText("30.034,41 €");
+  await expect(page.getByTestId("net-annual")).toHaveText("29.966,47 €");
 
   // <details> is native, so the derivation opens without a runtime too.
   // `:scope >` because the IRPEF row nests its own children, each a <details>.
   await page.getByTestId("line-IT.IRPEF").locator(":scope > summary").click();
-  await expect(page.getByTestId("line-IT.IRPEF")).toContainText("art. 11 c. 4 TUIR");
+  await expect(page.getByTestId("line-IT.IRPEF")).toContainText("10.645,19");
 
   // The server still renders any addressable profile directly; the interactive
   // workflow intentionally belongs to the live client and has no submit step.
   await expect(page.getByTestId("calculate")).toHaveCount(0);
   await page.goto("/?gross=30000&periods=14");
-  await expect(page.getByTestId("net-annual")).toHaveText("23.425,12 €");
+  await expect(page.getByTestId("net-annual")).toHaveText("23.372,49 €");
 
   await context.close();
 });

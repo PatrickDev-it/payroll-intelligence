@@ -62,7 +62,9 @@ test("the calculator is operable from the keyboard alone", async ({ page }, test
   // focus without a pointer.
   await page.locator("#field-country").focus();
   let reached = false;
-  for (let i = 0; i < 40 && !reached; i += 1) {
+  // Atomic contribution lines add legitimate disclosure controls to the tab
+  // order, so traverse the complete document rather than assuming a line count.
+  for (let i = 0; i < 80 && !reached; i += 1) {
     await page.keyboard.press("Tab");
     reached = await page.evaluate(() => document.activeElement?.id === "field-language");
   }
@@ -146,10 +148,10 @@ test("every live calculation is announced without a submit action", async ({ pag
   const live = page.getByRole("status");
   await expect(live).toHaveCount(1);
   await expect(page.getByTestId("calculate")).toHaveCount(0);
-  await expect(live).toContainText("30.034,41 €");
+  await expect(live).toContainText("29.966,47 €");
 
   await page.locator("#field-gross").fill("30000");
-  await expect(live).toContainText("23.425,12 €");
+  await expect(live).toContainText("23.372,49 €");
 
   await page.locator("#field-gross").fill("");
   await expect(live).toHaveText("Nessun risultato: controlla i dati inseriti.");

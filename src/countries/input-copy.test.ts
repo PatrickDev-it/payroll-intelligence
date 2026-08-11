@@ -73,6 +73,7 @@ describe("select copy", () => {
       "companySize",
       "jobLevel",
       "contractType",
+      "countryOptions.tfrDestination",
       "countryOptions.inailRiskClass",
       "countryOptions.inailRatePercent",
     ]);

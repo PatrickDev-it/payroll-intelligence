@@ -97,8 +97,8 @@ describe("official 2026 cross-checks", () => {
     );
     const contributions = (result: typeof capped) =>
       result.employee.socialSecurity.reduce((sum, line) => sum - line.amount.cents, 0);
-    expect(contributions(capped)).toBe(1_189_962);
-    expect(contributions(uncapped)).toBe(1_472_276);
+    expect(contributions(capped)).toBe(1_230_462);
+    expect(contributions(uncapped)).toBe(1_512_776);
   });
 });
 

@@ -107,6 +107,8 @@ test("the compact Italian controls and hybrid INAIL recalculate in real time", a
 
   await page.locator("#field-size").fill("2");
   await expect(page.locator("#field-size")).toHaveValue("2");
+  await page.locator("#field-fisReducedRateEligible").click();
+  await page.locator('[data-slot="select-item"][data-value="not_eligible"]').click();
   await expect
     .poll(() =>
       page.evaluate(() => {

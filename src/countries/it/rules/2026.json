@@ -1,7 +1,7 @@
 {
   "country": "IT",
   "taxYear": 2026,
-  "version": "2026.5",
+  "version": "2026.6",
   "rules": {
     "IT.INPS.EMPLOYEE.IVS": {
       "id": "IT.INPS.EMPLOYEE.IVS",
@@ -122,6 +122,57 @@
         "method": "primary_source + authority_publication",
         "crossCheckedAgainst": ["INPS Circolare 6/2026"]
       },
+      "version": 1
+    },
+    "IT.FIS.EMPLOYEE.SMALL.STANDARD": {
+      "id": "IT.FIS.EMPLOYEE.SMALL.STANDARD",
+      "label": "FIS a carico dipendente — fino a 5",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0017" },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Fondo di integrazione salariale (FIS)",
+        "article": "aliquota totale 0,50%, quota lavoratore 1/3",
+        "url": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50262.fondo-d-integrazione-salariale-fis-.html"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" },
+      "version": 1
+    },
+    "IT.FIS.EMPLOYEE.SMALL.REDUCED": {
+      "id": "IT.FIS.EMPLOYEE.SMALL.REDUCED",
+      "label": "FIS ridotto a carico dipendente — fino a 5",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.001" },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Circolare INPS n. 5 del 20/01/2025",
+        "article": "riduzione FIS per datori fino a 5 dipendenti senza domanda nei 24 mesi precedenti",
+        "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2025.01.circolare-numero-5-del-20-01-2025_14781.html"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" },
+      "version": 1
+    },
+    "IT.FIS.EMPLOYEE.LARGE": {
+      "id": "IT.FIS.EMPLOYEE.LARGE",
+      "label": "FIS a carico dipendente — oltre 5",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0027" },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Fondo di integrazione salariale (FIS)",
+        "article": "aliquota totale 0,80%, quota lavoratore 1/3",
+        "url": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50262.fondo-d-integrazione-salariale-fis-.html"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" },
       "version": 1
     },
     "IT.IRPEF.BRACKETS": {
@@ -409,7 +460,8 @@
         "params": {
           "amount": "1200",
           "lowerThreshold": "15000",
-          "upperThreshold": "28000"
+          "upperThreshold": "28000",
+          "capienzaCreditReduction": "75"
         }
       },
       "source": {
@@ -424,36 +476,38 @@
       },
       "version": 1
     },
-    "IT.INPS.EMPLOYER.TOTAL": {
-      "id": "IT.INPS.EMPLOYER.TOTAL",
-      "label": "Contributi INPS a carico azienda (Terziario, 6-49 dipendenti)",
+    "IT.INPS.EMPLOYER.IVS": {
+      "id": "IT.INPS.EMPLOYER.IVS",
+      "label": "IVS a carico azienda",
       "basis": "social_security_base",
       "effectiveFrom": "2026-01-01",
       "effectiveTo": null,
       "config": {
         "kind": "capped_rate",
-        "rate": "0.2978",
+        "rate": "0.2381",
         "ceiling": "122295"
       },
       "source": {
         "authority": "INPS",
         "type": "authority_publication",
-        "document": "Aliquote contributive Terziario — IVS 23,81 + CUAF 0,68 + maternità 0,24 + malattia 2,44 + NASpI 1,61 + fondo garanzia TFR 0,20 + FIS 0,80"
+        "document": "Aliquote contributive Terziario — quota IVS datore 23,81%",
+        "article": "L. 335/1995 art. 2 c. 18 — massimale della base pensionistica",
+        "url": "https://www.inps.it"
       },
       "verification": {
         "status": "supported",
         "verifiedAt": "2026-08-08",
-        "method": "tabelle aggregate; le voci minori restano da verificare sulla circolare CSC 7.01.xx"
+        "method": "tabella contributiva del profilo Terziario modellato"
       },
       "version": 1
     },
-    "IT.INPS.EMPLOYER.TOTAL.UNCAPPED": {
-      "id": "IT.INPS.EMPLOYER.TOTAL.UNCAPPED",
-      "label": "Contributi INPS azienda (senza massimale L. 335/1995)",
+    "IT.INPS.EMPLOYER.IVS.UNCAPPED": {
+      "id": "IT.INPS.EMPLOYER.IVS.UNCAPPED",
+      "label": "IVS azienda senza massimale L. 335/1995",
       "basis": "social_security_base",
       "effectiveFrom": "2026-01-01",
       "effectiveTo": null,
-      "config": { "kind": "flat_rate", "rate": "0.2978" },
+      "config": { "kind": "flat_rate", "rate": "0.2381" },
       "source": {
         "authority": "INPS",
         "type": "authority_publication",
@@ -466,6 +520,76 @@
         "method": "authority_publication"
       },
       "version": 1
+    },
+    "IT.INPS.EMPLOYER.CUAF": {
+      "id": "IT.INPS.EMPLOYER.CUAF", "label": "CUAF a carico azienda", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0068" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Aliquote contributive Terziario", "article": "CUAF 0,68%", "url": "https://www.inps.it" },
+      "verification": { "status": "experimental", "verifiedAt": "2026-08-11", "method": "profilo CSC Terziario da confermare" }, "version": 1
+    },
+    "IT.INPS.EMPLOYER.MATERNITY": {
+      "id": "IT.INPS.EMPLOYER.MATERNITY", "label": "Maternità a carico azienda", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0024" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Aliquote contributive Terziario", "article": "maternità 0,24%", "url": "https://www.inps.it" },
+      "verification": { "status": "experimental", "verifiedAt": "2026-08-11", "method": "profilo CSC Terziario da confermare" }, "version": 1
+    },
+    "IT.INPS.EMPLOYER.SICKNESS": {
+      "id": "IT.INPS.EMPLOYER.SICKNESS", "label": "Malattia a carico azienda", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0244" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Aliquote contributive Terziario", "article": "malattia 2,44%", "url": "https://www.inps.it" },
+      "verification": { "status": "experimental", "verifiedAt": "2026-08-11", "method": "profilo CSC Terziario da confermare" }, "version": 1
+    },
+    "IT.INPS.EMPLOYER.NASPI_ORDINARY": {
+      "id": "IT.INPS.EMPLOYER.NASPI_ORDINARY", "label": "NASpI ordinaria a carico azienda", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0161" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Aliquote contributive Terziario", "article": "NASpI ordinaria 1,61%", "url": "https://www.inps.it" },
+      "verification": { "status": "experimental", "verifiedAt": "2026-08-11", "method": "profilo CSC Terziario da confermare" }, "version": 1
+    },
+    "IT.INPS.EMPLOYER.FONDO_GARANZIA_TFR": {
+      "id": "IT.INPS.EMPLOYER.FONDO_GARANZIA_TFR", "label": "Fondo di garanzia TFR", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.002" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Fondo di garanzia del TFR", "article": "contributo datoriale 0,20%", "url": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50186.fondo-di-garanzia-del-tfr-e-dei-crediti-di-lavoro.html" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" }, "version": 1
+    },
+    "IT.FIS.EMPLOYER.SMALL.STANDARD": {
+      "id": "IT.FIS.EMPLOYER.SMALL.STANDARD", "label": "FIS a carico azienda — fino a 5", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0033" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Fondo di integrazione salariale (FIS)", "article": "aliquota totale 0,50%, quota datore 2/3", "url": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50262.fondo-d-integrazione-salariale-fis-.html" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" }, "version": 1
+    },
+    "IT.FIS.EMPLOYER.SMALL.REDUCED": {
+      "id": "IT.FIS.EMPLOYER.SMALL.REDUCED", "label": "FIS ridotto a carico azienda — fino a 5", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.002" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Circolare INPS n. 5 del 20/01/2025", "article": "riduzione FIS: quota datore 0,20%", "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2025.01.circolare-numero-5-del-20-01-2025_14781.html" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" }, "version": 1
+    },
+    "IT.FIS.EMPLOYER.LARGE": {
+      "id": "IT.FIS.EMPLOYER.LARGE", "label": "FIS a carico azienda — oltre 5", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0053" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Fondo di integrazione salariale (FIS)", "article": "aliquota totale 0,80%, quota datore 2/3", "url": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50262.fondo-d-integrazione-salariale-fis-.html" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" }, "version": 1
+    },
+    "IT.NASPI.ADDITIONAL.FIXED_TERM": {
+      "id": "IT.NASPI.ADDITIONAL.FIXED_TERM", "label": "Contributo addizionale NASpI — tempo determinato", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.014" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Contributo addizionale NASpI", "article": "L. 92/2012 art. 2 cc. 28-30 — 1,40%", "url": "https://www.inps.it" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "primary_source + authority_publication" }, "version": 1
+    },
+    "IT.NASPI.ADDITIONAL.RENEWALS": {
+      "id": "IT.NASPI.ADDITIONAL.RENEWALS", "label": "Maggiorazione NASpI per rinnovi", "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01", "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.005" },
+      "source": { "authority": "INPS", "type": "authority_publication", "document": "Circolare INPS n. 121 del 06/09/2019", "article": "0,50 punti per ciascun rinnovo", "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2019.09.circolare-numero-121-del-06-09-2019_22335.html" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-11", "method": "authority_publication" }, "version": 1
     },
     "IT.INAIL.PREMIUM": {
       "id": "IT.INAIL.PREMIUM",
@@ -517,7 +641,7 @@
     },
     "IT.TFR.ACCRUAL": {
       "id": "IT.TFR.ACCRUAL",
-      "label": "Accantonamento TFR, netto del fondo di garanzia",
+      "label": "Accantonamento TFR, netto della quota ex L. 297/1982",
       "basis": "gross",
       "effectiveFrom": "2026-01-01",
       "effectiveTo": null,
@@ -526,14 +650,14 @@
         "formulaId": "IT.TFR.DIVISOR",
         "params": {
           "divisor": "13.5",
-          "guaranteeFundRate": "0.005"
+          "employeeTfrQuotaRate": "0.005"
         }
       },
       "source": {
         "authority": "Repubblica Italiana",
         "type": "legislation",
-        "document": "Codice Civile art. 2120; L. 297/1982 (fondo di garanzia)",
-        "article": "lordo / 13,5, meno lo 0,50% già addebitato nella tabella INPS"
+        "document": "Codice Civile art. 2120; L. 297/1982",
+        "article": "lordo / 13,5 meno quota TFR 0,50% ex art. 3 L. 297/1982"
       },
       "verification": {
         "status": "supported",

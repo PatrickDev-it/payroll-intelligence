@@ -20,29 +20,29 @@ const PPB = 1_000_000_000n;
  * repeating decimal, so storing it as "0.074074074" would silently truncate the
  * statute. Dividing exactly is both simpler and closer to what art. 2120 says.
  *
- * The 0.50% guarantee-fund contribution is DEDUCTED here, not added: it is
- * already charged inside the INPS employer table. Adding 7.41% + 0.50% is the
- * classic double-count and overstates employer cost by half a point of gross.
+ * The 0.50% employee-financed TFR quota under art. 3 L. 297/1982 is DEDUCTED
+ * here. It is not the separate 0.20% employer contribution to the guarantee
+ * fund, which is exposed as its own contribution line.
  */
 registerFormula("IT.TFR.DIVISOR", (base, params) => {
   const divisorDecimal = params["divisor"];
-  const guaranteeDecimal = params["guaranteeFundRate"];
-  if (divisorDecimal === undefined || guaranteeDecimal === undefined) {
-    throw new TypeError("IT.TFR.DIVISOR needs params.divisor and params.guaranteeFundRate");
+  const employeeQuotaDecimal = params["employeeTfrQuotaRate"];
+  if (divisorDecimal === undefined || employeeQuotaDecimal === undefined) {
+    throw new TypeError("IT.TFR.DIVISOR needs params.divisor and params.employeeTfrQuotaRate");
   }
 
   const divisor = rate(divisorDecimal).ppb;
-  const guarantee = rate(guaranteeDecimal);
+  const employeeQuota = rate(employeeQuotaDecimal);
 
   const gross = toPrecise(base);
   const accrual = (gross * PPB) / divisor;
-  const guaranteeShare = (gross * guarantee.ppb) / PPB;
+  const employeeQuotaShare = (gross * employeeQuota.ppb) / PPB;
 
   return {
-    amount: toMoney(accrual - guaranteeShare, base.currency),
+    amount: toMoney(accrual - employeeQuotaShare, base.currency),
     formula:
       `${amt(base)} / ${num(divisorDecimal)} ${MINUS} ${amt(base)} ${TIMES} ` +
-      `${num(guaranteeDecimal)} (fondo di garanzia, gia\u0300 nella tabella INPS)`,
+      `${num(employeeQuotaDecimal)} (quota TFR ex art. 3 L. 297/1982)`,
   };
 });
 
