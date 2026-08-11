@@ -1,0 +1,1498 @@
+{
+  "country": "IT",
+  "taxYear": 2026,
+  "version": "2026.5",
+  "rules": {
+    "IT.INPS.EMPLOYEE.IVS": {
+      "id": "IT.INPS.EMPLOYEE.IVS",
+      "label": "Contributi INPS a carico del dipendente (IVS)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0919",
+        "ceiling": "122295"
+      },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Circolare INPS n. 6 del 30/01/2026 — parametri contributivi 2026",
+        "article": "L. 335/1995 art. 2 c. 18 — massimale contributivo",
+        "url": "https://www.inps.it"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source + authority_publication",
+        "crossCheckedAgainst": [
+          "INPS Circolare 6/2026"
+        ]
+      },
+      "version": 1
+    },
+    "IT.INPS.EMPLOYEE.ADDITIONAL_1PCT": {
+      "id": "IT.INPS.EMPLOYEE.ADDITIONAL_1PCT",
+      "label": "Contributo aggiuntivo IVS 1% oltre la prima fascia",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "56224",
+            "rate": "0"
+          },
+          {
+            "from": "56224",
+            "to": "122295",
+            "rate": "0.01"
+          },
+          {
+            "from": "122295",
+            "to": null,
+            "rate": "0"
+          }
+        ]
+      },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Circolare INPS n. 6 del 30/01/2026 — prima fascia retribuzione pensionabile 2026",
+        "article": "par. 7; art. 3-ter D.L. 384/1992",
+        "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2026.01.circolare-numero-6-del-30-01-2026_15151.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-10",
+        "method": "primary_source + authority_publication",
+        "crossCheckedAgainst": [
+          "INPS Circolare 6/2026"
+        ]
+      },
+      "version": 2
+    },
+    "IT.INPS.EMPLOYEE.IVS.UNCAPPED": {
+      "id": "IT.INPS.EMPLOYEE.IVS.UNCAPPED",
+      "label": "Contributi INPS dipendente (IVS, senza massimale L. 335/1995)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.0919" },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Circolare INPS n. 6 del 30/01/2026 — massimale contributivo 2026",
+        "article": "L. 335/1995 art. 2 c. 18 — esclusi i lavoratori con anzianità contributiva al 31/12/1995",
+        "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2026.01.circolare-numero-6-del-30-01-2026_15151.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-10",
+        "method": "primary_source + authority_publication",
+        "crossCheckedAgainst": ["INPS Circolare 6/2026"]
+      },
+      "version": 1
+    },
+    "IT.INPS.EMPLOYEE.ADDITIONAL_1PCT.UNCAPPED": {
+      "id": "IT.INPS.EMPLOYEE.ADDITIONAL_1PCT.UNCAPPED",
+      "label": "Contributo aggiuntivo IVS 1% senza massimale",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          { "from": "0", "to": "56224", "rate": "0" },
+          { "from": "56224", "to": null, "rate": "0.01" }
+        ]
+      },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Circolare INPS n. 6 del 30/01/2026 — prima fascia pensionabile 2026",
+        "article": "art. 3-ter D.L. 384/1992; assenza del massimale per il profilo dichiarato",
+        "url": "https://www.inps.it/it/it/inps-comunica/atti/circolari-messaggi-e-normativa/dettaglio.circolari-e-messaggi.2026.01.circolare-numero-6-del-30-01-2026_15151.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-10",
+        "method": "primary_source + authority_publication",
+        "crossCheckedAgainst": ["INPS Circolare 6/2026"]
+      },
+      "version": 1
+    },
+    "IT.IRPEF.BRACKETS": {
+      "id": "IT.IRPEF.BRACKETS",
+      "label": "IRPEF lorda",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "28000",
+            "rate": "0.23"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.33"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.43"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "D.P.R. 917/1986 (TUIR) art. 11, come modificato dalla L. 30/12/2025 n. 199",
+        "article": "L. 199/2025 art. 1 c. 3 — seconda aliquota dal 35% al 33%",
+        "url": "https://www.normattiva.it"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source + cross_check",
+        "crossCheckedAgainst": [
+          "Agenzia delle Entrate",
+          "Dipartimento Finanze"
+        ]
+      },
+      "version": 3,
+      "supersedes": "IT.IRPEF.BRACKETS@v2"
+    },
+    "IT.IRPEF.DETRAZIONE.LAVORO": {
+      "id": "IT.IRPEF.DETRAZIONE.LAVORO",
+      "label": "Detrazione per lavoro dipendente",
+      "basis": "total_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "tapered_credit",
+        "segments": [
+          {
+            "from": "0",
+            "to": "15000",
+            "max": "1955",
+            "floor": "1955"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "max": "3100",
+            "floor": "1910"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "max": "1910",
+            "floor": "0"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "D.P.R. 917/1986 (TUIR)",
+        "article": "art. 13"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.IRPEF.DETRAZIONE.BONUS65": {
+      "id": "IT.IRPEF.DETRAZIONE.BONUS65",
+      "label": "Ulteriore detrazione di 65 euro",
+      "basis": "total_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "tapered_credit",
+        "segments": [
+          {
+            "from": "0",
+            "to": "25000",
+            "max": "0",
+            "floor": "0"
+          },
+          {
+            "from": "25000",
+            "to": "35000",
+            "max": "65",
+            "floor": "65"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "D.P.R. 917/1986 (TUIR)",
+        "article": "art. 13 c. 1 lett. b) — importo fisso di 65 euro nella fascia"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.IRPEF.ULTERIORE_DETRAZIONE": {
+      "id": "IT.IRPEF.ULTERIORE_DETRAZIONE",
+      "label": "Ulteriore detrazione (cuneo fiscale)",
+      "basis": "total_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "tapered_credit",
+        "segments": [
+          {
+            "from": "0",
+            "to": "20000",
+            "max": "0",
+            "floor": "0"
+          },
+          {
+            "from": "20000",
+            "to": "32000",
+            "max": "1000",
+            "floor": "1000"
+          },
+          {
+            "from": "32000",
+            "to": "40000",
+            "max": "1000",
+            "floor": "0"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "L. 30/12/2024 n. 207 (Legge di Bilancio 2025)",
+        "article": "art. 1 cc. 6-9 — strutturale dal 2026"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.LOMBARDIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.LOMBARDIA",
+      "label": "Addizionale regionale — Lombardia",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0123"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0158"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0172"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0173"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Regione Lombardia",
+        "type": "legislation",
+        "document": "L.R. 14/07/2003 n. 10",
+        "article": "art. 72 — applicata per scaglioni, non sull'intero imponibile",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.MILANO": {
+      "id": "IT.ADDIZIONALE.COMUNALE.MILANO",
+      "label": "Addizionale comunale — Milano",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "23000",
+        "rate": "0.008"
+      },
+      "source": {
+        "authority": "Comune di Milano",
+        "type": "authority_publication",
+        "document": "Aliquota addizionale comunale IRPEF 2026, esenzione fino a 23.000 euro",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www.comune.milano.it/argomenti/tributi"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.PAYROLL.SOMMA_INTEGRATIVA": {
+      "id": "IT.PAYROLL.SOMMA_INTEGRATIVA",
+      "label": "Somma integrativa",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "banded_rate",
+        "bands": [
+          {
+            "from": "0",
+            "to": "8500",
+            "rate": "0.071"
+          },
+          {
+            "from": "8500",
+            "to": "15000",
+            "rate": "0.053"
+          },
+          {
+            "from": "15000",
+            "to": "20000",
+            "rate": "0.048"
+          },
+          {
+            "from": "20000",
+            "to": null,
+            "rate": "0"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "L. 30/12/2024 n. 207 (Legge di Bilancio 2025)",
+        "article": "art. 1 cc. 4-5 — somma non imponibile, non una detrazione"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.PAYROLL.TRATTAMENTO_INTEGRATIVO": {
+      "id": "IT.PAYROLL.TRATTAMENTO_INTEGRATIVO",
+      "label": "Trattamento integrativo",
+      "basis": "total_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "IT.TRATTAMENTO_INTEGRATIVO.CAP",
+        "params": {
+          "amount": "1200",
+          "lowerThreshold": "15000",
+          "upperThreshold": "28000"
+        }
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "D.L. 05/02/2020 n. 3",
+        "article": "art. 1 — soggetto al test di capienza sull'IRPEF lorda"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.INPS.EMPLOYER.TOTAL": {
+      "id": "IT.INPS.EMPLOYER.TOTAL",
+      "label": "Contributi INPS a carico azienda (Terziario, 6-49 dipendenti)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.2978",
+        "ceiling": "122295"
+      },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Aliquote contributive Terziario — IVS 23,81 + CUAF 0,68 + maternità 0,24 + malattia 2,44 + NASpI 1,61 + fondo garanzia TFR 0,20 + FIS 0,80"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabelle aggregate; le voci minori restano da verificare sulla circolare CSC 7.01.xx"
+      },
+      "version": 1
+    },
+    "IT.INPS.EMPLOYER.TOTAL.UNCAPPED": {
+      "id": "IT.INPS.EMPLOYER.TOTAL.UNCAPPED",
+      "label": "Contributi INPS azienda (senza massimale L. 335/1995)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "flat_rate", "rate": "0.2978" },
+      "source": {
+        "authority": "INPS",
+        "type": "authority_publication",
+        "document": "Aliquote contributive Terziario e Circolare INPS n. 6/2026",
+        "article": "L. 335/1995 art. 2 c. 18 — profilo non soggetto al massimale"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-10",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "IT.INAIL.PREMIUM": {
+      "id": "IT.INAIL.PREMIUM",
+      "label": "Premio INAIL",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "entries": {
+          "office": "0.004",
+          "retail": "0.015",
+          "manufacturing": "0.04",
+          "construction": "0.09"
+        },
+        "defaultKey": "office"
+      },
+      "source": {
+        "authority": "INAIL",
+        "type": "authority_publication",
+        "document": "Tariffe dei premi INAIL, D.M. 27/02/2019",
+        "article": "D.P.R. 1124/1965",
+        "url": "https://www.inail.it"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "fasce indicative; il tasso reale è per PAT e va da 0,4 a 130 per mille"
+      },
+      "version": 1
+    },
+    "IT.INAIL.PREMIUM.DECLARED": {
+      "id": "IT.INAIL.PREMIUM.DECLARED",
+      "label": "Premio INAIL — tasso PAT dichiarato",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "13" } },
+      "source": {
+        "authority": "INAIL",
+        "type": "authority_publication",
+        "document": "Tasso applicabile comunicato alla PAT e autoliquidazione aziendale",
+        "article": "D.P.R. 1124/1965 e tariffa INAIL applicabile",
+        "url": "https://www.inail.it"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_employer_notice" },
+      "version": 1
+    },
+    "IT.TFR.ACCRUAL": {
+      "id": "IT.TFR.ACCRUAL",
+      "label": "Accantonamento TFR, netto del fondo di garanzia",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "IT.TFR.DIVISOR",
+        "params": {
+          "divisor": "13.5",
+          "guaranteeFundRate": "0.005"
+        }
+      },
+      "source": {
+        "authority": "Repubblica Italiana",
+        "type": "legislation",
+        "document": "Codice Civile art. 2120; L. 297/1982 (fondo di garanzia)",
+        "article": "lordo / 13,5, meno lo 0,50% già addebitato nella tabella INPS"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.ABRUZZO": {
+      "id": "IT.ADDIZIONALE.REGIONALE.ABRUZZO",
+      "label": "Addizionale regionale — Abruzzo",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "28000",
+            "rate": "0.0167"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0287"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Abruzzo — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.BASILICATA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.BASILICATA",
+      "label": "Addizionale regionale — Basilicata",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0123"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Basilicata — aliquota unica sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.BOLZANO": {
+      "id": "IT.ADDIZIONALE.REGIONALE.BOLZANO",
+      "label": "Addizionale regionale — Provincia autonoma di Bolzano",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "50000",
+            "rate": "0.0123"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0173"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Provincia autonoma di Bolzano — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.CALABRIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.CALABRIA",
+      "label": "Addizionale regionale — Calabria",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0173"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Calabria — aliquota unica sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.CAMPANIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.CAMPANIA",
+      "label": "Addizionale regionale — Campania",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0173"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0296"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.032"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Campania — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.EMILIA_ROMAGNA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.EMILIA_ROMAGNA",
+      "label": "Addizionale regionale — Emilia-Romagna",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0133"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0193"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0278"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Emilia-Romagna — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.FRIULI_VENEZIA_GIULIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.FRIULI_VENEZIA_GIULIA",
+      "label": "Addizionale regionale — Friuli-Venezia Giulia",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "banded_rate",
+        "bands": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.007"
+          },
+          {
+            "from": "15000",
+            "to": null,
+            "rate": "0.0123"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Friuli-Venezia Giulia — aliquota unica per fascia, applicata sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.LAZIO": {
+      "id": "IT.ADDIZIONALE.REGIONALE.LAZIO",
+      "label": "Addizionale regionale — Lazio",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "28000",
+            "rate": "0.0173"
+          },
+          {
+            "from": "28000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Lazio — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.LIGURIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.LIGURIA",
+      "label": "Addizionale regionale — Liguria",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "28000",
+            "rate": "0.0123"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0318"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0323"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Liguria — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.MARCHE": {
+      "id": "IT.ADDIZIONALE.REGIONALE.MARCHE",
+      "label": "Addizionale regionale — Marche",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0123"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0153"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.017"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0173"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Marche — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.MOLISE": {
+      "id": "IT.ADDIZIONALE.REGIONALE.MOLISE",
+      "label": "Addizionale regionale — Molise",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0173"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0193"
+          },
+          {
+            "from": "28000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Molise — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.PIEMONTE": {
+      "id": "IT.ADDIZIONALE.REGIONALE.PIEMONTE",
+      "label": "Addizionale regionale — Piemonte",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0162"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0268"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0331"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Piemonte — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.PUGLIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.PUGLIA",
+      "label": "Addizionale regionale — Puglia",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0133"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0143"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0163"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0185"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Puglia — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.SARDEGNA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.SARDEGNA",
+      "label": "Addizionale regionale — Sardegna",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0123"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Sardegna — aliquota unica sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.SICILIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.SICILIA",
+      "label": "Addizionale regionale — Sicilia",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0123"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Sicilia — aliquota unica sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.TOSCANA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.TOSCANA",
+      "label": "Addizionale regionale — Toscana",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0.0142"
+          },
+          {
+            "from": "15000",
+            "to": "28000",
+            "rate": "0.0143"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0332"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Toscana — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.TRENTO": {
+      "id": "IT.ADDIZIONALE.REGIONALE.TRENTO",
+      "label": "Addizionale regionale — Provincia autonoma di Trento",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "50000",
+            "rate": "0.0123"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0173"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Provincia autonoma di Trento — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.UMBRIA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.UMBRIA",
+      "label": "Addizionale regionale — Umbria",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "28000",
+            "rate": "0.0173"
+          },
+          {
+            "from": "28000",
+            "to": "50000",
+            "rate": "0.0312"
+          },
+          {
+            "from": "50000",
+            "to": null,
+            "rate": "0.0333"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Umbria — applicata per scaglioni"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.VALLE_AOSTA": {
+      "id": "IT.ADDIZIONALE.REGIONALE.VALLE_AOSTA",
+      "label": "Addizionale regionale — Valle d'Aosta",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "banded_rate",
+        "bands": [
+          {
+            "from": "0",
+            "to": "15000",
+            "rate": "0"
+          },
+          {
+            "from": "15000",
+            "to": null,
+            "rate": "0.0123"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Valle d'Aosta — aliquota unica per fascia, applicata sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.REGIONALE.VENETO": {
+      "id": "IT.ADDIZIONALE.REGIONALE.VENETO",
+      "label": "Addizionale regionale — Veneto",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0123"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale regionale all'IRPEF 2026",
+        "url": "https://www1.finanze.gov.it/finanze/",
+        "article": "Legge regionale Veneto — aliquota unica sull'intero imponibile"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "tabella comparativa delle aliquote regionali; da riscontrare sul registro del Dipartimento delle Finanze"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.ROMA": {
+      "id": "IT.ADDIZIONALE.COMUNALE.ROMA",
+      "label": "Addizionale comunale — Roma",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "14000",
+        "rate": "0.009"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.NAPOLI": {
+      "id": "IT.ADDIZIONALE.COMUNALE.NAPOLI",
+      "label": "Addizionale comunale — Napoli",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "12000",
+        "rate": "0.01"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.FIRENZE": {
+      "id": "IT.ADDIZIONALE.COMUNALE.FIRENZE",
+      "label": "Addizionale comunale — Firenze",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "25000",
+        "rate": "0.002"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.TORINO": {
+      "id": "IT.ADDIZIONALE.COMUNALE.TORINO",
+      "label": "Addizionale comunale — Torino",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "0",
+        "rate": "0.008"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "aliquota confermata, soglia di esenzione da verificare sulla delibera comunale"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.BOLOGNA": {
+      "id": "IT.ADDIZIONALE.COMUNALE.BOLOGNA",
+      "label": "Addizionale comunale — Bologna",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "0",
+        "rate": "0.008"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "aliquota confermata, soglia di esenzione da verificare sulla delibera comunale"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.TRENTO": {
+      "id": "IT.ADDIZIONALE.COMUNALE.TRENTO",
+      "label": "Addizionale comunale — Trento",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "0",
+        "rate": "0"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "il comune non applica l'addizionale"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.BOLZANO": {
+      "id": "IT.ADDIZIONALE.COMUNALE.BOLZANO",
+      "label": "Addizionale comunale — Bolzano",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "0",
+        "rate": "0"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "il comune non applica l'addizionale"
+      },
+      "version": 1
+    },
+    "IT.ADDIZIONALE.COMUNALE.NESSUNA": {
+      "id": "IT.ADDIZIONALE.COMUNALE.NESSUNA",
+      "label": "Addizionale comunale — Comune senza addizionale",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "threshold_exemption",
+        "threshold": "0",
+        "rate": "0"
+      },
+      "source": {
+        "authority": "Dipartimento delle Finanze",
+        "type": "authority_publication",
+        "document": "Registro delle aliquote dell'addizionale comunale all'IRPEF 2026",
+        "article": "D.Lgs. 360/1998",
+        "url": "https://www1.finanze.gov.it/finanze/"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "circa 1.900 comuni non deliberano l'addizionale"
+      },
+      "version": 1
+    },
+    "IT.CCNL.FONDO_SANITARIO": {
+      "id": "IT.CCNL.FONDO_SANITARIO",
+      "label": "Fondo sanitario contrattuale (quota azienda)",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "amount",
+        "entries": {
+          "CCNL_TERZIARIO_CONFCOMMERCIO": "144",
+          "CCNL_METALMECCANICI_INDUSTRIA": "156",
+          "CCNL_STUDI_PROFESSIONALI": "324",
+          "NESSUNO": "0"
+        },
+        "defaultKey": "NESSUNO"
+      },
+      "source": {
+        "authority": "CNEL / fondi contrattuali",
+        "type": "collective_agreement",
+        "document": "Quote a carico azienda: Fondo Est (Terziario) € 12/mese · Metasalute piano BASE (Metalmeccanici) € 13/mese · Cadiprof+Ebipro (Studi professionali) € 27/mese",
+        "url": "https://www.cnel.it/Archivio-Contratti"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "quote reperite dai fondi; le tabelle retributive per livello restano parziali"
+      },
+      "version": 2,
+      "supersedes": "IT.CCNL.FONDO_EST"
+    }
+  }
+}

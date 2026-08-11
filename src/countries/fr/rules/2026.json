@@ -1,0 +1,1056 @@
+{
+  "country": "FR",
+  "taxYear": 2026,
+  "version": "2026.4",
+  "rules": {
+    "FR.PASS": {
+      "id": "FR.PASS",
+      "label": "Massimale annuo della sicurezza sociale (PASS)",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.PASS",
+        "params": {
+          "annual": "48060",
+          "monthly": "4005",
+          "fourPass": "192240",
+          "eightPass": "384480"
+        }
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Arrêté du 22 décembre 2025 portant fixation du plafond de la sécurité sociale pour 2026 (JORF du 23 décembre 2025)",
+        "article": "arrêté du 22 décembre 2025",
+        "url": "https://www.legifrance.gouv.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "FR.SAL.VIEILLESSE.PLAFONNEE": {
+      "id": "FR.SAL.VIEILLESSE.PLAFONNEE",
+      "label": "Pensione, quota entro il massimale (vieillesse plafonnée) — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.069",
+        "ceiling": "48060"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.VIEILLESSE.DEPLAFONNEE": {
+      "id": "FR.SAL.VIEILLESSE.DEPLAFONNEE",
+      "label": "Pensione, quota senza massimale (vieillesse déplafonnée) — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.004"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.MALADIE.ALSACE_MOSELLE": {
+      "id": "FR.SAL.MALADIE.ALSACE_MOSELLE",
+      "label": "Malattia, regime locale Alsace-Moselle — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "standard",
+        "entries": {
+          "standard": "0",
+          "alsace_moselle": "0.013"
+        }
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.RETRAITE.T1": {
+      "id": "FR.SAL.RETRAITE.T1",
+      "label": "Previdenza complementare Agirc-Arrco, tranche 1 — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0315",
+        "ceiling": "48060"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.CEG.T1": {
+      "id": "FR.SAL.CEG.T1",
+      "label": "Contributo di equilibrio generale (CEG), tranche 1 — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0086",
+        "ceiling": "48060"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.RETRAITE.T2": {
+      "id": "FR.SAL.RETRAITE.T2",
+      "label": "Previdenza complementare Agirc-Arrco, tranche 2 — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "48060",
+            "to": "384480",
+            "rate": "0.0864"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.CEG.T2": {
+      "id": "FR.SAL.CEG.T2",
+      "label": "Contributo di equilibrio generale (CEG), tranche 2 — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "48060",
+            "to": "384480",
+            "rate": "0.0108"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.CET": {
+      "id": "FR.SAL.CET",
+      "label": "Contributo di equilibrio tecnico (CET) — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0014",
+        "ceiling": "384480"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.SAL.APEC": {
+      "id": "FR.SAL.APEC",
+      "label": "Contributo Apec (quadri) — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.00024",
+        "ceiling": "192240"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.CSG.DEDUCTIBLE": {
+      "id": "FR.CSG.DEDUCTIBLE",
+      "label": "CSG deducibile dall'imponibile",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.068"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "article": "art. L136-1 et L136-8 CSS ; assiette de 98,25 % dans la limite de 4 PASS",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.CSG.NON_DEDUCTIBLE": {
+      "id": "FR.CSG.NON_DEDUCTIBLE",
+      "label": "CSG non deducibile",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.024"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "article": "art. L136-8 CSS",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.CRDS": {
+      "id": "FR.CRDS",
+      "label": "CRDS (rimborso del debito sociale)",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.005"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "article": "ordonnance 96-50 du 24 janvier 1996",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.CSG.ASSIETTE": {
+      "id": "FR.CSG.ASSIETTE",
+      "label": "Base CSG/CRDS — abbattimento per spese professionali",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.CSG.ASSIETTE",
+        "params": {
+          "rate": "0.9825",
+          "ceiling": "192240"
+        }
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "article": "art. L136-2 CSS : 98,25 % du brut dans la limite de 4 PASS, 100 % au-delà",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.IR.BAREME": {
+      "id": "FR.IR.BAREME",
+      "label": "Imposta sul reddito — scaglioni (barème)",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "11600",
+            "rate": "0"
+          },
+          {
+            "from": "11600",
+            "to": "29579",
+            "rate": "0.11"
+          },
+          {
+            "from": "29579",
+            "to": "84577",
+            "rate": "0.30"
+          },
+          {
+            "from": "84577",
+            "to": "181917",
+            "rate": "0.41"
+          },
+          {
+            "from": "181917",
+            "to": null,
+            "rate": "0.45"
+          }
+        ]
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
+        "article": "art. 197 I 1 CGI",
+        "url": "https://www.impots.gouv.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "service-public.fr — barème de l'impôt 2026"
+        ]
+      },
+      "version": 1
+    },
+    "FR.IR.ABATTEMENT": {
+      "id": "FR.IR.ABATTEMENT",
+      "label": "Abbattimento del 10% per spese professionali",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.IR.ABATTEMENT",
+        "params": {
+          "rate": "0.10",
+          "floor": "504",
+          "ceiling": "14426"
+        }
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
+        "article": "art. 83-3° CGI",
+        "url": "https://www.impots.gouv.fr"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "FR.IR.DECOTE": {
+      "id": "FR.IR.DECOTE",
+      "label": "Décote (sconto sulle imposte basse)",
+      "basis": "gross_tax",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.IR.DECOTE",
+        "params": {
+          "single": "897",
+          "couple": "1483",
+          "rate": "0.4525"
+        }
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
+        "article": "art. 197 I 4 CGI",
+        "url": "https://www.impots.gouv.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "FR.IR.QUOTIENT": {
+      "id": "FR.IR.QUOTIENT",
+      "label": "Quotient familial — tetto per mezza part",
+      "basis": "gross_tax",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.IR.QUOTIENT",
+        "params": {
+          "capPerHalfPart": "1807"
+        }
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
+        "article": "art. 197 I 2 CGI",
+        "url": "https://www.impots.gouv.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "FR.PAT.MALADIE": {
+      "id": "FR.PAT.MALADIE",
+      "label": "Assicurazione malattia, maternità, invalidità, morte — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.13"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.ALLOCATIONS_FAMILIALES": {
+      "id": "FR.PAT.ALLOCATIONS_FAMILIALES",
+      "label": "Assegni familiari (allocations familiales) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0525"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.CSA": {
+      "id": "FR.PAT.CSA",
+      "label": "Contributo solidarietà autonomia (CSA) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.003"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.VIEILLESSE.DEPLAFONNEE": {
+      "id": "FR.PAT.VIEILLESSE.DEPLAFONNEE",
+      "label": "Pensione, quota senza massimale — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0211"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.DIALOGUE_SOCIAL": {
+      "id": "FR.PAT.DIALOGUE_SOCIAL",
+      "label": "Contributo al dialogo sociale — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.00016"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.VIEILLESSE.PLAFONNEE": {
+      "id": "FR.PAT.VIEILLESSE.PLAFONNEE",
+      "label": "Pensione, quota entro il massimale — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0855",
+        "ceiling": "48060"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.CHOMAGE": {
+      "id": "FR.PAT.CHOMAGE",
+      "label": "Assicurazione disoccupazione (chômage) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.04",
+        "ceiling": "192240"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.AGS": {
+      "id": "FR.PAT.AGS",
+      "label": "Garanzia salari in caso di insolvenza (AGS) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0025",
+        "ceiling": "192240"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.FNAL": {
+      "id": "FR.PAT.FNAL",
+      "label": "Fondo nazionale per l'abitazione (Fnal) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "fifty_plus",
+        "entries": {
+          "under_fifty": "0.001",
+          "fifty_plus": "0.005"
+        }
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "article": "0,10 % dans la limite du plafond pour les employeurs de moins de 50 salariés, 0,50 % sur la totalité au-delà",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.RETRAITE.T1": {
+      "id": "FR.PAT.RETRAITE.T1",
+      "label": "Previdenza complementare Agirc-Arrco, tranche 1 — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0472",
+        "ceiling": "48060"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.CEG.T1": {
+      "id": "FR.PAT.CEG.T1",
+      "label": "Contributo di equilibrio generale (CEG), tranche 1 — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0129",
+        "ceiling": "48060"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.RETRAITE.T2": {
+      "id": "FR.PAT.RETRAITE.T2",
+      "label": "Previdenza complementare Agirc-Arrco, tranche 2 — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "48060",
+            "to": "384480",
+            "rate": "0.1295"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.CEG.T2": {
+      "id": "FR.PAT.CEG.T2",
+      "label": "Contributo di equilibrio generale (CEG), tranche 2 — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "48060",
+            "to": "384480",
+            "rate": "0.0162"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.CET": {
+      "id": "FR.PAT.CET",
+      "label": "Contributo di equilibrio tecnico (CET) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0021",
+        "ceiling": "384480"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.APEC": {
+      "id": "FR.PAT.APEC",
+      "label": "Contributo Apec (quadri) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.00036",
+        "ceiling": "192240"
+      },
+      "source": {
+        "authority": "Agirc-Arrco",
+        "type": "authority_publication",
+        "document": "taux et tranches de cotisation 2026 (T1 jusqu'à 1 PASS, T2 de 1 à 8 PASS)",
+        "url": "https://www.agirc-arrco.fr"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.FORMATION": {
+      "id": "FR.PAT.FORMATION",
+      "label": "Contributo alla formazione professionale — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "eleven_plus",
+        "entries": {
+          "under_eleven": "0.0055",
+          "eleven_plus": "0.01"
+        }
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.TAXE_APPRENTISSAGE": {
+      "id": "FR.PAT.TAXE_APPRENTISSAGE",
+      "label": "Tassa di apprendistato (taxe d'apprentissage) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0068"
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux de cotisations du secteur privé, barème applicable en 2026",
+        "article": "part principale 0,59 % + solde 0,09 %",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "FR.PAT.ATMP": {
+      "id": "FR.PAT.ATMP",
+      "label": "Infortuni e malattie professionali (AT/MP) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "office",
+        "entries": {
+          "office": "0.009",
+          "retail": "0.017",
+          "manufacturing": "0.03",
+          "construction": "0.055"
+        }
+      },
+      "source": {
+        "authority": "Caisse nationale de l'assurance maladie",
+        "type": "secondary",
+        "document": "Taux notifié par la Carsat, propre à l'établissement et à son code risque — les valeurs ci-dessous sont des ordres de grandeur par secteur",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "order_of_magnitude"
+      },
+      "version": 1
+    },
+    "FR.PAT.ATMP.DECLARED": {
+      "id": "FR.PAT.ATMP.DECLARED",
+      "label": "AT/MP — tasso Carsat dichiarato",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "20" } },
+      "source": {
+        "authority": "Carsat / Assurance Maladie",
+        "type": "authority_publication",
+        "document": "Notification annuelle du taux AT/MP de l'établissement",
+        "url": "https://www.net-entreprises.fr/declaration/compte-entreprise/"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_employer_notice" },
+      "version": 1
+    },
+    "FR.PAT.VERSEMENT_MOBILITE": {
+      "id": "FR.PAT.VERSEMENT_MOBILITE",
+      "label": "Versement mobilité (trasporto pubblico) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "none",
+        "entries": {
+          "none": "0",
+          "paris": "0.032",
+          "lyon": "0.02",
+          "other_urban": "0.01"
+        }
+      },
+      "source": {
+        "authority": "Urssaf",
+        "type": "secondary",
+        "document": "Taux fixé par chaque autorité organisatrice de la mobilité, de 0 % à 3,20 % — recherché par commune sur l'outil Urssaf",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/taux-cotisations-secteur-prive.html"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "order_of_magnitude"
+      },
+      "version": 1
+    },
+    "FR.PAT.VERSEMENT_MOBILITE.DECLARED": {
+      "id": "FR.PAT.VERSEMENT_MOBILITE.DECLARED",
+      "label": "Versement mobilité — tasso stabilimento dichiarato",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "5" } },
+      "source": {
+        "authority": "Urssaf",
+        "type": "authority_publication",
+        "document": "Taux versement mobilité par commune ou autorité organisatrice",
+        "url": "https://www.urssaf.fr/accueil/outils-documentation/taux-baremes/versement-mobilite.html"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_official_rate" },
+      "version": 1
+    },
+    "FR.PAT.REDUCTION_GENERALE": {
+      "id": "FR.PAT.REDUCTION_GENERALE",
+      "label": "Riduzione generale degressiva unica (RGDU) — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.RGDU",
+        "params": {
+          "smicAnnual": "21876.40",
+          "multiple": "3",
+          "tmin": "0.02",
+          "tdeltaFnalLow": "0.3781",
+          "tdeltaFnalHigh": "0.3821",
+          "exponent": "1.75"
+        }
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "LFSS 2025 art. 18, décret n° 2025-887 et décret n° 2026-509 du 12 juin 2026 : RGDU et SMIC de référence applicable au calcul 2026",
+        "article": "art. L241-13 et D241-7 CSS ; décret 2026-509 art. 1",
+        "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054248488"
+      },
+      "verification": {
+        "status": "verified",
+        "verifiedAt": "2026-08-10",
+        "method": "primary_source + official_calculator",
+        "crossCheckedAgainst": [
+          "Décret n° 2026-509 du 12 juin 2026",
+          "Urssaf — RGDU, mise à jour du 6 juillet 2026",
+          "Urssaf Mon-entreprise API — coefficient and annual amount"
+        ]
+      },
+      "version": 3,
+      "supersedes": "FR.PAT.REDUCTION_GENERALE@v2"
+    }
+  }
+}

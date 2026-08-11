@@ -1,0 +1,7 @@
+* @PatrickDev-it
+
+# Statutory truth requires explicit owner review.
+/src/countries/**/rules/** @PatrickDev-it
+/src/countries/**/calculate/** @PatrickDev-it
+/src/engine/** @PatrickDev-it
+/docs/countries/** @PatrickDev-it

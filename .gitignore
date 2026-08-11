@@ -1,0 +1,25 @@
+.sinapsi/graph.json
+.sinapsi/graph.provenance.json
+.sinapsi/.watcher
+.sinapsi/.tree-seen
+.sinapsi/journal
+
+node_modules/
+dist/
+.next/
+coverage/
+test-results/
+playwright-report/
+tsconfig.tsbuildinfo
+sbom.cdx.json
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Local development context. These files are useful in a working copy but are
+# not part of the product, its public documentation or its release artifacts.
+.sinapsi/
+.claude/
+AGENTS.md
+practices/

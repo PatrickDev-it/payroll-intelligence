@@ -1,0 +1,146 @@
+/**
+ * The French input surface.
+ *
+ * `Cadre` status and the `quotient familial` are the two that move the number
+ * most — the first by a few hundred euros of contributions, the second by
+ * several thousand euros of tax. Neither is guessable from the salary, so both
+ * are asked.
+ *
+ * Labels are Italian with the French term kept where it is the name on the
+ * bulletin de paie (rfc/002), and each input declares its form section.
+ */
+
+import type { EmployeeProfile, InputDescriptor } from "@engine/model/employee-profile.ts";
+
+export function frenchInputs(_profile?: Partial<EmployeeProfile>): readonly InputDescriptor[] {
+  return [
+    {
+      field: "grossAnnual",
+      label: "Retribuzione annua lorda",
+      shortLabel: "Lordo annuo",
+      kind: "money",
+      required: true,
+      group: "pay",
+      min: 1,
+      max: 1_000_000,
+      help: "Salaire brut annuel: lordo annuo prima di contributi e imposta. Non è il costo per l'azienda.",
+    },
+    {
+      field: "region",
+      label: "Regime locale",
+      kind: "select",
+      required: true,
+      group: "location",
+      defaultValue: "france",
+      options: [
+        { value: "france", label: "Régime général" },
+        { value: "alsace_moselle", label: "Alsace-Moselle" },
+      ],
+      help: "La Francia non ha imposte regionali sul reddito: l'unica geografia del cedolino è il regime locale dell'Alsace-Moselle, più il versement mobilité a carico azienda.",
+    },
+    {
+      field: "countryOptions.statut",
+      label: "Statut",
+      kind: "select",
+      required: true,
+      group: "profile",
+      defaultValue: "non_cadre",
+      options: [
+        { value: "non_cadre", label: "Non-cadre" },
+        { value: "cadre", label: "Cadre" },
+      ],
+      help: "Dopo la fusione Agirc-Arrco le aliquote di previdenza complementare sono identiche: resta l'Apec, dovuta dai soli cadres.",
+    },
+    {
+      field: "countryOptions.foyer",
+      label: "Foyer fiscal",
+      kind: "select",
+      required: true,
+      group: "profile",
+      defaultValue: "single",
+      options: [
+        { value: "single", label: "Single" },
+        { value: "couple", label: "Coppia" },
+      ],
+      help: "Single vale 1 part; Coppia vale 2 parts e presuppone tassazione congiunta con coniuge senza redditi propri.",
+    },
+    {
+      field: "countryOptions.versementMobilite",
+      label: "Versement mobilité",
+      kind: "select",
+      required: false,
+      group: "company",
+      advanced: true,
+      defaultValue: "none",
+      options: [
+        { value: "none", label: "Nessuno" },
+        { value: "other_urban", label: "Agglomerato medio" },
+        { value: "lyon", label: "Grande agglomerato" },
+        { value: "paris", label: "Île-de-France" },
+      ],
+      help: "Nessuno indica aziende sotto 11 dipendenti o fuori perimetro. Valori indicativi: agglomerato medio 1%, grande 2%, Île-de-France 3,2%.",
+    },
+    {
+      field: "countryOptions.versementMobiliteRatePercent",
+      label: "Mobilité esatta",
+      kind: "decimal",
+      required: false,
+      group: "company",
+      advanced: true,
+      min: 0,
+      max: 5,
+      help: "Se inserita, sostituisce lo scenario con il tasso esatto della commune o AOM dello stabilimento.",
+      source: "Tasso versement mobilité applicabile allo stabilimento, da Urssaf.",
+    },
+    {
+      field: "countryOptions.children",
+      label: "Figli a carico",
+      kind: "integer",
+      required: false,
+      group: "profile",
+      defaultValue: 0,
+      min: 0,
+      max: 12,
+      help: "Mezza part per ciascuno dei primi due, una part intera dal terzo. Il vantaggio è limitato a 1.807 € per mezza part.",
+    },
+    {
+      field: "companySize",
+      label: "N. dipendenti",
+      kind: "integer",
+      required: false,
+      group: "company",
+      defaultValue: 50,
+      min: 1,
+      max: 500_000,
+      help: "Fa scattare il Fnal a 50 dipendenti (0,10% → 0,50%) e il contributo formazione a 11 (0,55% → 1%).",
+    },
+    {
+      field: "countryOptions.atmpRiskClass",
+      label: "AT/MP",
+      kind: "select",
+      required: false,
+      group: "company",
+      advanced: true,
+      defaultValue: "office",
+      options: [
+        { value: "office", label: "Ufficio" },
+        { value: "retail", label: "Commercio" },
+        { value: "manufacturing", label: "Industria" },
+        { value: "construction", label: "Edilizia" },
+      ],
+      help: "Valori indicativi: Ufficio 0,9%, Commercio 1,7%, Industria 3,0%, Edilizia 5,5%. Il tasso reale è notificato dalla Carsat.",
+    },
+    {
+      field: "countryOptions.atmpRatePercent",
+      label: "AT/MP esatta",
+      kind: "decimal",
+      required: false,
+      group: "company",
+      advanced: true,
+      min: 0,
+      max: 20,
+      help: "Se inserita, sostituisce la classe indicativa con il tasso Carsat notificato allo stabilimento.",
+      source: "Notification de taux AT/MP Carsat dell'azienda.",
+    },
+  ];
+}

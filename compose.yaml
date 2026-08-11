@@ -1,0 +1,15 @@
+services:
+  calculator:
+    build:
+      context: .
+      args:
+        PAYROLL_RELEASE: local-compose
+    image: payroll-calculator:local
+    ports:
+      - "3000:3000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

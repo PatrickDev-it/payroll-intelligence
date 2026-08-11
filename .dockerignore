@@ -1,0 +1,17 @@
+.git
+.github
+.next
+.sinapsi
+.claude
+.codex
+.gemini
+node_modules
+test-results
+playwright-report
+coverage
+docs
+e2e
+practices
+*.log
+.env*
+!.env.example

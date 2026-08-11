@@ -1,0 +1,632 @@
+{
+  "country": "DE",
+  "taxYear": 2026,
+  "version": "2026.2",
+  "rules": {
+    "DE.RV.EMPLOYEE": {
+      "id": "DE.RV.EMPLOYEE",
+      "label": "Previdenza pensionistica (Rentenversicherung) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.093",
+        "ceiling": "101400"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB VI § 158 (Beitragssatz 18,6 %, hälftig geteilt) i. V. m. SVBezGrV 2026 § 3",
+        "article": "§ 158 SGB VI; § 3 SVBezGrV 2026",
+        "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/BJNR1160A0025.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "Deutsche Rentenversicherung — Rechengrößen 2026"
+        ]
+      },
+      "version": 1
+    },
+    "DE.AV.EMPLOYEE": {
+      "id": "DE.AV.EMPLOYEE",
+      "label": "Assicurazione disoccupazione (Arbeitslosenversicherung) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.013",
+        "ceiling": "101400"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB III § 341 (Beitragssatz 2,6 %, hälftig geteilt) i. V. m. SVBezGrV 2026 § 3",
+        "article": "§ 341 SGB III",
+        "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/BJNR1160A0025.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.KV.EMPLOYEE.BASE": {
+      "id": "DE.KV.EMPLOYEE.BASE",
+      "label": "Assicurazione sanitaria (Krankenversicherung), aliquota generale — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.073",
+        "ceiling": "69750"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB V § 241 (allgemeiner Beitragssatz 14,6 %) i. V. m. § 223 Abs. 3, Beitragsbemessungsgrenze 2026",
+        "article": "§ 241 SGB V",
+        "url": "https://www.gesetze-im-internet.de/sgb_5/__241.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "GKV-Spitzenverband — Rechengrößen 2026"
+        ]
+      },
+      "version": 1
+    },
+    "DE.KV.EMPLOYEE.ZUSATZBEITRAG": {
+      "id": "DE.KV.EMPLOYEE.ZUSATZBEITRAG",
+      "label": "Sanitaria — contributo aggiuntivo di cassa (Zusatzbeitrag), dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "average",
+        "entries": {
+          "low": "0.011",
+          "average": "0.0145",
+          "high": "0.0215"
+        }
+      },
+      "source": {
+        "authority": "Bundesministerium für Gesundheit",
+        "type": "authority_publication",
+        "document": "Bekanntmachung des durchschnittlichen Zusatzbeitragssatzes 2026 (2,9 %), Bundesanzeiger 10.11.2025 — hälftig getragen",
+        "article": "§ 242a SGB V",
+        "url": "https://www.gkv-spitzenverband.de"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication",
+        "crossCheckedAgainst": [
+          "vdek — Zusatzbeiträge 2026"
+        ]
+      },
+      "version": 1
+    },
+    "DE.KV.ZUSATZBEITRAG.DECLARED": {
+      "id": "DE.KV.ZUSATZBEITRAG.DECLARED",
+      "label": "Zusatzbeitrag — aliquota Krankenkasse dichiarata",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "5" } },
+      "source": {
+        "authority": "Krankenkasse del lavoratore",
+        "type": "authority_publication",
+        "document": "Kassenindividueller Zusatzbeitragssatz 2026",
+        "article": "§ 242 SGB V",
+        "url": "https://www.gkv-spitzenverband.de"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_fund_rate" },
+      "version": 1
+    },
+    "DE.PV.EMPLOYEE": {
+      "id": "DE.PV.EMPLOYEE",
+      "label": "Assicurazione non autosufficienza (Pflegeversicherung) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "childless",
+        "entries": {
+          "childless": "0.024",
+          "children1": "0.018",
+          "children2": "0.0155",
+          "children3": "0.013",
+          "children4": "0.0105",
+          "children5plus": "0.008",
+          "saxony_childless": "0.029",
+          "saxony_children1": "0.023",
+          "saxony_children2": "0.0205",
+          "saxony_children3": "0.018",
+          "saxony_children4": "0.0155",
+          "saxony_children5plus": "0.013"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB XI §§ 55, 58: Beitragssatz 3,6 %, Zuschlag für Kinderlose 0,6 %, Abschlag 0,25 Prozentpunkte je Kind vom zweiten bis zum fünften; Sachsen trägt 1,0 Prozentpunkt zusätzlich beim Arbeitnehmer",
+        "article": "§ 55 Abs. 3, § 58 Abs. 3 SGB XI",
+        "url": "https://www.gesetze-im-internet.de/sgb_11/__55.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.LOHNSTEUER.TARIF": {
+      "id": "DE.LOHNSTEUER.TARIF",
+      "label": "Imposta sul reddito (Lohnsteuer, § 32a EStG)",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "DE.ESTG.32A",
+        "params": {
+          "grundfreibetrag": "12348",
+          "zone2Upper": "17799",
+          "zone2QuadraticCoefficient": "914.51",
+          "zone2LinearCoefficient": "1400",
+          "zone3Upper": "69878",
+          "zone3QuadraticCoefficient": "173.10",
+          "zone3LinearCoefficient": "2397",
+          "zone3Constant": "1034.87",
+          "zone4Upper": "277825",
+          "zone4Rate": "0.42",
+          "zone4Subtrahend": "11135.63",
+          "zone5Rate": "0.45",
+          "zone5Subtrahend": "19470.38"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "Einkommensteuergesetz § 32a Abs. 1 in der ab dem Veranlagungszeitraum 2026 geltenden Fassung",
+        "article": "§ 32a Abs. 1 EStG",
+        "url": "https://www.gesetze-im-internet.de/estg/__32a.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "BMF — Amtliches Lohnsteuer-Handbuch 2026, § 32a"
+        ]
+      },
+      "version": 1
+    },
+    "DE.LOHNSTEUER.PAUSCHBETRAEGE": {
+      "id": "DE.LOHNSTEUER.PAUSCHBETRAEGE",
+      "label": "Deduzioni forfettarie (Arbeitnehmer- e Sonderausgaben-Pauschbetrag)",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "DE.PAUSCHBETRAEGE",
+        "params": {
+          "werbungskosten": "1230",
+          "sonderausgaben": "36",
+          "entlastungsbetragAlleinerziehende": "4260",
+          "entlastungsbetragJeWeiteresKind": "240"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "EStG § 9a Satz 1 Nr. 1 Buchst. a (1.230 €), § 10c (36 €), § 24b Abs. 2 (4.260 € + 240 € je weiterem Kind)",
+        "article": "§§ 9a, 10c, 24b EStG",
+        "url": "https://www.gesetze-im-internet.de/estg/__9a.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.LOHNSTEUER.VORSORGEPAUSCHALE": {
+      "id": "DE.LOHNSTEUER.VORSORGEPAUSCHALE",
+      "label": "Deduzione previdenziale nozionale (Vorsorgepauschale)",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "DE.VORSORGEPAUSCHALE",
+        "params": {
+          "rentenRate": "0.093",
+          "rentenCeiling": "101400",
+          "krankenErmaessigtRate": "0.07",
+          "krankenCeiling": "69750",
+          "arbeitslosRate": "0.013",
+          "arbeitslosCeiling": "101400",
+          "arbeitslosCombinedCap": "1900"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "EStG § 39b Abs. 2 Satz 5 Nr. 3 Buchst. a, b, c und e in der ab 2026 geltenden Fassung; BMF-Schreiben vom 14.08.2025 (Vorsorgepauschale im Lohnsteuerabzugsverfahren ab 2026)",
+        "article": "§ 39b Abs. 2 Satz 5 Nr. 3 EStG",
+        "url": "https://www.gesetze-im-internet.de/estg/__39b.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "BMF-Schreiben 14.08.2025"
+        ]
+      },
+      "version": 1
+    },
+    "DE.SOLIDARITAETSZUSCHLAG": {
+      "id": "DE.SOLIDARITAETSZUSCHLAG",
+      "label": "Contributo di solidarietà (Solidaritätszuschlag)",
+      "basis": "gross_tax",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "DE.SOLI",
+        "params": {
+          "rate": "0.055",
+          "freigrenze": "20350",
+          "milderungszoneRate": "0.119"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "Solidaritätszuschlaggesetz 1995 § 3 Abs. 3 und 4, § 4: Freigrenze 20.350 € (Grundtabelle) bzw. 40.700 € (Splittingtabelle), Milderungszone 11,9 %, Zuschlag 5,5 %",
+        "article": "§§ 3, 4 SolZG 1995",
+        "url": "https://www.gesetze-im-internet.de/solzg_1995/__3.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.KIRCHENSTEUER": {
+      "id": "DE.KIRCHENSTEUER",
+      "label": "Imposta di culto (Kirchensteuer)",
+      "basis": "gross_tax",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "none",
+        "entries": {
+          "none": "0",
+          "BY": "0.08",
+          "BW": "0.08",
+          "BE": "0.09",
+          "BB": "0.09",
+          "HB": "0.09",
+          "HH": "0.09",
+          "HE": "0.09",
+          "MV": "0.09",
+          "NI": "0.09",
+          "NW": "0.09",
+          "RP": "0.09",
+          "SL": "0.09",
+          "SN": "0.09",
+          "ST": "0.09",
+          "SH": "0.09",
+          "TH": "0.09"
+        }
+      },
+      "source": {
+        "authority": "Länder der Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "Kirchensteuergesetze der Länder: 8 % in Bayern und Baden-Württemberg, 9 % in den übrigen Ländern, bemessen an der Lohnsteuer",
+        "article": "z. B. Art. 8 BayKirchStG; § 5 KiStG BW",
+        "url": "https://www.bundesfinanzministerium.de"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.RV.EMPLOYER": {
+      "id": "DE.RV.EMPLOYER",
+      "label": "Previdenza pensionistica (Rentenversicherung) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.093",
+        "ceiling": "101400"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB VI § 158 i. V. m. SVBezGrV 2026 § 3",
+        "article": "§ 168 Abs. 1 Nr. 1 SGB VI",
+        "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/BJNR1160A0025.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.AV.EMPLOYER": {
+      "id": "DE.AV.EMPLOYER",
+      "label": "Assicurazione disoccupazione (Arbeitslosenversicherung) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.013",
+        "ceiling": "101400"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB III § 341 i. V. m. SVBezGrV 2026 § 3",
+        "article": "§ 346 Abs. 1 SGB III",
+        "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/BJNR1160A0025.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.KV.EMPLOYER.BASE": {
+      "id": "DE.KV.EMPLOYER.BASE",
+      "label": "Assicurazione sanitaria (Krankenversicherung), aliquota generale — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.073",
+        "ceiling": "69750"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB V § 249 Abs. 1: hälftige Tragung des allgemeinen Beitragssatzes",
+        "article": "§ 249 SGB V",
+        "url": "https://www.gesetze-im-internet.de/sgb_5/__249.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.KV.EMPLOYER.ZUSATZBEITRAG": {
+      "id": "DE.KV.EMPLOYER.ZUSATZBEITRAG",
+      "label": "Sanitaria — contributo aggiuntivo di cassa (Zusatzbeitrag), azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "average",
+        "entries": {
+          "low": "0.011",
+          "average": "0.0145",
+          "high": "0.0215"
+        }
+      },
+      "source": {
+        "authority": "Bundesministerium für Gesundheit",
+        "type": "authority_publication",
+        "document": "Bekanntmachung des durchschnittlichen Zusatzbeitragssatzes 2026 (2,9 %); § 249 Abs. 1 SGB V: hälftige Tragung",
+        "article": "§ 242a SGB V",
+        "url": "https://www.gkv-spitzenverband.de"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "DE.PV.EMPLOYER": {
+      "id": "DE.PV.EMPLOYER",
+      "label": "Assicurazione non autosufficienza (Pflegeversicherung) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "standard",
+        "entries": {
+          "standard": "0.018",
+          "saxony": "0.013"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB XI § 58: hälftige Tragung von 3,6 %; in Sachsen trägt der Arbeitgeber 1,3 %",
+        "article": "§ 58 Abs. 1 und 3 SGB XI",
+        "url": "https://www.gesetze-im-internet.de/sgb_11/__58.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.INSOLVENZGELDUMLAGE": {
+      "id": "DE.INSOLVENZGELDUMLAGE",
+      "label": "Fondo garanzia insolvenza (Insolvenzgeldumlage, U3)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "capped_rate",
+        "rate": "0.0015",
+        "ceiling": "101400"
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "SGB III § 360: Umlagesatz 0,15 % für 2026 (keine abweichende Rechtsverordnung erlassen)",
+        "article": "§ 360 SGB III",
+        "url": "https://www.gesetze-im-internet.de/sgb_3/__360.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "DE.UMLAGE.U2": {
+      "id": "DE.UMLAGE.U2",
+      "label": "Contributo maternità (Umlage U2)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0044"
+      },
+      "source": {
+        "authority": "Krankenkassen",
+        "type": "authority_publication",
+        "document": "Umlagesatz U2 nach § 7 AAG, kassenindividuell — hier der von der Techniker Krankenkasse für 2026 veröffentlichte Satz von 0,44 %",
+        "article": "§ 7 AAG",
+        "url": "https://www.tk.de/firmenkunden"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "DE.UMLAGE.U2.DECLARED": {
+      "id": "DE.UMLAGE.U2.DECLARED",
+      "label": "Umlage U2 — aliquota cassa dichiarata",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "5" } },
+      "source": {
+        "authority": "Krankenkasse aziendale",
+        "type": "authority_publication",
+        "document": "Kassenindividueller Umlagesatz U2 2026",
+        "article": "§ 7 AAG"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_fund_rate" },
+      "version": 1
+    },
+    "DE.UNFALLVERSICHERUNG": {
+      "id": "DE.UNFALLVERSICHERUNG",
+      "label": "Assicurazione infortuni (gesetzliche Unfallversicherung)",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "office",
+        "entries": {
+          "office": "0.005",
+          "retail": "0.009",
+          "manufacturing": "0.015",
+          "construction": "0.035"
+        }
+      },
+      "source": {
+        "authority": "Deutsche Gesetzliche Unfallversicherung",
+        "type": "secondary",
+        "document": "Beitrag nach Gefahrtarif der zuständigen Berufsgenossenschaft (§ 153 SGB VII) — betriebsindividuell; hier Größenordnungen je Gewerbezweig",
+        "article": "§§ 150 ff. SGB VII",
+        "url": "https://www.dguv.de"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "order_of_magnitude"
+      },
+      "version": 1
+    },
+    "DE.UNFALLVERSICHERUNG.DECLARED": {
+      "id": "DE.UNFALLVERSICHERUNG.DECLARED",
+      "label": "Unfallversicherung — aliquota BG dichiarata",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "20" } },
+      "source": {
+        "authority": "Berufsgenossenschaft aziendale",
+        "type": "authority_publication",
+        "document": "Beitragsbescheid e Gefahrtarif dell'impresa",
+        "article": "§§ 150 ff. SGB VII",
+        "url": "https://www.dguv.de"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_employer_notice" },
+      "version": 1
+    },
+    "DE.KV.VERSICHERUNGSPFLICHTGRENZE": {
+      "id": "DE.KV.VERSICHERUNGSPFLICHTGRENZE",
+      "label": "Soglia di obbligo assicurativo (Jahresarbeitsentgeltgrenze)",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "DE.JAEG",
+        "params": {
+          "jahresarbeitsentgeltgrenze": "77400"
+        }
+      },
+      "source": {
+        "authority": "Bundesrepublik Deutschland",
+        "type": "legislation",
+        "document": "Verordnung über maßgebende Rechengrößen der Sozialversicherung für 2026 (SVBezGrV 2026), Jahresarbeitsentgeltgrenze nach § 6 Abs. 6 SGB V",
+        "article": "§ 4 SVBezGrV 2026",
+        "url": "https://www.gesetze-im-internet.de/svbezgrv_2026/BJNR1160A0025.html"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    }
+  }
+}

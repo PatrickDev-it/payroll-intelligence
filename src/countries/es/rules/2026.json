@@ -1,0 +1,1507 @@
+{
+  "country": "ES",
+  "taxYear": 2026,
+  "version": "2026.3",
+  "rules": {
+    "ES.SS.BASE": {
+      "id": "ES.SS.BASE",
+      "label": "Base di contribuzione — massimale mensile",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "ES.SS.BASE",
+        "params": {
+          "maxMonthly": "5101.20",
+          "months": "12"
+        }
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 3 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication",
+        "crossCheckedAgainst": [
+          "Seguridad Social — Bases y tipos de cotización 2026"
+        ]
+      },
+      "version": 1
+    },
+    "ES.SS.BASE.MINIMA": {
+      "id": "ES.SS.BASE.MINIMA",
+      "label": "Base minima di contribuzione per gruppo professionale (mensile)",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "amount",
+        "defaultKey": "grupo5",
+        "entries": {
+          "grupo1": "1989.30",
+          "grupo2": "1649.70",
+          "grupo3": "1435.20",
+          "grupo4": "1424.40",
+          "grupo5": "1424.40",
+          "grupo6": "1424.40",
+          "grupo7": "1424.40"
+        }
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 3 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYEE.CONTINGENCIAS_COMUNES": {
+      "id": "ES.SS.EMPLOYEE.CONTINGENCIAS_COMUNES",
+      "label": "Contingencias comunes (previdenza e malattia) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.047"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 5 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYEE.DESEMPLEO": {
+      "id": "ES.SS.EMPLOYEE.DESEMPLEO",
+      "label": "Disoccupazione (desempleo) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "permanent",
+        "entries": {
+          "permanent": "0.0155",
+          "fixed_term": "0.016"
+        }
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 32 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYEE.FORMACION": {
+      "id": "ES.SS.EMPLOYEE.FORMACION",
+      "label": "Formazione professionale (formación profesional) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.001"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 34 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYEE.MEI": {
+      "id": "ES.SS.EMPLOYEE.MEI",
+      "label": "Meccanismo di equità intergenerazionale (MEI) — dipendente",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0015"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "disp. adicional 1ª Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYEE.SOLIDARIDAD": {
+      "id": "ES.SS.EMPLOYEE.SOLIDARIDAD",
+      "label": "Contributo di solidarietà sopra il massimale — dipendente",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "61214.40",
+            "to": "67335.84",
+            "rate": "0.0019"
+          },
+          {
+            "from": "67335.84",
+            "to": "91821.60",
+            "rate": "0.0021"
+          },
+          {
+            "from": "91821.60",
+            "to": null,
+            "rate": "0.0024"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "disp. adicional 42ª LGSS; Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.SOLIDARIDAD": {
+      "id": "ES.SS.EMPLOYER.SOLIDARIDAD",
+      "label": "Contributo di solidarietà sopra il massimale — azienda",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "61214.40",
+            "to": "67335.84",
+            "rate": "0.0096"
+          },
+          {
+            "from": "67335.84",
+            "to": "91821.60",
+            "rate": "0.0104"
+          },
+          {
+            "from": "91821.60",
+            "to": null,
+            "rate": "0.0122"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "disp. adicional 42ª LGSS; Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.CONTINGENCIAS_COMUNES": {
+      "id": "ES.SS.EMPLOYER.CONTINGENCIAS_COMUNES",
+      "label": "Contingencias comunes (previdenza e malattia) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.236"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 5 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.FOGASA": {
+      "id": "ES.SS.EMPLOYER.FOGASA",
+      "label": "Fondo di garanzia salariale (FOGASA) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.002"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 33 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.FORMACION": {
+      "id": "ES.SS.EMPLOYER.FORMACION",
+      "label": "Formazione professionale (formación profesional) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.006"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 34 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.MEI": {
+      "id": "ES.SS.EMPLOYER.MEI",
+      "label": "Meccanismo di equità intergenerazionale (MEI) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "flat_rate",
+        "rate": "0.0075"
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "disp. adicional 1ª Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.DESEMPLEO": {
+      "id": "ES.SS.EMPLOYER.DESEMPLEO",
+      "label": "Disoccupazione (desempleo) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "permanent",
+        "entries": {
+          "permanent": "0.055",
+          "fixed_term": "0.067"
+        }
+      },
+      "source": {
+        "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+        "type": "authority_publication",
+        "document": "Orden PJC/297/2026, de 30 de marzo, por la que se desarrollan las normas legales de cotización a la Seguridad Social para el ejercicio 2026 (BOE 31/03/2026)",
+        "article": "art. 32 Orden PJC/297/2026",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.ATEP": {
+      "id": "ES.SS.EMPLOYER.ATEP",
+      "label": "Premio infortuni e malattie professionali (AT/EP) — azienda",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "lookup_table",
+        "valueKind": "rate",
+        "defaultKey": "office",
+        "entries": {
+          "office": "0.015",
+          "retail": "0.019",
+          "manufacturing": "0.031",
+          "construction": "0.065"
+        }
+      },
+      "source": {
+        "authority": "Reino de España",
+        "type": "secondary",
+        "document": "Tarifa de primas de la disposición adicional 61ª del RDLeg. 8/2015, incorporada por la disp. final 1.3 del RD-ley 3/2026 — la prima depende de la actividad CNAE de la empresa",
+        "article": "disp. adicional 61ª RDLeg. 8/2015",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": {
+        "status": "experimental",
+        "verifiedAt": "2026-08-08",
+        "method": "order_of_magnitude"
+      },
+      "version": 1
+    },
+    "ES.SS.EMPLOYER.ATEP.DECLARED": {
+      "id": "ES.SS.EMPLOYER.ATEP.DECLARED",
+      "label": "AT/EP — tasso CNAE dichiarato",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "10" } },
+      "source": {
+        "authority": "Reino de España",
+        "type": "legislation",
+        "document": "Tarifa de primas de accidentes de trabajo por actividad CNAE",
+        "article": "disposición adicional 61ª RDLeg. 8/2015",
+        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7296"
+      },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_employer_tariff" },
+      "version": 1
+    },
+    "ES.IRPF.RETENCION.AEAT": {
+      "id": "ES.IRPF.RETENCION.AEAT",
+      "label": "Ritenuta IRPF payroll calcolata da AEAT",
+      "basis": "gross",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "ES.IRPF.RETENCION.AEAT.USER_RATE",
+        "params": { "rateScale": "100" }
+      },
+      "source": {
+        "authority": "Agencia Estatal de Administración Tributaria",
+        "type": "authority_publication",
+        "document": "Algoritmo para el cálculo del tipo de retención a cuenta del IRPF 2026",
+        "article": "Servicio de cálculo de retenciones 2026",
+        "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/ALGORITMO_2026.pdf"
+      },
+      "verification": {
+        "status": "verified",
+        "verifiedAt": "2026-08-10",
+        "method": "primary_source + official_calculator",
+        "crossCheckedAgainst": ["AEAT Servicio de cálculo de retenciones 2026"]
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.ESTATAL": {
+      "id": "ES.IRPF.ESCALA.ESTATAL",
+      "label": "IRPF — scala statale",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "12450",
+            "rate": "0.095"
+          },
+          {
+            "from": "12450",
+            "to": "20200",
+            "rate": "0.12"
+          },
+          {
+            "from": "20200",
+            "to": "35200",
+            "rate": "0.15"
+          },
+          {
+            "from": "35200",
+            "to": "60000",
+            "rate": "0.185"
+          },
+          {
+            "from": "60000",
+            "to": "300000",
+            "rate": "0.225"
+          },
+          {
+            "from": "300000",
+            "to": null,
+            "rate": "0.245"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Reino de España",
+        "type": "legislation",
+        "document": "Ley 35/2006, del Impuesto sobre la Renta de las Personas Físicas, texto consolidado",
+        "article": "art. 63.1 LIRPF",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "AEAT — Manual práctico de Renta, gravamen estatal"
+        ]
+      },
+      "version": 1
+    },
+    "ES.IRPF.GASTOS.OTROS": {
+      "id": "ES.IRPF.GASTOS.OTROS",
+      "label": "Altre spese deducibili da lavoro (otros gastos)",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "ES.IRPF.GASTOS.OTROS",
+        "params": {
+          "amount": "2000"
+        }
+      },
+      "source": {
+        "authority": "Reino de España",
+        "type": "legislation",
+        "document": "Ley 35/2006, del Impuesto sobre la Renta de las Personas Físicas, texto consolidado",
+        "article": "art. 19.2.f) LIRPF",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "ES.IRPF.REDUCCION.TRABAJO": {
+      "id": "ES.IRPF.REDUCCION.TRABAJO",
+      "label": "Riduzione per redditi da lavoro (art. 20 LIRPF)",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "tapered_credit",
+        "segments": [
+          {
+            "from": "0",
+            "to": "14852",
+            "max": "7302",
+            "floor": "7302"
+          },
+          {
+            "from": "14852",
+            "to": "17673.52",
+            "max": "7302",
+            "floor": "2364.34"
+          },
+          {
+            "from": "17673.52",
+            "to": "19747.50",
+            "max": "2364.34",
+            "floor": "0"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Reino de España",
+        "type": "legislation",
+        "document": "Ley 35/2006, del Impuesto sobre la Renta de las Personas Físicas, texto consolidado",
+        "article": "art. 20 LIRPF",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "ES.IRPF.MINIMO.CONTRIBUYENTE": {
+      "id": "ES.IRPF.MINIMO.CONTRIBUYENTE",
+      "label": "Minimo personale del contribuente (mínimo del contribuyente)",
+      "basis": "total_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "ES.IRPF.MINIMO",
+        "params": {
+          "amount": "5550"
+        }
+      },
+      "source": {
+        "authority": "Reino de España",
+        "type": "legislation",
+        "document": "Ley 35/2006, del Impuesto sobre la Renta de las Personas Físicas, texto consolidado",
+        "article": "art. 57.1 LIRPF",
+        "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.CATALUNA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.CATALUNA",
+      "label": "IRPF, scala autonomica — Cataluña",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12500.0",
+            "rate": "0.095"
+          },
+          {
+            "from": "12500.00",
+            "to": "22000.0",
+            "rate": "0.125"
+          },
+          {
+            "from": "22000.00",
+            "to": "33000.0",
+            "rate": "0.16"
+          },
+          {
+            "from": "33000.00",
+            "to": "53000.0",
+            "rate": "0.19"
+          },
+          {
+            "from": "53000.00",
+            "to": "90000.0",
+            "rate": "0.215"
+          },
+          {
+            "from": "90000.00",
+            "to": "120000.0",
+            "rate": "0.235"
+          },
+          {
+            "from": "120000.00",
+            "to": "175000.0",
+            "rate": "0.245"
+          },
+          {
+            "from": "175000.00",
+            "to": null,
+            "rate": "0.255"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.GALICIA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.GALICIA",
+      "label": "IRPF, scala autonomica — Galicia",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12985.35",
+            "rate": "0.09"
+          },
+          {
+            "from": "12985.35",
+            "to": "21068.6",
+            "rate": "0.1165"
+          },
+          {
+            "from": "21068.60",
+            "to": "35200.0",
+            "rate": "0.149"
+          },
+          {
+            "from": "35200.00",
+            "to": "60000.0",
+            "rate": "0.184"
+          },
+          {
+            "from": "60000.00",
+            "to": null,
+            "rate": "0.225"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.ANDALUCIA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.ANDALUCIA",
+      "label": "IRPF, scala autonomica — Andalucía",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "13000.0",
+            "rate": "0.095"
+          },
+          {
+            "from": "13000.00",
+            "to": "21100.0",
+            "rate": "0.12"
+          },
+          {
+            "from": "21100.00",
+            "to": "35200.0",
+            "rate": "0.15"
+          },
+          {
+            "from": "35200.00",
+            "to": "60000.0",
+            "rate": "0.185"
+          },
+          {
+            "from": "60000.00",
+            "to": null,
+            "rate": "0.225"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.ASTURIAS": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.ASTURIAS",
+      "label": "IRPF, scala autonomica — Principado de Asturias",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12450.0",
+            "rate": "0.09"
+          },
+          {
+            "from": "12450.00",
+            "to": "17707.2",
+            "rate": "0.12"
+          },
+          {
+            "from": "17707.20",
+            "to": "33007.2",
+            "rate": "0.14"
+          },
+          {
+            "from": "33007.20",
+            "to": "53407.2",
+            "rate": "0.192"
+          },
+          {
+            "from": "53407.20",
+            "to": "70000.0",
+            "rate": "0.215"
+          },
+          {
+            "from": "70000.00",
+            "to": "90000.0",
+            "rate": "0.225"
+          },
+          {
+            "from": "90000.00",
+            "to": "175000.0",
+            "rate": "0.25"
+          },
+          {
+            "from": "175000.00",
+            "to": null,
+            "rate": "0.26"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.CANTABRIA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.CANTABRIA",
+      "label": "IRPF, scala autonomica — Cantabria",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "13000.0",
+            "rate": "0.085"
+          },
+          {
+            "from": "13000.00",
+            "to": "21000.0",
+            "rate": "0.11"
+          },
+          {
+            "from": "21000.00",
+            "to": "35200.0",
+            "rate": "0.145"
+          },
+          {
+            "from": "35200.00",
+            "to": "60000.0",
+            "rate": "0.18"
+          },
+          {
+            "from": "60000.00",
+            "to": "90000.0",
+            "rate": "0.225"
+          },
+          {
+            "from": "90000.00",
+            "to": null,
+            "rate": "0.245"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.LA_RIOJA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.LA_RIOJA",
+      "label": "IRPF, scala autonomica — La Rioja",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12450.0",
+            "rate": "0.08"
+          },
+          {
+            "from": "12450.00",
+            "to": "20200.0",
+            "rate": "0.106"
+          },
+          {
+            "from": "20200.00",
+            "to": "35200.0",
+            "rate": "0.136"
+          },
+          {
+            "from": "35200.00",
+            "to": "40000.0",
+            "rate": "0.178"
+          },
+          {
+            "from": "40000.00",
+            "to": "50000.0",
+            "rate": "0.183"
+          },
+          {
+            "from": "50000.00",
+            "to": "60000.0",
+            "rate": "0.19"
+          },
+          {
+            "from": "60000.00",
+            "to": "120000.0",
+            "rate": "0.245"
+          },
+          {
+            "from": "120000.00",
+            "to": null,
+            "rate": "0.27"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.MURCIA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.MURCIA",
+      "label": "IRPF, scala autonomica — Región de Murcia",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12450.0",
+            "rate": "0.095"
+          },
+          {
+            "from": "12450.00",
+            "to": "20200.0",
+            "rate": "0.112"
+          },
+          {
+            "from": "20200.00",
+            "to": "34000.0",
+            "rate": "0.133"
+          },
+          {
+            "from": "34000.00",
+            "to": "60000.0",
+            "rate": "0.179"
+          },
+          {
+            "from": "60000.00",
+            "to": null,
+            "rate": "0.225"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.COMUNITAT_VALENCIANA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.COMUNITAT_VALENCIANA",
+      "label": "IRPF, scala autonomica — Comunitat Valenciana",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "12000.0",
+            "rate": "0.09"
+          },
+          {
+            "from": "12000.00",
+            "to": "22000.0",
+            "rate": "0.12"
+          },
+          {
+            "from": "22000.00",
+            "to": "32000.0",
+            "rate": "0.15"
+          },
+          {
+            "from": "32000.00",
+            "to": "42000.0",
+            "rate": "0.175"
+          },
+          {
+            "from": "42000.00",
+            "to": "52000.0",
+            "rate": "0.2"
+          },
+          {
+            "from": "52000.00",
+            "to": "62000.0",
+            "rate": "0.225"
+          },
+          {
+            "from": "62000.00",
+            "to": "72000.0",
+            "rate": "0.25"
+          },
+          {
+            "from": "72000.00",
+            "to": "100000.0",
+            "rate": "0.265"
+          },
+          {
+            "from": "100000.00",
+            "to": "150000.0",
+            "rate": "0.275"
+          },
+          {
+            "from": "150000.00",
+            "to": "200000.0",
+            "rate": "0.285"
+          },
+          {
+            "from": "200000.00",
+            "to": null,
+            "rate": "0.295"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.ARAGON": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.ARAGON",
+      "label": "IRPF, scala autonomica — Aragón",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "13072.5",
+            "rate": "0.095"
+          },
+          {
+            "from": "13072.50",
+            "to": "21210.0",
+            "rate": "0.12"
+          },
+          {
+            "from": "21210.00",
+            "to": "36960.0",
+            "rate": "0.15"
+          },
+          {
+            "from": "36960.00",
+            "to": "52500.0",
+            "rate": "0.185"
+          },
+          {
+            "from": "52500.00",
+            "to": "60000.0",
+            "rate": "0.205"
+          },
+          {
+            "from": "60000.00",
+            "to": "80000.0",
+            "rate": "0.23"
+          },
+          {
+            "from": "80000.00",
+            "to": "90000.0",
+            "rate": "0.24"
+          },
+          {
+            "from": "90000.00",
+            "to": "130000.0",
+            "rate": "0.25"
+          },
+          {
+            "from": "130000.00",
+            "to": null,
+            "rate": "0.255"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.CASTILLA_LA_MANCHA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.CASTILLA_LA_MANCHA",
+      "label": "IRPF, scala autonomica — Castilla-La Mancha",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12450.0",
+            "rate": "0.095"
+          },
+          {
+            "from": "12450.00",
+            "to": "20200.0",
+            "rate": "0.12"
+          },
+          {
+            "from": "20200.00",
+            "to": "35200.0",
+            "rate": "0.15"
+          },
+          {
+            "from": "35200.00",
+            "to": "60000.0",
+            "rate": "0.185"
+          },
+          {
+            "from": "60000.00",
+            "to": null,
+            "rate": "0.225"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.CANARIAS": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.CANARIAS",
+      "label": "IRPF, scala autonomica — Canarias",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "13748.0",
+            "rate": "0.09"
+          },
+          {
+            "from": "13748.00",
+            "to": "19422.0",
+            "rate": "0.115"
+          },
+          {
+            "from": "19422.00",
+            "to": "35924.0",
+            "rate": "0.14"
+          },
+          {
+            "from": "35924.00",
+            "to": "57566.0",
+            "rate": "0.185"
+          },
+          {
+            "from": "57566.00",
+            "to": "93268.0",
+            "rate": "0.235"
+          },
+          {
+            "from": "93268.00",
+            "to": "123745.0",
+            "rate": "0.25"
+          },
+          {
+            "from": "123745.00",
+            "to": null,
+            "rate": "0.26"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.EXTREMADURA": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.EXTREMADURA",
+      "label": "IRPF, scala autonomica — Extremadura",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12450.0",
+            "rate": "0.08"
+          },
+          {
+            "from": "12450.00",
+            "to": "20200.0",
+            "rate": "0.1"
+          },
+          {
+            "from": "20200.00",
+            "to": "24200.0",
+            "rate": "0.16"
+          },
+          {
+            "from": "24200.00",
+            "to": "35200.0",
+            "rate": "0.175"
+          },
+          {
+            "from": "35200.00",
+            "to": "60000.0",
+            "rate": "0.21"
+          },
+          {
+            "from": "60000.00",
+            "to": "80200.0",
+            "rate": "0.235"
+          },
+          {
+            "from": "80200.00",
+            "to": "99200.0",
+            "rate": "0.24"
+          },
+          {
+            "from": "99200.00",
+            "to": "120200.0",
+            "rate": "0.245"
+          },
+          {
+            "from": "120200.00",
+            "to": null,
+            "rate": "0.25"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.BALEARES": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.BALEARES",
+      "label": "IRPF, scala autonomica — Illes Balears",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0",
+            "to": "10000.0",
+            "rate": "0.09"
+          },
+          {
+            "from": "10000",
+            "to": "18000.0",
+            "rate": "0.1125"
+          },
+          {
+            "from": "18000",
+            "to": "30000.0",
+            "rate": "0.1425"
+          },
+          {
+            "from": "30000",
+            "to": "48000.0",
+            "rate": "0.175"
+          },
+          {
+            "from": "48000",
+            "to": "70000.0",
+            "rate": "0.19"
+          },
+          {
+            "from": "70000",
+            "to": "90000.0",
+            "rate": "0.2175"
+          },
+          {
+            "from": "90000",
+            "to": "120000.0",
+            "rate": "0.2275"
+          },
+          {
+            "from": "120000",
+            "to": "175000.0",
+            "rate": "0.2375"
+          },
+          {
+            "from": "175000",
+            "to": null,
+            "rate": "0.2475"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.MADRID": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.MADRID",
+      "label": "IRPF, scala autonomica — Comunidad de Madrid",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "13362.22",
+            "rate": "0.085"
+          },
+          {
+            "from": "13362.22",
+            "to": "19004.63",
+            "rate": "0.107"
+          },
+          {
+            "from": "19004.63",
+            "to": "35425.68",
+            "rate": "0.128"
+          },
+          {
+            "from": "35425.68",
+            "to": "57320.4",
+            "rate": "0.174"
+          },
+          {
+            "from": "57320.40",
+            "to": null,
+            "rate": "0.205"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    },
+    "ES.IRPF.ESCALA.AUTONOMICA.CASTILLA_Y_LEON": {
+      "id": "ES.IRPF.ESCALA.AUTONOMICA.CASTILLA_Y_LEON",
+      "label": "IRPF, scala autonomica — Castilla y León",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "progressive_brackets",
+        "brackets": [
+          {
+            "from": "0.00",
+            "to": "12450.0",
+            "rate": "0.09"
+          },
+          {
+            "from": "12450.00",
+            "to": "20200.0",
+            "rate": "0.12"
+          },
+          {
+            "from": "20200.00",
+            "to": "35200.0",
+            "rate": "0.14"
+          },
+          {
+            "from": "35200.00",
+            "to": "53407.2",
+            "rate": "0.185"
+          },
+          {
+            "from": "53407.20",
+            "to": null,
+            "rate": "0.215"
+          }
+        ]
+      },
+      "source": {
+        "authority": "Ministerio de Hacienda",
+        "type": "authority_publication",
+        "document": "Tributación Autonómica. Medidas 2026 (libro electrónico de la Secretaría General de Financiación Autonómica y Local, actualizado a 29 de abril de 2026), escala autonómica aplicable a la base liquidable general",
+        "article": "art. 74 LIRPF; normativa propia de la comunidad",
+        "url": "https://www.hacienda.gob.es/sgfal/financiacionterritorial/autonomica/capitulo-iv-tributacion-autonomica-2026.pdf"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-08",
+        "method": "authority_publication"
+      },
+      "version": 1
+    }
+  }
+}

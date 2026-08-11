@@ -1,0 +1,192 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: "true"
+  PAYROLL_RELEASE: ${{ github.sha }}
+  NEXT_PUBLIC_PAYROLL_RELEASE: ${{ github.sha }}
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Pin npm CLI
+        run: npm install --global npm@11.17.0
+      - name: Install exact dependencies
+        run: npm ci --ignore-scripts
+      - name: Audit production dependencies
+        run: npm run security:audit
+      - name: Typecheck and unit tests
+        run: npm run check
+      - name: Production build
+        run: npm run build
+      - name: Export payroll regression matrix
+        run: npm run --silent rules:matrix > regression-matrix.json
+      - name: Generate CycloneDX SBOM
+        run: npm sbom --sbom-format cyclonedx > sbom.cdx.json
+      - name: Upload review evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: quality-evidence-${{ github.sha }}
+          path: |
+            regression-matrix.json
+            sbom.cdx.json
+          if-no-files-found: error
+          retention-days: 30
+
+  browser:
+    name: Browser E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Pin npm CLI
+        run: npm install --global npm@11.17.0
+      - name: Install exact dependencies
+        run: npm ci --ignore-scripts
+      - name: Install browser runtimes
+        run: npx playwright install --with-deps chromium webkit firefox
+      - name: Build the release candidate
+        run: npm run build
+      - name: Run production-browser suite
+        run: npm run test:e2e
+      - name: Upload browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: playwright-${{ github.sha }}
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+          retention-days: 14
+
+  output-diff:
+    name: Payroll output diff
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Pin npm CLI
+        run: npm install --global npm@11.17.0
+      - name: Build head matrix
+        run: |
+          npm ci --ignore-scripts
+          npm run --silent rules:matrix > head-matrix.json
+      - name: Build base matrix
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/payroll-base" "$BASE_SHA"
+          cd "$RUNNER_TEMP/payroll-base"
+          npm ci --ignore-scripts
+          npm run --silent rules:matrix > "$GITHUB_WORKSPACE/base-matrix.json"
+      - name: Produce human-reviewable output diff
+        run: |
+          diff -u base-matrix.json head-matrix.json > payroll-output.diff || true
+          if [ -s payroll-output.diff ]; then
+            {
+              echo '## Payroll output changes'
+              echo '```diff'
+              sed -n '1,500p' payroll-output.diff
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '## Payroll output changes' >> "$GITHUB_STEP_SUMMARY"
+            echo 'No cent-level output changes.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'No cent-level output changes.' > payroll-output.diff
+          fi
+      - name: Upload output-diff evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: payroll-output-diff-${{ github.sha }}
+          path: |
+            base-matrix.json
+            head-matrix.json
+            payroll-output.diff
+          if-no-files-found: error
+          retention-days: 90
+
+  container:
+    name: Release container
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [quality, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Login to GHCR
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Container metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
+      - name: Build and publish immutable image
+        id: build
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: PAYROLL_RELEASE=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: mode=max
+          sbom: true
+      - name: Publish rollback handle
+        run: |
+          echo '## Immutable release' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Image digest: `${{ steps.build.outputs.digest }}`' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Rollback with this digest; never with the mutable latest tag.' >> "$GITHUB_STEP_SUMMARY"
