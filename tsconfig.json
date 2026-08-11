@@ -30,16 +30,15 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "@engine/*": [
-        "src/engine/*"
+        "./src/engine/*"
       ],
       "@countries/*": [
-        "src/countries/*"
+        "./src/countries/*"
       ],
       "@ui/*": [
-        "src/app/_components/*"
+        "./src/app/_components/*"
       ]
     },
     "esModuleInterop": true
