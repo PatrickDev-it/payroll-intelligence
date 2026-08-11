@@ -4,7 +4,7 @@ import { RELEASE_HEADER } from "./application.ts";
 const RELEASE_PATTERN = /^[A-Za-z0-9._-]{1,128}$/;
 const candidate = process.env.NEXT_PUBLIC_PAYROLL_RELEASE;
 
-/** Immutable deployment identity. GitHub Actions supplies the full commit SHA. */
+/** Immutable deployment identity, inlined from CI or the hosting provider at build time. */
 export const RELEASE_ID = candidate && RELEASE_PATTERN.test(candidate) ? candidate : "local";
 
 export type ReleasedCalculation = PayrollCalculation & {

@@ -33,7 +33,7 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - name: Pin npm CLI
-        run: npm install --global npm@11.17.0
+        run: npm install --global npm@10.9.7
       - name: Install exact dependencies
         run: npm ci --ignore-scripts
       - name: Audit production dependencies
@@ -69,7 +69,7 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - name: Pin npm CLI
-        run: npm install --global npm@11.17.0
+        run: npm install --global npm@10.9.7
       - name: Install exact dependencies
         run: npm ci --ignore-scripts
       - name: Install browser runtimes
@@ -107,7 +107,7 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - name: Pin npm CLI
-        run: npm install --global npm@11.17.0
+        run: npm install --global npm@10.9.7
       - name: Build head matrix
         run: |
           npm ci --ignore-scripts

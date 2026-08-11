@@ -22,7 +22,7 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - name: Pin npm CLI
-        run: npm install --global npm@11.17.0
+        run: npm install --global npm@10.9.7
       - name: Reproduce dependency graph
         run: npm ci --ignore-scripts
       - name: Audit production dependencies

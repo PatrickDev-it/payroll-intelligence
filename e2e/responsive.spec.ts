@@ -135,6 +135,13 @@ test("floating label text defers without fading its mask and chevrons mirror bor
   expect(
     new Set(await labelText.evaluateAll((items) => items.map((item) => getComputedStyle(item).opacity))),
   ).toEqual(new Set(["0.77"]));
+  const bodyBackground = await page.locator("body").evaluate((body) =>
+    getComputedStyle(body).backgroundColor,
+  );
+  const labelBackgrounds = await labels.evaluateAll((items) =>
+    items.map((item) => getComputedStyle(item).backgroundColor),
+  );
+  expect(new Set(labelBackgrounds)).toEqual(new Set([bodyBackground]));
 
   const country = page.locator("#field-country");
   const chevron = country.locator(".select-chevron");

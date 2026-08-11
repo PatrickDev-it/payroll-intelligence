@@ -592,7 +592,7 @@
     overflow: hidden;
     align-items: center;
     padding: 0 var(--p);
-    background: var(--surface);
+    background: var(--canvas);
     color: var(--ink);
     text-overflow: ellipsis;
     white-space: nowrap;

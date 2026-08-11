@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const development = process.env["NODE_ENV"] !== "production";
+const releaseId =
+  process.env["PAYROLL_RELEASE"] ?? process.env["VERCEL_GIT_COMMIT_SHA"] ?? "local";
+const publicReleaseId = process.env["NEXT_PUBLIC_PAYROLL_RELEASE"] ?? releaseId;
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${development ? " 'unsafe-eval'" : ""}`,
@@ -33,7 +36,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
-  generateBuildId: async () => process.env["PAYROLL_RELEASE"] ?? "local",
+  env: {
+    NEXT_PUBLIC_PAYROLL_RELEASE: publicReleaseId,
+  },
+  generateBuildId: async () => releaseId,
   headers: async () => [
     { source: "/:path*", headers: securityHeaders },
     {

@@ -2,12 +2,12 @@
   "name": "payroll-calculator",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "npm@11.17.0",
+  "packageManager": "npm@10.9.7",
   "type": "module",
   "description": "Four-country payroll projection engine for Italy, Germany, Spain and France",
   "engines": {
-    "node": "22.13.x",
-    "npm": "11.17.x"
+    "node": "22.x",
+    "npm": "10.x"
   },
   "scripts": {
     "dev": "next dev",

@@ -2,8 +2,9 @@
 
 ## Release identity
 
-Every production build uses the full Git commit SHA as `PAYROLL_RELEASE`. The UI, API response
-header `X-Payroll-Release`, API result `meta.releaseId` and health response expose that identity.
+Every production build uses the full Git commit SHA from `PAYROLL_RELEASE` or Vercel's
+`VERCEL_GIT_COMMIT_SHA`. The UI, API response header `X-Payroll-Release`, API result
+`meta.releaseId` and health response expose that identity.
 The engine and rule-set versions answer different questions and must not be substituted for it.
 
 ## Health

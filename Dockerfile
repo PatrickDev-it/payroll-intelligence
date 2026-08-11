@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 FROM node:22.13.0-bookworm-slim AS toolchain
-RUN npm install --global npm@11.17.0
+RUN npm install --global npm@10.9.7
 
 FROM toolchain AS dependencies
 WORKDIR /app

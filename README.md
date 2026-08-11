@@ -76,7 +76,7 @@ and catalogue entry. The shared engine does not contain country switches.
 
 ## Run locally
 
-Requirements: Node `22.13.x` and npm `11.17.x`.
+Requirements: Node `22.x` and npm `10.x` (the repository pins npm `10.9.7`).
 
 ```bash
 npm ci --ignore-scripts
@@ -84,6 +84,13 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+## Vercel
+
+The repository is ready for Vercel's Next.js preset. `vercel.json` keeps installation
+reproducible with `npm ci --ignore-scripts`; no custom Build Command or Output Directory is
+required. Keep Node.js `22.x` selected and enable **Automatically expose System Environment
+Variables** so `VERCEL_GIT_COMMIT_SHA` becomes the release identity shown by the app and API.
 
 ## Verification
 
