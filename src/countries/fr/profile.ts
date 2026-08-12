@@ -7,11 +7,13 @@
  */
 
 import type { EmployeeProfile } from "@engine/model/employee-profile.ts";
+import type { RuleSet } from "@engine/model/rule.ts";
+import { formulaParam, ruleOf } from "@engine/pipeline/helpers.ts";
 
 export const DEFAULT_REGION = "france";
 
 /** Situations that decide the base number of `parts` and the décote amount. */
-export const HOUSEHOLDS = ["single", "couple"] as const;
+export const HOUSEHOLDS = ["single", "couple", "parent_isole"] as const;
 export type Household = (typeof HOUSEHOLDS)[number];
 
 function option(profile: EmployeeProfile, key: string): string | number | boolean | undefined {
@@ -38,15 +40,25 @@ export function childrenOf(profile: EmployeeProfile): number {
  * couple, half a part for each of the first two children and a whole part from
  * the third.
  */
-export function partsOf(profile: EmployeeProfile): number {
+export function partsOf(profile: EmployeeProfile, rules: RuleSet): number {
   const children = childrenOf(profile);
-  const base = householdOf(profile) === "couple" ? 2 : 1;
-  const fromChildren = children <= 2 ? children * 0.5 : 1 + (children - 2);
-  return base + fromChildren;
+  const household = householdOf(profile);
+  const rule = ruleOf(rules, "FR.IR.QUOTIENT");
+  const base = Number(formulaParam(rule, `${household}BaseParts`));
+  const firstTwoIncrement = Number(formulaParam(rule, "firstTwoChildIncrement"));
+  const laterIncrement = Number(formulaParam(rule, "thirdAndLaterChildIncrement"));
+  const fromChildren =
+    Math.min(children, 2) * firstTwoIncrement + Math.max(children - 2, 0) * laterIncrement;
+  const isolatedIncrement =
+    household === "parent_isole" && children > 0
+      ? Number(formulaParam(rule, "parentIsoleAdditionalParts"))
+      : 0;
+  return base + fromChildren + isolatedIncrement;
 }
 
-export function basePartsOf(profile: EmployeeProfile): number {
-  return householdOf(profile) === "couple" ? 2 : 1;
+export function basePartsOf(profile: EmployeeProfile, rules: RuleSet): number {
+  const household = householdOf(profile);
+  return Number(formulaParam(ruleOf(rules, "FR.IR.QUOTIENT"), `${household}BaseParts`));
 }
 
 export function healthRegimeKey(profile: EmployeeProfile): string {

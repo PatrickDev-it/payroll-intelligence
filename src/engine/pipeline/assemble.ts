@@ -20,7 +20,7 @@ import type {
   PayrollCalculation,
   Rates,
 } from "../model/calculation.ts";
-import { allLines, assertCitable } from "../model/calculation.ts";
+import { allLines, assertCitable, assertPayrollTaxRoles } from "../model/calculation.ts";
 import { lowestConfidence, type ConfidenceTier } from "../model/confidence.ts";
 import type { EmployeeProfile } from "../model/employee-profile.ts";
 import type { RuleRef, RuleSet } from "../model/rule.ts";
@@ -87,6 +87,8 @@ export function assembleCalculation(assembly: Assembly): PayrollCalculation {
   const lines = topLevelLines(employee, employer);
 
   assertCitable(lines);
+  assertPayrollTaxRoles(employee.taxes);
+  assertAssemblySemantics(employee, employer);
 
   const netAnnual = employee.netAnnual;
 
@@ -121,6 +123,75 @@ export function assembleCalculation(assembly: Assembly): PayrollCalculation {
       notes,
     },
   };
+}
+
+function assertAssemblySemantics(
+  employee: EmployeeComputation,
+  employer: EmployerComputation,
+): void {
+  const employeeContributionCents = sumLineCents(employee.socialSecurity);
+  const employeeTaxCents = sumLineCents(employee.taxes);
+  const employeeCreditCents = sumLineCents(employee.credits);
+
+  assertEqual(
+    "employee contribution total",
+    employeeContributionCents,
+    -employee.totalContributions.cents,
+  );
+  assertEqual("employee tax total", employeeTaxCents, -employee.totalTaxes.cents);
+  assertEqual("employee credit total", employeeCreditCents, employee.totalCredits.cents);
+  assertEqual(
+    "employee net",
+    employee.gross.cents + employeeContributionCents + employeeTaxCents + employeeCreditCents,
+    employee.netAnnual.cents,
+  );
+
+  const employerLineCents = sumLineCents([
+    ...employer.contributions,
+    ...employer.insurance,
+    ...employer.severanceAccrual,
+    ...employer.otherCosts,
+  ]);
+  assertEqual("employer total cost", employer.gross.cents + employerLineCents, employer.totalCost.cents);
+
+  const payrollRoots = new Set(employee.taxes);
+  const walk = (line: CalculationLine, payrollRoot: CalculationLine | undefined): void => {
+    if (line.taxRole === "payroll_withholding" && line !== payrollRoot) {
+      throw new Error(`Calculation invariant failed: payroll withholding ${line.id} is not a top-level employee tax`);
+    }
+    if (line.taxRole === "annual_settlement_estimate" && payrollRoot === undefined) {
+      throw new Error(`Calculation invariant failed: annual settlement estimate ${line.id} is outside a payroll tax`);
+    }
+    for (const child of line.children ?? []) walk(child, payrollRoot);
+  };
+  for (const line of linesForSemantics(employee, employer)) {
+    walk(line, payrollRoots.has(line) ? line : undefined);
+  }
+}
+
+function sumLineCents(lines: readonly CalculationLine[]): number {
+  return lines.reduce((total, line) => total + line.amount.cents, 0);
+}
+
+function assertEqual(label: string, actual: number, expected: number): void {
+  if (actual !== expected) {
+    throw new Error(`Calculation invariant failed: ${label} is ${actual} cents, expected ${expected}`);
+  }
+}
+
+function linesForSemantics(
+  employee: EmployeeComputation,
+  employer: EmployerComputation,
+): readonly CalculationLine[] {
+  return [
+    ...employee.socialSecurity,
+    ...employee.taxes,
+    ...employee.credits,
+    ...employer.contributions,
+    ...employer.insurance,
+    ...employer.severanceAccrual,
+    ...employer.otherCosts,
+  ];
 }
 
 function topLevelLines(

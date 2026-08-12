@@ -1,0 +1,90 @@
+[
+  {
+    "id": "BMF-PAP-2026-ANNUAL-STKL-I-60000",
+    "papPublicationDate": "2025-11-12",
+    "papFileUrl": "https://www.bundesfinanzministerium.de/Datenportal/Daten/frei-nutzbare-produkte/Anwendungen/Programmablaufplan-2026/Programmablaufplan-2026-Anlage1.pdf?__blob=publicationFile&v=3",
+    "officialInterfaceUrl": "https://www.bmf-steuerrechner.de/interface/2026Version1.xhtml?code=LSt2026ext",
+    "extractionMethod": "GET della Schnittstelle esterna BMF; risposta XML salvata e hashata senza trasformazioni",
+    "accessedAt": "2026-08-12",
+    "sourceChecksumSha256": "ce7918cbe883b6d37218f47e74f15cd04d0f96ffe66e43b674536436f279a28e",
+    "evidenceStatus": "verified",
+    "inputs": {
+      "AF": 0, "AJAHR": 0, "ALTER1": 0, "ALV": 0, "F": "1.000",
+      "JFREIB": 0, "JHINZU": 0, "JRE4": 0, "JRE4ENT": 0, "JVBEZ": 0,
+      "KRV": 0, "KVZ": "2.90", "LZZ": 1, "LZZFREIB": 0, "LZZHINZU": 0,
+      "MBV": 0, "PKPV": 0, "PKPVAGZ": 0, "PKV": 0, "PVA": 0,
+      "PVS": 0, "PVZ": 1, "R": 0, "RE4": 6000000, "SONSTB": 0,
+      "SONSTENT": 0, "STERBE": 0, "STKL": 1, "VBEZ": 0, "VBEZM": 0,
+      "VBEZS": 0, "VBS": 0, "VJAHR": 0, "ZKF": "0.0", "ZMVB": 0
+    },
+    "officialOutputs": { "LSTLZZ": 938900, "SOLZLZZ": 0 },
+    "expectedEngineLines": ["DE.LOHNSTEUER.TARIF"],
+    "allowedToleranceCents": 0
+  },
+  {
+    "id": "BMF-PAP-2026-ANNUAL-STKL-II-60000",
+    "papPublicationDate": "2025-11-12",
+    "papFileUrl": "https://www.bundesfinanzministerium.de/Datenportal/Daten/frei-nutzbare-produkte/Anwendungen/Programmablaufplan-2026/Programmablaufplan-2026-Anlage1.pdf?__blob=publicationFile&v=3",
+    "officialInterfaceUrl": "https://www.bmf-steuerrechner.de/interface/2026Version1.xhtml?code=LSt2026ext",
+    "extractionMethod": "GET della Schnittstelle esterna BMF; risposta XML salvata e hashata senza trasformazioni",
+    "accessedAt": "2026-08-12",
+    "sourceChecksumSha256": "1da3257986a2fb822f1b788cfb7cb34b068edcbc3e7046dc992001c6433c6b34",
+    "evidenceStatus": "verified",
+    "inputs": {
+      "AF": 0, "AJAHR": 0, "ALTER1": 0, "ALV": 0, "F": "1.000",
+      "JFREIB": 0, "JHINZU": 0, "JRE4": 0, "JRE4ENT": 0, "JVBEZ": 0,
+      "KRV": 0, "KVZ": "2.90", "LZZ": 1, "LZZFREIB": 0, "LZZHINZU": 0,
+      "MBV": 0, "PKPV": 0, "PKPVAGZ": 0, "PKV": 0, "PVA": 0,
+      "PVS": 0, "PVZ": 0, "R": 0, "RE4": 6000000, "SONSTB": 0,
+      "SONSTENT": 0, "STERBE": 0, "STKL": 2, "VBEZ": 0, "VBEZM": 0,
+      "VBEZS": 0, "VBS": 0, "VJAHR": 0, "ZKF": "0.0", "ZMVB": 0
+    },
+    "officialOutputs": { "LSTLZZ": 809100, "SOLZLZZ": 0 },
+    "expectedEngineLines": ["DE.LOHNSTEUER.TARIF"],
+    "allowedToleranceCents": 0
+  },
+  {
+    "id": "BMF-PAP-2026-ANNUAL-STKL-III-60000",
+    "papPublicationDate": "2025-11-12",
+    "papFileUrl": "https://www.bundesfinanzministerium.de/Datenportal/Daten/frei-nutzbare-produkte/Anwendungen/Programmablaufplan-2026/Programmablaufplan-2026-Anlage1.pdf?__blob=publicationFile&v=3",
+    "officialInterfaceUrl": "https://www.bmf-steuerrechner.de/interface/2026Version1.xhtml?code=LSt2026ext",
+    "extractionMethod": "GET della Schnittstelle esterna BMF; risposta XML salvata e hashata senza trasformazioni",
+    "accessedAt": "2026-08-12",
+    "sourceChecksumSha256": "60a16df8c7d7bf1341cd4c4e9a863cc811ee3f73477c4e527b629d0358b0e594",
+    "evidenceStatus": "verified",
+    "inputs": {
+      "AF": 0, "AJAHR": 0, "ALTER1": 0, "ALV": 0, "F": "1.000",
+      "JFREIB": 0, "JHINZU": 0, "JRE4": 0, "JRE4ENT": 0, "JVBEZ": 0,
+      "KRV": 0, "KVZ": "2.90", "LZZ": 1, "LZZFREIB": 0, "LZZHINZU": 0,
+      "MBV": 0, "PKPV": 0, "PKPVAGZ": 0, "PKV": 0, "PVA": 0,
+      "PVS": 0, "PVZ": 1, "R": 0, "RE4": 6000000, "SONSTB": 0,
+      "SONSTENT": 0, "STERBE": 0, "STKL": 3, "VBEZ": 0, "VBEZM": 0,
+      "VBEZS": 0, "VBS": 0, "VJAHR": 0, "ZKF": "0.0", "ZMVB": 0
+    },
+    "officialOutputs": { "LSTLZZ": 482200, "SOLZLZZ": 0 },
+    "expectedEngineLines": ["DE.LOHNSTEUER.TARIF"],
+    "allowedToleranceCents": 0
+  },
+  {
+    "id": "BMF-PAP-2026-ANNUAL-STKL-IV-60000",
+    "papPublicationDate": "2025-11-12",
+    "papFileUrl": "https://www.bundesfinanzministerium.de/Datenportal/Daten/frei-nutzbare-produkte/Anwendungen/Programmablaufplan-2026/Programmablaufplan-2026-Anlage1.pdf?__blob=publicationFile&v=3",
+    "officialInterfaceUrl": "https://www.bmf-steuerrechner.de/interface/2026Version1.xhtml?code=LSt2026ext",
+    "extractionMethod": "GET della Schnittstelle esterna BMF; risposta XML salvata e hashata senza trasformazioni",
+    "accessedAt": "2026-08-12",
+    "sourceChecksumSha256": "d883baa21de0239f69acb923aa25936d1f4093246a780f5bbb80c50a1273994d",
+    "evidenceStatus": "verified",
+    "inputs": {
+      "AF": 0, "AJAHR": 0, "ALTER1": 0, "ALV": 0, "F": "1.000",
+      "JFREIB": 0, "JHINZU": 0, "JRE4": 0, "JRE4ENT": 0, "JVBEZ": 0,
+      "KRV": 0, "KVZ": "2.90", "LZZ": 1, "LZZFREIB": 0, "LZZHINZU": 0,
+      "MBV": 0, "PKPV": 0, "PKPVAGZ": 0, "PKV": 0, "PVA": 0,
+      "PVS": 0, "PVZ": 1, "R": 0, "RE4": 6000000, "SONSTB": 0,
+      "SONSTENT": 0, "STERBE": 0, "STKL": 4, "VBEZ": 0, "VBEZM": 0,
+      "VBEZS": 0, "VBS": 0, "VJAHR": 0, "ZKF": "0.0", "ZMVB": 0
+    },
+    "officialOutputs": { "LSTLZZ": 938900, "SOLZLZZ": 0 },
+    "expectedEngineLines": ["DE.LOHNSTEUER.TARIF"],
+    "allowedToleranceCents": 0
+  }
+]

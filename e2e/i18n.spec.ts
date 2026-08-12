@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 const LOCALES = {
-  it: { tag: "it-IT", net: "Netto per mensilità · 14 mensilità", breakdown: "Dal lordo al netto", employer: "Costo per l'azienda", rates: "Aliquote effettive", methodology: "Metodologia e perimetro del modello", country: "Paese", guide: "Guida al parametro" },
-  en: { tag: "en-GB", net: "Net per payslip · 14 payments", breakdown: "From gross to net", employer: "Cost to the employer", rates: "Effective rates", methodology: "Methodology and model scope", country: "Country", guide: "Parameter guide" },
-  de: { tag: "de-DE", net: "Netto je Abrechnung · 14 Zahlungen", breakdown: "Vom Brutto zum Netto", employer: "Kosten für den Arbeitgeber", rates: "Effektive Sätze", methodology: "Methodik und Modellumfang", country: "Land", guide: "Parameterhilfe" },
-  fr: { tag: "fr-FR", net: "Net par paie · 14 versements", breakdown: "Du brut au net", employer: "Coût pour l’employeur", rates: "Taux effectifs", methodology: "Méthodologie et périmètre du modèle", country: "Pays", guide: "Guide du paramètre" },
-  es: { tag: "es-ES", net: "Neto por paga · 14 pagas", breakdown: "Del bruto al neto", employer: "Coste para la empresa", rates: "Tipos efectivos", methodology: "Metodología y alcance del modelo", country: "País", guide: "Guía del parámetro" },
+  it: { tag: "it-IT", net: "Media netta per periodo · 14 periodi", breakdown: "Dal lordo al netto", employer: "Costo per l'azienda", rates: "Aliquote effettive", methodology: "Metodologia e perimetro del modello", country: "Paese", guide: "Guida al parametro" },
+  en: { tag: "en-GB", net: "Projected average per pay period · 14 periods", breakdown: "From gross to net", employer: "Cost to the employer", rates: "Effective rates", methodology: "Methodology and model scope", country: "Country", guide: "Parameter guide" },
+  de: { tag: "de-DE", net: "Prognostizierter Durchschnitt je Zeitraum · 14 Zeiträume", breakdown: "Vom Brutto zum Netto", employer: "Kosten für den Arbeitgeber", rates: "Effektive Sätze", methodology: "Methodik und Modellumfang", country: "Land", guide: "Parameterhilfe" },
+  fr: { tag: "fr-FR", net: "Moyenne projetée par période · 14 périodes", breakdown: "Du brut au net", employer: "Coût pour l’employeur", rates: "Taux effectifs", methodology: "Méthodologie et périmètre du modèle", country: "Pays", guide: "Guide du paramètre" },
+  es: { tag: "es-ES", net: "Promedio neto proyectado por periodo · 14 periodos", breakdown: "Del bruto al neto", employer: "Coste para la empresa", rates: "Tipos efectivos", methodology: "Metodología y alcance del modelo", country: "País", guide: "Guía del parámetro" },
 } as const;
 
 test("all five locales translate the complete product surface and number formats", async ({ page }, testInfo) => {
@@ -98,7 +98,7 @@ test("server rendering preserves the requested language without JavaScript", asy
   await expect(page.locator("html")).toHaveAttribute("lang", "fr");
   await expect(page).toHaveTitle("Du brut au net");
   await expect(page.getByTestId("calculate")).toHaveCount(0);
-  await expect(page.getByRole("heading", { level: 1, name: "Net par paie · 14 versements" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Moyenne projetée par période · 14 périodes" })).toBeVisible();
 
   await context.close();
 });

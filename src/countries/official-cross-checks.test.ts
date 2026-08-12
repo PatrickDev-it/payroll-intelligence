@@ -1,4 +1,4 @@
-/** Golden values transcribed from official 2026 calculators/publications. */
+/** Independent authority fixtures only. Declared-rate multiplication lives in country tests. */
 
 import { describe, expect, it } from "vitest";
 import { allLines } from "@engine/model/calculation.ts";
@@ -45,30 +45,6 @@ describe("official 2026 cross-checks", () => {
       expect(Math.abs(tax.amount.cents), `${fixture.taxClass} at ${fixture.gross}`).toBe(
         fixture.tax * 100,
       );
-    }
-  });
-
-  it("reproduces the AEAT withholding amounts when given the official rates", () => {
-    const rules = loadSpanishRules(2026)!;
-    const cases = [
-      { gross: 15_000, rate: 0, withheld: 0 },
-      { gross: 25_000, rate: 14.09, withheld: 3_522.5 },
-      { gross: 45_000, rate: 21.05, withheld: 9_472.5 },
-      { gross: 70_000, rate: 26.64, withheld: 18_648 },
-      { gross: 120_000, rate: 34.24, withheld: 41_088 },
-    ];
-
-    for (const fixture of cases) {
-      const base = spanishProfile(fixture.gross);
-      const result = spanishAdapter.calculate(
-        {
-          ...base,
-          countryOptions: { ...base.countryOptions, aeatWithholdingRate: fixture.rate },
-        },
-        rules,
-      );
-      const tax = result.employee.taxes.find((line) => line.id === "ES.IRPF.RETENCION")!;
-      expect(Math.abs(tax.amount.cents)).toBe(Math.round(fixture.withheld * 100));
     }
   });
 

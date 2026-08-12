@@ -2,6 +2,13 @@ import { expect, test, type Page } from "@playwright/test";
 
 const COUNTRIES = ["IT", "DE", "ES", "FR"] as const;
 
+const REQUIRED_PROFILE_QUERY = {
+  IT: "",
+  DE: "&size=31",
+  ES: "&aeatWithholdingRate=21.05",
+  FR: "&pasRatePercent=8.2",
+} as const;
+
 type ProjectionSnapshot = {
   status: string;
   netPerPeriod: string | null;
@@ -20,7 +27,7 @@ for (const country of COUNTRIES) {
   test(`${country}: every parameter recalculates live with no submit action`, async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "one exhaustive interaction pass is sufficient");
 
-    const baseUrl = `/?country=${country}&gross=45000`;
+    const baseUrl = `/?country=${country}&gross=45000${REQUIRED_PROFILE_QUERY[country]}`;
     await page.goto(baseUrl);
 
     const fieldIds = await page.locator("[data-control]").evaluateAll((controls) =>
@@ -81,7 +88,7 @@ for (const country of COUNTRIES) {
 }
 
 test("legacy profile links are consumed once, then reduced to a privacy-safe URL", async ({ page }) => {
-  await page.goto("/?country=DE&gross=50000&steuerklasse=III");
+  await page.goto("/?country=DE&gross=50000&steuerklasse=III&size=31");
   await expect(page.locator("#field-country")).toHaveAttribute("data-value", "DE");
   await expect(page.locator("#field-gross")).toHaveValue("50.000");
   await expect(page).toHaveURL(/\?lang=it$/);

@@ -146,10 +146,18 @@ function coerce(
 ): string | number | boolean | undefined {
   const fallback = descriptor.defaultValue;
 
-  if (descriptor.kind === "integer" || descriptor.kind === "decimal") {
+  if (descriptor.kind === "integer") {
     if (raw === undefined || raw.trim() === "") return fallback;
-    const parsed = descriptor.kind === "integer" ? Number.parseInt(raw ?? "", 10) : Number(raw);
+    const parsed = Number.parseInt(raw, 10);
     return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  // Declared percentages stay in their original decimal spelling. Converting
+  // them to Number here would silently erase excess precision before the exact
+  // country adapter can validate it (for example 21.0500000 -> 21.05).
+  if (descriptor.kind === "decimal") {
+    if (raw === undefined || raw.trim() === "") return fallback;
+    return Number.isFinite(Number(raw)) ? raw.trim() : fallback;
   }
 
   if (descriptor.kind === "boolean") {

@@ -132,10 +132,29 @@ export class UncitedLineError extends Error {
   }
 }
 
+export class InvalidPayrollTaxRoleError extends Error {
+  constructor(lineId: string, role: CalculationLine["taxRole"]) {
+    super(
+      `Top-level employee tax "${lineId}" must declare taxRole "payroll_withholding"; ` +
+        `received ${role === undefined ? "no role" : `"${role}"`}. Annual settlement estimates belong below a payroll line.`,
+    );
+    this.name = "InvalidPayrollTaxRoleError";
+  }
+}
+
 /** Called by the engine before a result leaves it. Not optional. */
 export function assertCitable(lines: readonly CalculationLine[]): void {
   for (const line of lines) {
     if (line.ruleIds.length === 0) throw new UncitedLineError(line.id);
     if (line.children) assertCitable(line.children);
+  }
+}
+
+/** A figure that changes payroll net must identify itself as payroll withholding. */
+export function assertPayrollTaxRoles(taxes: readonly CalculationLine[]): void {
+  for (const line of taxes) {
+    if (line.taxRole !== "payroll_withholding") {
+      throw new InvalidPayrollTaxRoleError(line.id, line.taxRole);
+    }
   }
 }

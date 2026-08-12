@@ -72,6 +72,7 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
     ["IT.IRPEF.BRACKETS", "IT.IRPEF.DETRAZIONE.LAVORO"],
     irpefGross.line.confidence,
     irpefChildren,
+    { taxRole: "payroll_withholding" },
   );
 
   // ⑥ Local surtaxes — on the taxable base, never on the tax. The rule id is
@@ -81,11 +82,11 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
   const municipalRule = municipalityRuleId(profile.municipality ?? DEFAULT_MUNICIPALITY);
   const regional =
     irpefNet.cents > 0
-      ? applyRule(rules, regionalRuleId, taxableIncome)
+      ? applyRule(rules, regionalRuleId, taxableIncome, { taxRole: "payroll_withholding" })
       : zeroAppliedRule(rules, regionalRuleId, taxableIncome);
   const municipal =
     irpefNet.cents > 0
-      ? applyRule(rules, municipalRule, taxableIncome)
+      ? applyRule(rules, municipalRule, taxableIncome, { taxRole: "payroll_withholding" })
       : zeroAppliedRule(rules, municipalRule, taxableIncome);
 
   const taxes = [irpefLine, regional.line, municipal.line];
@@ -126,7 +127,7 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
 }
 
 function zeroAppliedRule(rules: RuleSet, id: string, base: ReturnType<typeof zero>) {
-  const applied = applyRule(rules, id, base);
+  const applied = applyRule(rules, id, base, { taxRole: "payroll_withholding" });
   return {
     amount: zero(base.currency),
     line: {

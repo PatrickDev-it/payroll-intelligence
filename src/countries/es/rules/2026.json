@@ -1,7 +1,7 @@
 {
   "country": "ES",
   "taxYear": 2026,
-  "version": "2026.3",
+  "version": "2026.4",
   "rules": {
     "ES.SS.BASE": {
       "id": "ES.SS.BASE",
@@ -431,22 +431,25 @@
       "config": {
         "kind": "formula",
         "formulaId": "ES.IRPF.RETENCION.AEAT.USER_RATE",
-        "params": { "rateScale": "100" }
+        "params": {
+          "rateScale": "100",
+          "maxDecimalPlaces": "2",
+          "moneyRoundingUnit": "0.01"
+        }
       },
       "source": {
         "authority": "Agencia Estatal de Administración Tributaria",
         "type": "authority_publication",
         "document": "Algoritmo para el cálculo del tipo de retención a cuenta del IRPF 2026",
-        "article": "Servicio de cálculo de retenciones 2026",
+        "article": "pp. 33 e 35: TIPO truncado al segundo decimal; IMPORTE = RETRIB × TIPO / 100, REDONDEAR1",
         "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/ALGORITMO_2026.pdf"
       },
       "verification": {
-        "status": "verified",
-        "verifiedAt": "2026-08-10",
-        "method": "primary_source + official_calculator",
-        "crossCheckedAgainst": ["AEAT Servicio de cálculo de retenciones 2026"]
+        "status": "supported",
+        "verifiedAt": "2026-08-12",
+        "method": "primary_source_declared_authority_output"
       },
-      "version": 1
+      "version": 2
     },
     "ES.IRPF.ESCALA.ESTATAL": {
       "id": "ES.IRPF.ESCALA.ESTATAL",

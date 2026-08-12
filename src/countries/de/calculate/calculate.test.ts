@@ -9,7 +9,7 @@ import { loadGermanRules } from "../rules/index.ts";
 import "../formulas.ts";
 
 const rules = loadGermanRules(2026)!;
-const compute = (gross: number, options: Record<string, string | number> = {}) => {
+const compute = (gross: number, options: Record<string, string | number | boolean> = {}) => {
   const base = referenceProfile(gross);
   return germanAdapter.calculate(
     { ...base, countryOptions: { ...base.countryOptions, ...options } },
@@ -155,9 +155,9 @@ describe("the discriminants Germany actually has", () => {
   });
 
   it("reduces the care rate from the second child, not the first", () => {
-    const one = compute(45_000, { children: 1 });
-    const two = compute(45_000, { children: 2 });
-    const three = compute(45_000, { children: 3 });
+    const one = compute(45_000, { hasParentStatus: true, qualifyingChildrenUnder25: 1 });
+    const two = compute(45_000, { hasParentStatus: true, qualifyingChildrenUnder25: 2 });
+    const three = compute(45_000, { hasParentStatus: true, qualifyingChildrenUnder25: 3 });
     expect(two.employee.netAnnual.cents).toBeGreaterThan(one.employee.netAnnual.cents);
     expect(three.employee.netAnnual.cents).toBeGreaterThan(two.employee.netAnnual.cents);
   });

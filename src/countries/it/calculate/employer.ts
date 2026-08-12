@@ -47,8 +47,8 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
 
   // ② Mandatory insurance. The risk class is an explicit input because the real
   //    range is 0.4 to 130 per mille and no honest default exists.
-  const declaredInail = Number(profile.countryOptions?.["inailRatePercent"]);
-  const inail = Number.isFinite(declaredInail)
+  const declaredInail = profile.countryOptions?.["inailRatePercent"];
+  const inail = typeof declaredInail === "string" || typeof declaredInail === "number"
     ? applyDeclaredPercentageRule(rules, "IT.INAIL.PREMIUM.DECLARED", gross, declaredInail, {
         sign: 1,
       })

@@ -1,13 +1,12 @@
 # 🇩🇪 Germany — Country Factsheet
 
-**Tier: 🟡 SUPPORTED — implemented** · Tax year **2026** · Currency **EUR**
+**Tier: 🟠 EXPERIMENTAL — implemented** · Tax year **2026** · Currency **EUR**
 
-> Germany has an engine as of the 2026-08-08 patch. Every figure below was re-read from the
-> primary text on that date; what changed against the previous version of this file is marked
-> **↻**. The overall result is labelled *experimental* because three employer-side parameters
-> (health-fund `Zusatzbeitrag`, `Unfallversicherung` risk class, `Umlage U2`) are set per
-> employer or per fund and have no honest single value — not because the statutory lines are
-> uncertain.
+> The annual stable-salary wage-tax path is reconciled exactly against four complete BMF PAP
+> 2026 vectors (Steuerklassen I–IV). The complete result remains *experimental* whenever the
+> health-fund `Zusatzbeitrag`, Berufsgenossenschaft accident rate or U2 rate use scenario
+> values rather than exact employer declarations. U1 requires both the represented AAG
+> headcount and an exact Krankenkasse rate; it is never guessed.
 
 Germany is the structurally hardest EU income tax to model correctly, for one reason: **it is
 not a bracket table.** §32a EStG defines the tax as a **piecewise polynomial**. Modelling it
@@ -22,8 +21,8 @@ several hundred euros in the progressive zone.
 
 | Zone | `zu versteuerndes Einkommen` | Rate |
 | --- | --- | --- |
-| 1 — `Grundfreibetrag` | € 0 – 12,347 | **0 %** |
-| 2 — progression | € 12,348 – 69,878 | **14 % → 42 %**, continuously |
+| 1 — `Grundfreibetrag` | € 0 – 12,348 | **0 %** |
+| 2 — progression | € 12,349 – 69,878 | **14 % → 42 %**, continuously |
 | 3 — proportional | € 69,879 – 277,825 | **42 %** |
 | 4 — `Reichensteuer` | above € 277,826 | **45 %** |
 
@@ -43,14 +42,14 @@ several hundred euros in the progressive zone.
 | `Kirchensteuer` | **8 %** (Bayern, Baden-Württemberg) / **9 %** (all other Länder) | Assessed income tax. Only for registered church members. |
 
 Church tax is the German geography discriminant, and it is opt-in by religious affiliation
-rather than by residence. **Assumed 0 %** in the prototype.
+rather than by residence. The default scenario is 0 %, and membership is an explicit input.
 
 ### `Steuerklassen` — the family discriminant
 
 | Class | Applies to | Effect | Modelled |
 | --- | --- | --- | :---: |
 | **I** ← default | Single | Baseline (§ 32a Abs. 1) | ✅ |
-| II | Single parent | + `Entlastungsbetrag` €4,260 + €240 per further child | ✅ |
+| II | Single parent | + base `Entlastungsbetrag` €4,260 | ✅ |
 | III | Married, higher earner | Splitting tariff (§ 32a Abs. 5): tax on half, doubled | ✅ |
 | IV | Married, similar earnings | Each as if single — same tariff as I | ✅ |
 | V | Married, lower earner | Own construction under § 39b Abs. 2 Satz 7-9 | ❌ |
@@ -59,6 +58,10 @@ rather than by residence. **Assumed 0 %** in the prototype.
 `Ehegattensplitting` (joint income halved, taxed, doubled) is **the single largest family tax
 effect in the EU** — worth up to ~€10,000/yr for a single-earner couple. A German calculator
 without `Steuerklasse` is not imprecise; it is wrong for half the population.
+
+The extra €240 per further eligible child belongs to the ELStAM allowance path and is not
+inferred from the separate Pflege count of children under 25. Faktorverfahren and other
+ELStAM allowances are outside the represented PAP scope.
 
 ---
 
@@ -135,22 +138,29 @@ give, worth roughly €200 of extra tax. That gap is asserted as a test, not as 
 | `Krankenversicherung` + half `Zusatzbeitrag` | 8.75 % | ≤ 69,750 | € 3,937.50 |
 | `Pflegeversicherung` | 1.8 % (Sachsen 1.3 %) | ≤ 69,750 | € 810.00 |
 | `Insolvenzgeldumlage` (U3) | 0.15 % | ≤ 101,400 | € 67.50 |
-| `Umlage U2` | ≈ 0.44 % 🟠 | gross | € 198.00 |
+| `Umlage U1` | declared exact rate, only at AAG count ≤ 30 | recurring pension-insurable pay ≤ 101,400 | conditional |
+| `Umlage U2` | ≈ 0.44 % scenario or declared exact rate | recurring pension-insurable pay ≤ 101,400 | € 198.00 |
 | `Unfallversicherung` | ≈ 0.5 % 🟠 | gross | € 225.00 |
 | **TOTAL EMPLOYER COST** | **1.222 ×** | | **€ 55,008.00** |
 
-`Umlage U1` (sick-pay reimbursement) is **excluded**: it applies only to employers with 30 or
-fewer employees and its rate depends on the fund and on the reimbursement level chosen, so any
-single number would be wrong for almost everyone.
+U1 applies to employers that generally employ no more than 30 relevant workers. The count has
+AAG-specific exclusions/weights and is therefore labelled as such in the input. If it is 30
+or lower, calculation refuses to proceed without the exact U1 tariff selected with the
+Krankenkasse. U1 and U2 exclude one-off remuneration and stop at the pension contribution
+ceiling, as specified by Deutsche Rentenversicherung.
 
 **No severance accrual.** Germany has no TFR equivalent — severance is contingent on
 termination, not accrued — which is worth about 7 points of employer cost against Italy.
 
-1. Cross-check five gross values against the **BMF Lohnsteuer interface**
-   (`bmf-steuerrechner.de/interface/2026Version1.xhtml`). It needs a registered access code,
-   which this build does not have — every code tried returns *"Der angegebene Zugriffscode
-   existiert nicht!"*. Until that runs, § 32a is `supported`, never `verified`.
+### Evidence status and remaining scope
+
+The dedicated PAP fixture artefact records all 35 inputs named by Anlage 1, official outputs,
+access date, extraction method and SHA-256 of each BMF XML response. At €60,000 annual recurring
+pay the engine matches `LSTLZZ` to the cent for classes I–IV. This verifies those recorded
+vectors, not unsupported PAP branches or the whole German adapter.
+
+1. Add PAP fixtures at further gross and Soli boundaries without changing expected outputs in
+   the same formula patch.
 2. Implement `Steuerklassen` V and VI (§ 39b Abs. 2 Satz 7-9 uses its own construction, not the
    plain tariff) and the `Kinderfreibeträge`.
-3. Replace the three employer-side placeholders with real inputs: the fund's actual
-   Zusatzbeitrag, the Berufsgenossenschaft's Gefahrtarif, the fund's U1/U2 rates.
+3. Represent private health insurance, Faktorverfahren and ELStAM Freibetrag/Hinzurechnung.

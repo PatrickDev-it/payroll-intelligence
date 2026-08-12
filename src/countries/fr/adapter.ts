@@ -24,9 +24,11 @@ import type {
   ValidationResult,
 } from "@engine/model/employee-profile.ts";
 import type { RuleSet } from "@engine/model/rule.ts";
+import { moneyFromDecimal, parseDeclaredPercentage } from "@engine/money/money.ts";
 import { explainLine } from "@engine/pipeline/explain.ts";
 import { calculateFrance } from "./calculate/index.ts";
 import { frenchInputs } from "./inputs.ts";
+import { childrenOf, householdOf } from "./profile.ts";
 import { SUPPORTED_TAX_YEARS } from "./rules/index.ts";
 
 const REGIONS = new Set(["france", "alsace_moselle"]);
@@ -65,6 +67,54 @@ export const frenchAdapter: CountryPayrollAdapter = {
         field: "payPeriods",
         severity: "error",
         message: "La paie française se fait sur 12 mois ; un 13e mois est un élément de salaire, pas une mensualité de plus",
+      });
+    }
+    const pasRate = profile.countryOptions?.pasRatePercent;
+    if (pasRate !== undefined && pasRate !== null && pasRate !== "") {
+      try {
+        parseDeclaredPercentage(
+          typeof pasRate === "string" || typeof pasRate === "number"
+            ? pasRate
+            : String(pasRate),
+        );
+      } catch {
+        issues.push({
+          field: "countryOptions.pasRatePercent",
+          severity: "error",
+          message: "Le taux PAS doit être compris entre 0 et 100 %, avec au plus six décimales",
+        });
+      }
+    }
+    if (householdOf(profile) === "parent_isole" && childrenOf(profile) < 1) {
+      issues.push({
+        field: "countryOptions.foyer",
+        severity: "error",
+        message: "Le statut parent isolé exige au moins un enfant à charge",
+      });
+    }
+    const declaredDeductions = [
+      ["mutuelleEmployeeAnnual", "mutuelle"],
+      ["prevoyanceEmployeeAnnual", "prévoyance"],
+    ] as const;
+    let declaredDeductionCents = 0;
+    for (const [key, label] of declaredDeductions) {
+      const value = profile.countryOptions?.[key];
+      if (value === undefined || value === null || value === "") continue;
+      try {
+        declaredDeductionCents += moneyFromDecimal(String(value), profile.grossAnnual.currency).cents;
+      } catch {
+        issues.push({
+          field: `countryOptions.${key}`,
+          severity: "error",
+          message: `La part salariale de ${label} doit être un montant annuel au centime près`,
+        });
+      }
+    }
+    if (declaredDeductionCents > profile.grossAnnual.cents) {
+      issues.push({
+        field: "countryOptions.mutuelleEmployeeAnnual",
+        severity: "error",
+        message: "Les parts salariales déclarées ne peuvent pas dépasser la rémunération brute",
       });
     }
 

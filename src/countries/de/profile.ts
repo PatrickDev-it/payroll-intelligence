@@ -24,7 +24,10 @@ function option(profile: EmployeeProfile, key: string): string | number | boolea
 
 export function steuerklasseOf(profile: EmployeeProfile): Steuerklasse {
   const value = option(profile, "steuerklasse");
-  return STEUERKLASSEN.includes(value as Steuerklasse) ? (value as Steuerklasse) : "I";
+  if (!STEUERKLASSEN.includes(value as Steuerklasse)) {
+    throw new TypeError(`Unbekannte Steuerklasse: "${String(value)}"`);
+  }
+  return value as Steuerklasse;
 }
 
 /** Only class III uses the Splitting tariff (§ 32a Abs. 5): tax on half, doubled. */
@@ -32,10 +35,17 @@ export function isSplittingClass(profile: EmployeeProfile): boolean {
   return steuerklasseOf(profile) === "III";
 }
 
-export function childrenOf(profile: EmployeeProfile): number {
-  const value = option(profile, "children");
-  const parsed = typeof value === "number" ? value : Number.parseInt(String(value ?? 0), 10);
-  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : 0;
+export function hasParentStatus(profile: EmployeeProfile): boolean {
+  return option(profile, "hasParentStatus") === true;
+}
+
+export function qualifyingChildrenUnder25(profile: EmployeeProfile): number {
+  const value = option(profile, "qualifyingChildrenUnder25");
+  const parsed = typeof value === "number" ? value : Number.parseInt(String(value), 10);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    throw new TypeError(`Ungültige Zahl berücksichtigungsfähiger Kinder: "${String(value)}"`);
+  }
+  return parsed;
 }
 
 export function landOf(profile: EmployeeProfile): string {
@@ -65,14 +75,17 @@ export function zusatzbeitragKey(profile: EmployeeProfile): string {
  * "has no children".
  */
 export function careInsuranceKey(profile: EmployeeProfile): string {
-  const children = childrenOf(profile);
+  const parent = hasParentStatus(profile);
+  const children = qualifyingChildrenUnder25(profile);
   const age = profile.age ?? CHILDLESS_SURCHARGE_AGE;
   const band =
-    children === 0
+    !parent
       ? age >= CHILDLESS_SURCHARGE_AGE
         ? "childless"
         : "children1"
-      : `children${Math.min(children, 5)}${children >= 5 ? "plus" : ""}`;
+      : children < 2
+        ? "children1"
+        : `children${Math.min(children, 5)}${children >= 5 ? "plus" : ""}`;
 
   return landOf(profile) === SAXONY ? `saxony_${band}` : band;
 }

@@ -1,7 +1,7 @@
 {
   "country": "DE",
   "taxYear": 2026,
-  "version": "2026.2",
+  "version": "2026.3",
   "rules": {
     "DE.RV.EMPLOYEE": {
       "id": "DE.RV.EMPLOYEE",
@@ -123,7 +123,7 @@
       "basis": "social_security_base",
       "effectiveFrom": "2026-01-01",
       "effectiveTo": null,
-      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "5" } },
+      "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "10" } },
       "source": {
         "authority": "Krankenkasse del lavoratore",
         "type": "authority_publication",
@@ -513,6 +513,33 @@
       },
       "version": 1
     },
+    "DE.UMLAGE.U1.DECLARED": {
+      "id": "DE.UMLAGE.U1.DECLARED",
+      "label": "Rimborso malattia (Umlage U1) — aliquota cassa dichiarata",
+      "basis": "social_security_base",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "DECLARED_PERCENT",
+        "params": {
+          "maxPercent": "10"
+        }
+      },
+      "source": {
+        "authority": "Deutsche Rentenversicherung e Krankenkasse aziendale",
+        "type": "authority_publication",
+        "document": "Ausgleichsverfahren U1: partecipazione fino a 30 addetti rilevanti; base pensionabile ricorrente senza Einmalzahlungen; aliquota secondo tariffa della cassa",
+        "article": "§§ 1, 7 AAG",
+        "url": "https://www.deutsche-rentenversicherung.de/DRV/DE/Experten/Arbeitgeber-und-Steuerberater/summa-summarum/Lexikon/A/ausgleichsverfahren_u1"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-12",
+        "method": "primary_authority_base_and_user_declared_fund_rate"
+      },
+      "version": 1
+    },
     "DE.UMLAGE.U2": {
       "id": "DE.UMLAGE.U2",
       "label": "Contributo maternità (Umlage U2)",
@@ -524,16 +551,19 @@
         "rate": "0.0044"
       },
       "source": {
-        "authority": "Krankenkassen",
+        "authority": "Techniker Krankenkasse",
         "type": "authority_publication",
-        "document": "Umlagesatz U2 nach § 7 AAG, kassenindividuell — hier der von der Techniker Krankenkasse für 2026 veröffentlichte Satz von 0,44 %",
+        "document": "Umlagesätze U1/U2 2026: scenario TK U2 0,44 %. La base pensionabile ricorrente senza Einmalzahlungen è verificata separatamente sulla DRV",
         "article": "§ 7 AAG",
-        "url": "https://www.tk.de/firmenkunden"
+        "url": "https://www.tk.de/firmenkunden/versicherung/beitraege-faq/umlagen-u1-u2-und-insolvenzgeld/hoehe-umlagesaetze-u1-und-u2-2031720"
       },
       "verification": {
         "status": "experimental",
         "verifiedAt": "2026-08-08",
-        "method": "authority_publication"
+        "method": "tk_2026_rate_and_drv_statutory_base",
+        "crossCheckedAgainst": [
+          "Deutsche Rentenversicherung — Ausgleichsverfahren U2"
+        ]
       },
       "version": 1
     },
@@ -545,12 +575,13 @@
       "effectiveTo": null,
       "config": { "kind": "formula", "formulaId": "DECLARED_PERCENT", "params": { "maxPercent": "5" } },
       "source": {
-        "authority": "Krankenkasse aziendale",
+        "authority": "Deutsche Rentenversicherung e Krankenkasse aziendale",
         "type": "authority_publication",
-        "document": "Kassenindividueller Umlagesatz U2 2026",
-        "article": "§ 7 AAG"
+        "document": "U2 sulla base pensionabile ricorrente senza Einmalzahlungen, con aliquota 2026 dichiarata dalla cassa",
+        "article": "§ 7 AAG",
+        "url": "https://www.deutsche-rentenversicherung.de/DRV/DE/Experten/Arbeitgeber-und-Steuerberater/summa-summarum/Lexikon/A/ausgleichsverfahren_u2"
       },
-      "verification": { "status": "supported", "verifiedAt": "2026-08-10", "method": "user_declared_fund_rate" },
+      "verification": { "status": "supported", "verifiedAt": "2026-08-12", "method": "primary_authority_base_and_user_declared_fund_rate" },
       "version": 1
     },
     "DE.UNFALLVERSICHERUNG": {

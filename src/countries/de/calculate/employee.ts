@@ -28,7 +28,6 @@ import type { RuleSet } from "@engine/model/rule.ts";
 import type { Money } from "@engine/money/money.ts";
 import type { EmployeeComputation } from "@engine/pipeline/assemble.ts";
 import {
-  applyDeclaredPercentageRule,
   applyRule,
   derivedLine,
   formulaParam,
@@ -48,9 +47,10 @@ import {
 } from "@engine/money/money.ts";
 import { applyPrimitive } from "@engine/primitives/apply.ts";
 import { MINUS, TIMES, amt } from "@engine/primitives/format.ts";
+import { healthAndCareBase, pensionInsuranceBase } from "../base.ts";
+import { applyDeclaredPercentageHalfRule, declaredPercentageOption } from "../declared.ts";
 import {
   careInsuranceKey,
-  childrenOf,
   churchKey,
   isSplittingClass,
   steuerklasseOf,
@@ -62,20 +62,21 @@ export type { EmployeeComputation };
 export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): EmployeeComputation {
   const currency = profile.grossAnnual.currency;
   const gross = profile.grossAnnual;
+  const pensionBase = pensionInsuranceBase(profile, rules);
+  const healthBase = healthAndCareBase(profile, rules);
 
   // ① Sozialversicherung. Four branches, two different ceilings — 101.400 for
   //    pension and unemployment, 69.750 for health and care.
-  const rv = applyRule(rules, "DE.RV.EMPLOYEE", gross);
-  const av = applyRule(rules, "DE.AV.EMPLOYEE", gross);
-  const kvBase = applyRule(rules, "DE.KV.EMPLOYEE.BASE", gross);
-  const healthBase = min(gross, healthCeiling(rules));
-  const declaredZusatz = Number(profile.countryOptions?.["zusatzbeitragRatePercent"]);
-  const kvZusatz = Number.isFinite(declaredZusatz)
-    ? applyDeclaredPercentageRule(
+  const rv = applyRule(rules, "DE.RV.EMPLOYEE", pensionBase);
+  const av = applyRule(rules, "DE.AV.EMPLOYEE", pensionBase);
+  const kvBase = applyRule(rules, "DE.KV.EMPLOYEE.BASE", healthBase);
+  const declaredZusatz = declaredPercentageOption(profile, "zusatzbeitragRatePercent");
+  const kvZusatz = declaredZusatz !== undefined
+    ? applyDeclaredPercentageHalfRule(
         rules,
         "DE.KV.ZUSATZBEITRAG.DECLARED",
         healthBase,
-        declaredZusatz / 2,
+        declaredZusatz,
       )
     : applyRule(rules, "DE.KV.EMPLOYEE.ZUSATZBEITRAG", healthBase, {
         key: zusatzbeitragKey(profile),
@@ -116,11 +117,15 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
     [tariff.id, "DE.LOHNSTEUER.PAUSCHBETRAEGE", "DE.LOHNSTEUER.VORSORGEPAUSCHALE"],
     tariff.verification.status,
     [pauschbetraege.line, vorsorge.line],
+    { taxRole: "payroll_withholding" },
   );
 
   // ④ Two surcharges ON THE TAX, not on income.
   const soli = solidaritaetszuschlag(rules, lohnsteuer, splitting);
-  const church = applyRule(rules, "DE.KIRCHENSTEUER", lohnsteuer, { key: churchKey(profile) });
+  const church = applyRule(rules, "DE.KIRCHENSTEUER", lohnsteuer, {
+    key: churchKey(profile),
+    taxRole: "payroll_withholding",
+  });
 
   const taxes: CalculationLine[] = [lohnsteuerLine];
   if (soli.amount.cents > 0) taxes.push(soli.line);
@@ -145,15 +150,6 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
   };
 }
 
-/** The health/care ceiling, read from the KV rule so there is one copy of 69.750. */
-function healthCeiling(rules: RuleSet): Money {
-  const config = ruleOf(rules, "DE.KV.EMPLOYEE.BASE").config;
-  if (config.kind !== "capped_rate") {
-    throw new TypeError("DE.KV.EMPLOYEE.BASE must be a capped_rate — its ceiling is the KV/PV BBG");
-  }
-  return moneyFromDecimal(config.ceiling, "EUR");
-}
-
 type Deduction = { readonly amount: Money; readonly line: CalculationLine };
 
 /**
@@ -171,9 +167,11 @@ function pauschbetraegeOf(profile: EmployeeProfile, rules: RuleSet): Deduction {
 
   if (steuerklasseOf(profile) === "II") {
     const base = moneyFromDecimal(formulaParam(rule, "entlastungsbetragAlleinerziehende"), currency);
-    const perChild = moneyFromDecimal(formulaParam(rule, "entlastungsbetragJeWeiteresKind"), currency);
-    const extra = Math.max(0, childrenOf(profile) - 1);
-    const entlastung = fromCents(base.cents + perChild.cents * extra, currency);
+    // Further-child ELStAM allowances are not represented by the compact
+    // Pflege family input; using under-25 care children here would collapse
+    // two distinct legal predicates again. The represented PAP scope applies
+    // the class-II base amount only.
+    const entlastung = base;
     amount = add(amount, entlastung);
     formula += ` + ${amt(entlastung)} (§ 24b, Entlastungsbetrag für Alleinerziehende)`;
   }
@@ -215,13 +213,13 @@ function vorsorgepauschale(profile: EmployeeProfile, rules: RuleSet, gross: Mone
     { kind: "flat_rate", rate: formulaParam(rule, "krankenErmaessigtRate") },
     { base: healthBase },
   ).amount;
-  const declaredZusatz = Number(profile.countryOptions?.["zusatzbeitragRatePercent"]);
-  const zusatzHalf = Number.isFinite(declaredZusatz)
-    ? applyDeclaredPercentageRule(
+  const declaredZusatz = declaredPercentageOption(profile, "zusatzbeitragRatePercent");
+  const zusatzHalf = declaredZusatz !== undefined
+    ? applyDeclaredPercentageHalfRule(
         rules,
         "DE.KV.ZUSATZBEITRAG.DECLARED",
         healthBase,
-        declaredZusatz / 2,
+        declaredZusatz,
       ).amount
     : applyPrimitive(ruleOf(rules, "DE.KV.EMPLOYEE.ZUSATZBEITRAG").config, {
         base: healthBase,
@@ -295,6 +293,8 @@ function solidaritaetszuschlag(
         `${amt(lohnsteuer)} ≤ ${amt(freigrenze)} (Freigrenze) → 0,00`,
         [rule.id],
         rule.verification.status,
+        undefined,
+        { taxRole: "payroll_withholding" },
       ),
     };
   }
@@ -320,6 +320,8 @@ function solidaritaetszuschlag(
         : `${amt(lohnsteuer)} ${TIMES} 5,5%`,
       [rule.id],
       rule.verification.status,
+      undefined,
+      { taxRole: "payroll_withholding" },
     ),
   };
 }

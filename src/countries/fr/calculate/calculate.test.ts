@@ -18,6 +18,14 @@ const line = (gross: number, id: string, options: Record<string, string | number
     (l) => l.id === id,
   );
 
+const annualTax = (gross: number, options: Record<string, string | number> = {}) => {
+  const annual = compute(gross, options).employee.taxes[0]!.children?.find(
+    (child) => child.taxRole === "annual_settlement_estimate",
+  );
+  if (!annual) throw new Error("Missing French annual settlement estimate");
+  return annual;
+};
+
 describe("the French result", () => {
   it("reconciles at every fixture and every band edge", () => {
     for (const gross of [...FR_FIXTURES, ...FR_BOUNDARIES]) {
@@ -69,14 +77,15 @@ describe("CSG/CRDS — the base that is neither gross nor net", () => {
 
 describe("the quotient familial", () => {
   it("is worth thousands to a couple and nothing to a single filer", () => {
-    const single = compute(60_000).employee.netAnnual.cents;
-    const couple = compute(60_000, { foyer: "couple" }).employee.netAnnual.cents;
+    const single = annualTax(60_000).amount.cents;
+    const couple = annualTax(60_000, { foyer: "couple" }).amount.cents;
     expect(couple - single).toBeGreaterThan(200_000);
   });
 
   it("caps the benefit of each half-part at €1.807", () => {
-    const capped = compute(120_000, { foyer: "couple", children: 2 });
-    const cap = capped.employee.taxes[0]!.children?.find((l) => l.id === "FR.IR.QUOTIENT");
+    const cap = annualTax(120_000, { foyer: "couple", children: 2 }).children?.find(
+      (l) => l.id === "FR.IR.QUOTIENT",
+    );
     expect(cap).toBeDefined();
     // Two children of a couple are two half-parts: the advantage cannot exceed
     // 2 × €1.807, however much the raw quotient would have saved.
@@ -84,24 +93,24 @@ describe("the quotient familial", () => {
   });
 
   it("gives a third child a full part, not a half", () => {
-    const two = compute(45_000, { foyer: "couple", children: 2 }).employee.netAnnual.cents;
-    const three = compute(45_000, { foyer: "couple", children: 3 }).employee.netAnnual.cents;
+    const two = annualTax(45_000, { foyer: "couple", children: 2 }).amount.cents;
+    const three = annualTax(45_000, { foyer: "couple", children: 3 }).amount.cents;
     expect(three).toBeGreaterThanOrEqual(two);
   });
 });
 
 describe("the décote", () => {
   it("erases a small liability entirely", () => {
-    const result = compute(22_000);
-    const tax = -result.employee.taxes[0]!.amount.cents;
-    const decote = result.employee.taxes[0]!.children?.find((l) => l.id === "FR.IR.DECOTE");
+    const annual = annualTax(22_000);
+    const tax = -annual.amount.cents;
+    const decote = annual.children?.find((l) => l.id === "FR.IR.DECOTE");
     expect(decote).toBeDefined();
     expect(tax).toBeGreaterThanOrEqual(0);
   });
 
   it("never turns the tax negative", () => {
     for (const gross of [15_000, 18_000, 20_000, 22_000, 25_000]) {
-      expect(compute(gross).employee.taxes[0]!.amount.cents).toBeLessThanOrEqual(0);
+      expect(annualTax(gross).amount.cents).toBeLessThanOrEqual(0);
     }
   });
 });

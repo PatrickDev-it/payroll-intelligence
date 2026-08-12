@@ -368,7 +368,7 @@ function Control({
             inputMode={input.kind === "decimal" ? "decimal" : "numeric"}
             min={input.min ?? 0}
             max={input.max}
-            step={input.kind === "decimal" ? "0.01" : 1}
+            step={input.kind === "decimal" ? "any" : 1}
             value={value}
             onChange={(event) => onFieldChange(name, event.target.value)}
             className={`${CONTROL_CLASS} tabular`}

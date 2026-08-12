@@ -4,6 +4,7 @@
  */
 
 import type { EmployeeProfile } from "@engine/model/employee-profile.ts";
+import { parseDeclaredPercentage } from "@engine/money/money.ts";
 
 export const AUTONOMIC_SCALE_PREFIX = "ES.IRPF.ESCALA.AUTONOMICA.";
 
@@ -48,12 +49,24 @@ export function riskClassOf(profile: EmployeeProfile): string {
   return typeof value === "string" ? value : "office";
 }
 
-/** Percentage returned by the employer's AEAT 2026 withholding calculation. */
-export function aeatWithholdingRateOf(profile: EmployeeProfile): number {
+const AEAT_PERCENTAGE_PATTERN = /^\d+(?:\.(\d+))?$/;
+
+/**
+ * Percentage returned by AEAT, kept as a canonical decimal for exact arithmetic.
+ * The 2026 algorithm truncates TIPO at the second decimal, so more precision is
+ * not an official output and is refused instead of being rounded silently.
+ */
+export function aeatWithholdingRateOf(profile: EmployeeProfile): string {
   const value = profile.countryOptions?.["aeatWithholdingRate"];
-  const rate = typeof value === "number" ? value : Number(value);
-  if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
-    throw new TypeError("A valid AEAT withholding rate is required before calculating Spanish payroll");
+  if (typeof value !== "string" && typeof value !== "number") {
+    throw new TypeError("La ritenuta AEAT deve essere una percentuale decimale");
   }
-  return rate;
+
+  const text = typeof value === "number" ? String(value) : value;
+  const fraction = AEAT_PERCENTAGE_PATTERN.exec(text)?.[1];
+  if (fraction !== undefined && fraction.length > 2) {
+    throw new TypeError("La ritenuta AEAT 2026 ammette al massimo due decimali");
+  }
+
+  return parseDeclaredPercentage(value).decimal;
 }

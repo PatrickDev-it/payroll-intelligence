@@ -81,6 +81,21 @@ function validateDeclaredInput(
     return;
   }
 
+  if (input.kind === "decimal") {
+    const text = String(value);
+    const match = /^(\d+)(?:\.(\d+))?$/.exec(text);
+    const maximumDecimalPlaces = 6;
+    if (!match || (match[2]?.length ?? 0) > maximumDecimalPlaces) {
+      issues.push(
+        error(
+          input.field,
+          `"${input.label}" deve essere un decimale ordinario con al massimo ${maximumDecimalPlaces} cifre decimali`,
+        ),
+      );
+      return;
+    }
+  }
+
   const numeric = input.kind === "money" ? profile.grossAnnual.cents / 100 : Number(value);
   if (!Number.isFinite(numeric)) {
     issues.push(error(input.field, `"${input.label}" deve essere un numero finito`));

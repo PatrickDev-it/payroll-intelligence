@@ -13,7 +13,9 @@ const matrix = COUNTRIES.flatMap((country) =>
       country,
       gross: String(gross),
       ...(country === "IT" && gross > 122_295 ? { pensionCeilingStatus: "subject" } : {}),
+      ...(country === "DE" ? { size: "31" } : {}),
       ...(country === "ES" ? { aeatWithholdingRate: "21.05" } : {}),
+      ...(country === "FR" ? { pasRatePercent: "8.2" } : {}),
     });
     const result = resolveAdapter(country).calculate(profile, resolveRuleSet(country, profile.taxYear));
     return {

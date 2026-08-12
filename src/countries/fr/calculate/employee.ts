@@ -24,7 +24,13 @@ import type { EmployeeProfile } from "@engine/model/employee-profile.ts";
 import type { RuleSet } from "@engine/model/rule.ts";
 import type { Money } from "@engine/money/money.ts";
 import type { EmployeeComputation } from "@engine/pipeline/assemble.ts";
-import { applyRule, derivedLine, formulaParam, ruleOf } from "@engine/pipeline/helpers.ts";
+import {
+  applyDeclaredPercentageRule,
+  applyRule,
+  derivedLine,
+  formulaParam,
+  ruleOf,
+} from "@engine/pipeline/helpers.ts";
 import {
   add,
   clampAtZero,
@@ -77,6 +83,25 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
   if (aboveCeiling(rules, gross)) push("FR.SAL.CET");
   if (cadre) push("FR.SAL.APEC");
 
+  for (const declared of [
+    declaredContribution(
+      profile,
+      rules,
+      "mutuelleEmployeeAnnual",
+      "FR.SAL.MUTUELLE.DECLARED",
+    ),
+    declaredContribution(
+      profile,
+      rules,
+      "prevoyanceEmployeeAnnual",
+      "FR.SAL.PREVOYANCE.DECLARED",
+    ),
+  ]) {
+    if (!declared) continue;
+    deductible.push(declared.line);
+    applied.push(declared.amount);
+  }
+
   const deductibleContributions = sum(applied, currency);
 
   // ② CSG and CRDS, on 98,25% of the gross up to 4 PASS and 100% above it.
@@ -103,25 +128,61 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
   const abattement = professionalAllowance(rules, netImposable);
   const revenuImposable = clampAtZero(subtract(netImposable, abattement.amount));
 
-  // ④ The barème, per part, with the half-part benefit capped.
-  const tax = incomeTax(profile, rules, revenuImposable);
+  // ④ PAS is the payroll tax. The annual barème remains a nested comparison.
+  const annualEstimate = incomeTax(profile, rules, revenuImposable);
+  const declaredPasRate = profile.countryOptions?.pasRatePercent;
+  if (typeof declaredPasRate !== "string" && typeof declaredPasRate !== "number") {
+    throw new TypeError("French payroll requires countryOptions.pasRatePercent");
+  }
+  const pas = applyDeclaredPercentageRule(
+    rules,
+    "FR.PAS.DECLARED",
+    netImposable,
+    declaredPasRate,
+    { taxRole: "payroll_withholding" },
+  );
+  const pasLine: CalculationLine = { ...pas.line, children: [annualEstimate.line] };
 
   return {
     gross,
     socialSecurity,
     totalContributions,
     taxableIncome: revenuImposable,
-    taxes: [tax.line],
-    totalTaxes: tax.amount,
+    taxes: [pasLine],
+    totalTaxes: pas.amount,
     credits: [],
     totalCredits: zero(currency),
-    netAnnual: subtract(subtract(gross, totalContributions), tax.amount),
+    netAnnual: subtract(subtract(gross, totalContributions), pas.amount),
   };
 }
 
 function aboveCeiling(rules: RuleSet, gross: Money): boolean {
   const pass = moneyFromDecimal(formulaParam(ruleOf(rules, "FR.PASS"), "annual"), gross.currency);
   return gross.cents > pass.cents;
+}
+
+function declaredContribution(
+  profile: EmployeeProfile,
+  rules: RuleSet,
+  optionKey: string,
+  ruleId: string,
+): Applied | undefined {
+  const declared = profile.countryOptions?.[optionKey];
+  if (declared === undefined || declared === null || declared === "") return undefined;
+  const rule = ruleOf(rules, ruleId);
+  const amount = moneyFromDecimal(String(declared), profile.grossAnnual.currency);
+  return {
+    amount,
+    line: {
+      id: rule.id,
+      label: rule.label,
+      amount: negate(amount),
+      formula: `${amt(amount)} (quota salariale annua esatta dichiarata)`,
+      ruleIds: [rule.id],
+      confidence: rule.verification.status,
+      valueOrigin: "declared_input",
+    },
+  };
 }
 
 /** art. L136-2 CSS: 98,25% of the gross up to 4 PASS, 100% of the excess. */
@@ -177,23 +238,33 @@ function professionalAllowance(rules: RuleSet, netImposable: Money): Applied {
 function incomeTax(profile: EmployeeProfile, rules: RuleSet, revenu: Money): Applied {
   const currency = revenu.currency;
   const bareme = ruleOf(rules, "FR.IR.BAREME");
-  const parts = partsOf(profile);
-  const baseParts = basePartsOf(profile);
+  const parts = partsOf(profile, rules);
+  const baseParts = basePartsOf(profile, rules);
 
   const withParts = scaled(bareme.config, revenu, parts, currency);
   const withoutParts = scaled(bareme.config, revenu, baseParts, currency);
 
   const quotientRule = ruleOf(rules, "FR.IR.QUOTIENT");
   const capPerHalfPart = moneyFromDecimal(formulaParam(quotientRule, "capPerHalfPart"), currency);
+  const parentIsoleFirstChildCap = moneyFromDecimal(
+    formulaParam(quotientRule, "parentIsoleFirstChildCap"),
+    currency,
+  );
   const halfParts = Math.round((parts - baseParts) / 0.5);
-  const cap = fromCents(capPerHalfPart.cents * halfParts, currency);
+  const parentIsole = householdOf(profile) === "parent_isole";
+  const generalHalfParts = parentIsole ? Math.max(halfParts - 2, 0) : halfParts;
+  const cap = fromCents(
+    (parentIsole ? parentIsoleFirstChildCap.cents : 0) +
+      capPerHalfPart.cents * generalHalfParts,
+    currency,
+  );
   const advantage = clampAtZero(subtract(withoutParts, withParts));
   const capped = halfParts > 0 && advantage.cents > cap.cents;
   const beforeDecote = capped ? subtract(withoutParts, cap) : withParts;
 
   const decoteRule = ruleOf(rules, "FR.IR.DECOTE");
   const threshold = moneyFromDecimal(
-    formulaParam(decoteRule, householdOf(profile) === "couple" ? "couple" : "single"),
+    formulaParam(decoteRule, householdOf(profile)),
     currency,
   );
   const share = applyPrimitive(
@@ -210,7 +281,9 @@ function incomeTax(profile: EmployeeProfile, rules: RuleSet, revenu: Money): App
         quotientRule.id,
         quotientRule.label,
         negate(cap),
-        `avantage plafonné à ${amt(capPerHalfPart)} par demi-part (${halfParts} demi-part(s))`,
+        parentIsole
+          ? `premier enfant parent isolé plafonné à ${amt(parentIsoleFirstChildCap)}, puis ${amt(capPerHalfPart)} par demi-part (${generalHalfParts} demi-part(s) générale(s))`
+          : `avantage plafonné à ${amt(capPerHalfPart)} par demi-part (${halfParts} demi-part(s))`,
         [quotientRule.id],
         quotientRule.verification.status,
       ),
@@ -232,13 +305,14 @@ function incomeTax(profile: EmployeeProfile, rules: RuleSet, revenu: Money): App
   return {
     amount,
     line: derivedLine(
-      "FR.IR",
-      "Impôt sur le revenu",
+      "FR.IR.ANNUAL_ESTIMATE",
+      "Stima provvisoria dell'imposta annuale sui redditi 2025",
       negate(amount),
       `barème sur ${amt(revenu)} / ${formatParts(parts)} part(s), puis ${TIMES} ${formatParts(parts)}`,
       [bareme.id, quotientRule.id, decoteRule.id],
       bareme.verification.status,
       children.length > 0 ? children : undefined,
+      { taxRole: "annual_settlement_estimate" },
     ),
   };
 }

@@ -58,8 +58,8 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
   add1("FR.PAT.CET");
   if (isCadre(profile)) add1("FR.PAT.APEC");
 
-  const declaredAtmp = Number(profile.countryOptions?.["atmpRatePercent"]);
-  const atmp = Number.isFinite(declaredAtmp)
+  const declaredAtmp = profile.countryOptions?.["atmpRatePercent"];
+  const atmp = typeof declaredAtmp === "string" || typeof declaredAtmp === "number"
     ? applyDeclaredPercentageRule(rules, "FR.PAT.ATMP.DECLARED", gross, declaredAtmp, {
         sign: 1,
       })
@@ -79,8 +79,8 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
   addOther("FR.PAT.DIALOGUE_SOCIAL");
   addOther("FR.PAT.FORMATION", trainingKey(profile));
   addOther("FR.PAT.TAXE_APPRENTISSAGE");
-  const declaredMobility = Number(profile.countryOptions?.["versementMobiliteRatePercent"]);
-  if (Number.isFinite(declaredMobility)) {
+  const declaredMobility = profile.countryOptions?.["versementMobiliteRatePercent"];
+  if (typeof declaredMobility === "string" || typeof declaredMobility === "number") {
     const mobility = applyDeclaredPercentageRule(
       rules,
       "FR.PAT.VERSEMENT_MOBILITE.DECLARED",

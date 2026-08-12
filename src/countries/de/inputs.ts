@@ -24,8 +24,44 @@ const STEUERKLASSE_LABELS: Record<(typeof STEUERKLASSEN)[number], string> = {
   IV: "IV",
 };
 
+const FAMILY_STATUS_OPTIONS = [
+  {
+    value: "none",
+    label: "Nessun figlio",
+    assigns: {
+      "countryOptions.hasParentStatus": false,
+      "countryOptions.qualifyingChildrenUnder25": 0,
+    },
+  },
+  {
+    value: "parent_0",
+    label: "Genitore · nessuno <25",
+    assigns: {
+      "countryOptions.hasParentStatus": true,
+      "countryOptions.qualifyingChildrenUnder25": 0,
+    },
+  },
+  ...[1, 2, 3, 4].map((children) => ({
+    value: `parent_${children}`,
+    label: `${children} <25`,
+    assigns: {
+      "countryOptions.hasParentStatus": true,
+      "countryOptions.qualifyingChildrenUnder25": children,
+    },
+  })),
+  {
+    value: "parent_5plus",
+    label: "5+ <25",
+    assigns: {
+      "countryOptions.hasParentStatus": true,
+      "countryOptions.qualifyingChildrenUnder25": 5,
+    },
+  },
+] as const;
+
 export function germanInputs(profile?: Partial<EmployeeProfile>): readonly InputDescriptor[] {
   const churchSelected = isChurchMember((profile ?? {}) as EmployeeProfile);
+  const u1Applies = profile?.companySize !== undefined && profile.companySize <= 30;
 
   return [
     {
@@ -75,15 +111,34 @@ export function germanInputs(profile?: Partial<EmployeeProfile>): readonly Input
         : "L'imposta di culto è dovuta solo da chi è iscritto a una confessione che la riscuote.",
     },
     {
-      field: "countryOptions.children",
-      label: "Figli a carico",
-      kind: "integer",
-      required: false,
+      field: "countryOptions.familyStatus",
+      label: "Genitorialità e figli <25",
+      shortLabel: "Figli (Pflege)",
+      kind: "select",
+      required: true,
       group: "profile",
-      defaultValue: 0,
+      defaultValue: "none",
+      options: FAMILY_STATUS_OPTIONS,
+      help: "La qualità di genitore evita il supplemento per chi è senza figli; separatamente, dal secondo al quinto figlio sotto i 25 anni la Pflegeversicherung scende di 0,25 punti per figlio.",
+      source: "§ 55 Abs. 3 SGB XI; dati familiari comunicati al datore di lavoro.",
+    },
+    {
+      field: "countryOptions.hasParentStatus",
+      label: "Qualità di genitore",
+      kind: "boolean",
+      required: true,
+      group: "profile",
+      hidden: true,
+    },
+    {
+      field: "countryOptions.qualifyingChildrenUnder25",
+      label: "Figli rilevanti sotto i 25 anni",
+      kind: "integer",
+      required: true,
+      group: "profile",
+      hidden: true,
       min: 0,
-      max: 12,
-      help: "Non cambia l'imposta (i Kinderfreibeträge non sono modellati) ma il contributo per la non autosufficienza: senza figli e dai 23 anni si pagano 0,6 punti in più; dal secondo figlio si scende di 0,25 punti per figlio.",
+      max: 5,
     },
     {
       field: "age",
@@ -151,6 +206,34 @@ export function germanInputs(profile?: Partial<EmployeeProfile>): readonly Input
       help: "Se inserita, sostituisce la classe con l'aliquota effettiva della Berufsgenossenschaft.",
       source: "Bescheid della Berufsgenossenschaft aziendale.",
     },
+    {
+      field: "companySize",
+      label: "Addetti rilevanti U1",
+      shortLabel: "Addetti U1",
+      kind: "integer",
+      required: true,
+      group: "company",
+      min: 1,
+      max: 1_000_000,
+      help: "Conteggio AAG per la verifica U1: in genere il datore partecipa se impiega non più di 30 lavoratori; apprendisti, persone con disabilità grave e part-time hanno regole di conteggio specifiche.",
+      source: "§ 1 AAG e Deutsche Rentenversicherung, Ausgleichsverfahren U1.",
+    },
+    ...(u1Applies
+      ? [
+          {
+            field: "countryOptions.u1RatePercent",
+            label: "U1 esatta",
+            kind: "decimal" as const,
+            required: true,
+            group: "company" as const,
+            advanced: true,
+            min: 0,
+            max: 10,
+            help: "Aliquota U1 del tariffario scelto presso la Krankenkasse. È obbligatoria quando il conteggio AAG è 30 o meno.",
+            source: "Umlagesatz U1 e tariffa di rimborso pubblicati dalla Krankenkasse aziendale.",
+          },
+        ]
+      : []),
     {
       field: "countryOptions.u2RatePercent",
       label: "U2 esatta",

@@ -33,8 +33,8 @@ export function computeEmployer(profile: EmployeeProfile, rules: RuleSet): Emplo
   const formacion = applyRule(rules, "ES.SS.EMPLOYER.FORMACION", base, { sign: 1 });
   const mei = applyRule(rules, "ES.SS.EMPLOYER.MEI", base, { sign: 1 });
   const solidaridad = applyRule(rules, "ES.SS.EMPLOYER.SOLIDARIDAD", gross, { sign: 1 });
-  const declaredAtep = Number(profile.countryOptions?.["atepRatePercent"]);
-  const atep = Number.isFinite(declaredAtep)
+  const declaredAtep = profile.countryOptions?.["atepRatePercent"];
+  const atep = typeof declaredAtep === "string" || typeof declaredAtep === "number"
     ? applyDeclaredPercentageRule(rules, "ES.SS.EMPLOYER.ATEP.DECLARED", base, declaredAtep, {
         sign: 1,
       })

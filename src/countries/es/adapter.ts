@@ -24,6 +24,7 @@ import { explainLine } from "@engine/pipeline/explain.ts";
 import { calculateSpain } from "./calculate/index.ts";
 import { COMMUNITIES, isKnownCommunity } from "./geography.ts";
 import { spanishInputs } from "./inputs.ts";
+import { aeatWithholdingRateOf } from "./profile.ts";
 import { SUPPORTED_TAX_YEARS } from "./rules/index.ts";
 
 /** The foral territories, which levy their own IRPF rather than a regional half. */
@@ -68,6 +69,27 @@ export const spanishAdapter: CountryPayrollAdapter = {
         severity: "error",
         message: "La nómina española se paga en 12 o 14 pagas",
       });
+    }
+
+    const aeatField = "countryOptions.aeatWithholdingRate";
+    const aeatRate = profile.countryOptions?.["aeatWithholdingRate"];
+    if (
+      aeatRate !== undefined &&
+      aeatRate !== "" &&
+      !issues.some((issue) => issue.field === aeatField)
+    ) {
+      try {
+        aeatWithholdingRateOf(profile);
+      } catch (cause) {
+        issues.push({
+          field: aeatField,
+          severity: "error",
+          message:
+            cause instanceof Error
+              ? cause.message
+              : "La ritenuta AEAT non rispetta il formato ufficiale",
+        });
+      }
     }
 
     return { ok: issues.every((issue) => issue.severity !== "error"), issues };

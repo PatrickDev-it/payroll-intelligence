@@ -655,9 +655,9 @@ test("every supported country keeps a compact rail and visible live preview", as
 
   const countries = [
     ["IT", ""],
-    ["DE", ""],
+    ["DE", "&size=31"],
     ["ES", "&aeatWithholdingRate=21.05"],
-    ["FR", ""],
+    ["FR", "&pasRatePercent=8.2"],
   ] as const;
 
   for (const [country, query] of countries) {
@@ -714,16 +714,16 @@ test("each desktop country follows its payroll task flow", async ({ page }, test
       ["field-gross", "field-ccnl", "field-level", "field-periods", "field-inail"],
     ],
     DE: [
-      ["field-country", "field-region", "field-steuerklasse", "field-churchMember", "field-age", "field-children"],
-      ["field-gross", "field-zusatzbeitrag", "field-zusatzbeitragRatePercent", "field-unfallRiskClass", "field-unfallRatePercent", "field-u2RatePercent"],
+      ["field-country", "field-gross", "field-region", "field-steuerklasse", "field-zusatzbeitragRatePercent", "field-unfallRatePercent"],
+      ["field-churchMember", "field-familyStatus", "field-age", "field-zusatzbeitrag", "field-unfallRiskClass", "field-size", "field-u2RatePercent"],
     ],
     ES: [
       ["field-country", "field-region", "field-contract", "field-cnaeRiskClass"],
       ["field-gross", "field-level", "field-periods", "field-aeatWithholdingRate", "field-atepRatePercent"],
     ],
     FR: [
-      ["field-country", "field-region", "field-foyer", "field-children", "field-size"],
-      ["field-gross", "field-statut", "field-versementMobilite", "field-versementMobiliteRatePercent", "field-atmpRiskClass", "field-atmpRatePercent"],
+      ["field-country", "field-gross", "field-region", "field-statut", "field-pasRatePercent", "field-versementMobiliteRatePercent", "field-mutuelleEmployeeAnnual"],
+      ["field-foyer", "field-versementMobilite", "field-prevoyanceEmployeeAnnual", "field-children", "field-size", "field-atmpRiskClass", "field-atmpRatePercent"],
     ],
   };
 

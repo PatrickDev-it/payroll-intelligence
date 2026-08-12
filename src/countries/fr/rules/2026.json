@@ -1,7 +1,7 @@
 {
   "country": "FR",
   "taxYear": 2026,
-  "version": "2026.4",
+  "version": "2026.5",
   "rules": {
     "FR.PASS": {
       "id": "FR.PASS",
@@ -362,6 +362,88 @@
       },
       "version": 1
     },
+    "FR.PAS.DECLARED": {
+      "id": "FR.PAS.DECLARED",
+      "label": "Prélèvement à la source (PAS) annualizzato",
+      "basis": "taxable_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.PAS.DECLARED",
+        "params": {
+          "maximumPercent": "100",
+          "maximumDecimalPlaces": "6",
+          "roundingCent": "0.01"
+        }
+      },
+      "source": {
+        "authority": "Direction générale des Finances publiques",
+        "type": "authority_publication",
+        "document": "BOI-IR-PAS-20-10-10 — assiette de la retenue à la source",
+        "article": "CGI, art. 204 F : montant net imposable, sans déduction des frais professionnels",
+        "url": "https://bofip.impots.gouv.fr/bofip/11249-PGP.html/identifiant=BOI-IR-PAS-20-10-10-20200728"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-12",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "impots.gouv.fr — calcul du prélèvement à la source sur le revenu net imposable"
+        ]
+      },
+      "version": 1
+    },
+    "FR.SAL.MUTUELLE.DECLARED": {
+      "id": "FR.SAL.MUTUELLE.DECLARED",
+      "label": "Mutuelle aziendale obbligatoria — quota dipendente dichiarata",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.SAL.MUTUELLE.DECLARED",
+        "params": {}
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Code général des impôts, article 83 — régimes de prévoyance complémentaire obligatoires et collectifs",
+        "article": "art. 83, 1° quater CGI",
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006307104"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-12",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
+    "FR.SAL.PREVOYANCE.DECLARED": {
+      "id": "FR.SAL.PREVOYANCE.DECLARED",
+      "label": "Prévoyance collettiva obbligatoria — quota dipendente dichiarata",
+      "basis": "employment_income",
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "config": {
+        "kind": "formula",
+        "formulaId": "FR.SAL.PREVOYANCE.DECLARED",
+        "params": {}
+      },
+      "source": {
+        "authority": "République française",
+        "type": "legislation",
+        "document": "Code général des impôts, article 83 — régimes de prévoyance complémentaire obligatoires et collectifs",
+        "article": "art. 83, 1° quater CGI",
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006307104"
+      },
+      "verification": {
+        "status": "supported",
+        "verifiedAt": "2026-08-12",
+        "method": "primary_source"
+      },
+      "version": 1
+    },
     "FR.IR.BAREME": {
       "id": "FR.IR.BAREME",
       "label": "Imposta sul reddito — scaglioni (barème)",
@@ -403,11 +485,11 @@
         "type": "legislation",
         "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
         "article": "art. 197 I 1 CGI",
-        "url": "https://www.impots.gouv.fr"
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006308349"
       },
       "verification": {
         "status": "supported",
-        "verifiedAt": "2026-08-08",
+        "verifiedAt": "2026-08-12",
         "method": "primary_source",
         "crossCheckedAgainst": [
           "service-public.fr — barème de l'impôt 2026"
@@ -426,8 +508,8 @@
         "formulaId": "FR.IR.ABATTEMENT",
         "params": {
           "rate": "0.10",
-          "floor": "504",
-          "ceiling": "14426"
+          "floor": "509",
+          "ceiling": "14555"
         }
       },
       "source": {
@@ -435,12 +517,15 @@
         "type": "legislation",
         "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
         "article": "art. 83-3° CGI",
-        "url": "https://www.impots.gouv.fr"
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006307104"
       },
       "verification": {
-        "status": "experimental",
-        "verifiedAt": "2026-08-08",
-        "method": "primary_source"
+        "status": "supported",
+        "verifiedAt": "2026-08-12",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "impots.gouv.fr — déduction forfaitaire de 10 %, revenus 2025"
+        ]
       },
       "version": 1
     },
@@ -455,6 +540,7 @@
         "formulaId": "FR.IR.DECOTE",
         "params": {
           "single": "897",
+          "parent_isole": "897",
           "couple": "1483",
           "rate": "0.4525"
         }
@@ -464,11 +550,11 @@
         "type": "legislation",
         "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
         "article": "art. 197 I 4 CGI",
-        "url": "https://www.impots.gouv.fr"
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006308349"
       },
       "verification": {
         "status": "supported",
-        "verifiedAt": "2026-08-08",
+        "verifiedAt": "2026-08-12",
         "method": "primary_source"
       },
       "version": 1
@@ -483,20 +569,30 @@
         "kind": "formula",
         "formulaId": "FR.IR.QUOTIENT",
         "params": {
-          "capPerHalfPart": "1807"
+          "singleBaseParts": "1",
+          "coupleBaseParts": "2",
+          "parent_isoleBaseParts": "1",
+          "firstTwoChildIncrement": "0.5",
+          "thirdAndLaterChildIncrement": "1",
+          "parentIsoleAdditionalParts": "0.5",
+          "capPerHalfPart": "1807",
+          "parentIsoleFirstChildCap": "4262"
         }
       },
       "source": {
         "authority": "République française",
         "type": "legislation",
-        "document": "Code général des impôts, art. 197 I, tel qu'indexé par la loi de finances pour 2026 (barème applicable aux revenus de 2025)",
-        "article": "art. 197 I 2 CGI",
-        "url": "https://www.impots.gouv.fr"
+        "document": "Code général des impôts : parts de foyer et plafonnement du quotient familial, revenus 2025",
+        "article": "art. 194 I-II et art. 197 I 2 CGI",
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006308349"
       },
       "verification": {
         "status": "supported",
-        "verifiedAt": "2026-08-08",
-        "method": "primary_source"
+        "verifiedAt": "2026-08-12",
+        "method": "primary_source",
+        "crossCheckedAgainst": [
+          "Brochure pratique IR 2026 DGFiP — situation du foyer et parent isolé, revenus 2025"
+        ]
       },
       "version": 1
     },

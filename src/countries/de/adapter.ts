@@ -2,11 +2,11 @@
  * Germany.
  *
  * The confidence floor is `experimental`, and the reason is named: the health
- * fund's Zusatzbeitrag, the accident-insurance risk class and the U2 levy are
+ * fund's Zusatzbeitrag, the accident-insurance risk class and the U1/U2 levies are
  * all set per employer or per fund, so no honest single value exists. Every
- * statutory line — § 32a, the four contributions, Soli, Kirchensteuer — is
- * `supported`: read from the primary text, not yet cross-checked against the
- * BMF calculator, which needs a registered access code this build does not have.
+ * statutory line is at least `supported`; the stable annual wage-tax path for
+ * classes I–IV also has complete, immutable BMF PAP interface fixtures. The
+ * country floor remains experimental whenever scenario employer rates apply.
  */
 
 import type { CountryPayrollAdapter, Explanation } from "@engine/adapter/contract.ts";
@@ -14,6 +14,7 @@ import { validateProfileBoundary } from "@engine/adapter/validate-profile.ts";
 import { InvalidProfileError } from "@engine/errors.ts";
 import type { PayrollCalculation } from "@engine/model/calculation.ts";
 import { allLines } from "@engine/model/calculation.ts";
+import { parseDeclaredPercentage } from "@engine/money/money.ts";
 import type {
   EmployeeProfile,
   InputDescriptor,
@@ -25,7 +26,7 @@ import { explainLine } from "@engine/pipeline/explain.ts";
 import { calculateGermany } from "./calculate/index.ts";
 import { LAENDER, isKnownLand } from "./geography.ts";
 import { germanInputs } from "./inputs.ts";
-import { childrenOf, steuerklasseOf } from "./profile.ts";
+import { hasParentStatus } from "./profile.ts";
 import { SUPPORTED_TAX_YEARS, loadGermanRules } from "./rules/index.ts";
 import "./formulas.ts";
 
@@ -65,15 +66,14 @@ export const germanAdapter: CountryPayrollAdapter = {
         message: "Die deutsche Lohnabrechnung läuft über 12 Monatsgehälter",
       });
     }
+    validateDeclaredRates(profile, issues);
 
-    // Warnings, not errors: the profile still computes, but the reader should
-    // know which part of the result is not what their payslip will say.
-    if (steuerklasseOf(profile) === "II" && childrenOf(profile) === 0) {
+    if (profile.countryOptions?.["steuerklasse"] === "II" && !hasParentStatus(profile)) {
       issues.push({
-        field: "countryOptions.children",
-        severity: "warning",
+        field: "countryOptions.familyStatus",
+        severity: "error",
         message:
-          "Steuerklasse II setzt mindestens ein Kind voraus (§ 24b EStG). Der Entlastungsbetrag wird hier trotzdem gewährt.",
+          "Steuerklasse II setzt die Eigenschaft als alleinerziehender Elternteil voraus (§ 24b EStG). Die widersprüchlichen Angaben werden nicht berechnet.",
       });
     }
     if (aboveInsuranceThreshold(profile)) {
@@ -121,4 +121,33 @@ function insuranceThreshold(): number {
 
 function aboveInsuranceThreshold(profile: EmployeeProfile): boolean {
   return profile.grossAnnual.cents > JAHRESARBEITSENTGELTGRENZE;
+}
+
+function validateDeclaredRates(profile: EmployeeProfile, issues: ValidationIssue[]): void {
+  for (const key of [
+    "zusatzbeitragRatePercent",
+    "unfallRatePercent",
+    "u1RatePercent",
+    "u2RatePercent",
+  ] as const) {
+    const value = profile.countryOptions?.[key];
+    if (value === undefined || value === "") continue;
+    if (typeof value !== "string" && typeof value !== "number") {
+      issues.push({
+        field: `countryOptions.${key}`,
+        severity: "error",
+        message: `${key} muss als gewöhnliche Dezimalzahl angegeben werden`,
+      });
+      continue;
+    }
+    try {
+      parseDeclaredPercentage(value);
+    } catch {
+      issues.push({
+        field: `countryOptions.${key}`,
+        severity: "error",
+        message: `${key} muss eine Dezimal-Prozentangabe mit höchstens sechs Nachkommastellen sein`,
+      });
+    }
+  }
 }

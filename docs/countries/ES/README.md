@@ -6,10 +6,11 @@ l'annualizzazione delle basi in presenza di paga variabile.
 ## Contratto fiscale corretto
 
 Il netto payroll usa `aeatWithholdingRate`, la percentuale restituita dal servizio ufficiale AEAT
-per quel lavoratore. Non usa più come sostituto il debito IRPF annuale stimato.
+per quel lavoratore, nel formato ufficiale `TIPO` con massimo due decimali. Non usa più come
+sostituto il debito IRPF annuale stimato.
 
-La scala statale e quella della comunità autonoma restano calcolate come confronto sulla
-responsabilità finale: sono mostrate sotto la ritenuta e non vengono sottratte una seconda volta.
+La scala statale e quella della comunità autonoma restano una stima annuale parziale: sono
+mostrate sotto la ritenuta, dichiarano le esclusioni e non vengono sottratte una seconda volta.
 
 ## Previdenza 2026
 

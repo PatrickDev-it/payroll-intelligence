@@ -2,14 +2,14 @@ import { describe, expect, it } from "vitest";
 import { registerAllCountries } from "@countries/index.ts";
 import { resolveAdapter, resolveRuleSet } from "@engine/adapter/registry.ts";
 import { formValuesOf, profileFromParams } from "./profile.ts";
+import { message, type Locale } from "./i18n.ts";
 
 /**
  * The redesign's safety net.
  *
- * A user-interface patch must not move a single cent. These ten profiles were
- * computed BEFORE the interface work started and pinned here; if a refactor of
- * the form, the URL reader or the formatting layer changes what the engine
- * produces, one of these fails and says which country and which figure.
+ * These ten profiles pin the current versioned country contracts end-to-end.
+ * Deliberate RFC changes update both the explicit URL inputs and these values;
+ * later form, URL or formatting refactors must not move them by a cent.
  *
  * They go through `profileFromParams` on purpose rather than building the
  * profile by hand: the URL reader is part of the path from an input to a
@@ -79,7 +79,7 @@ const FIXTURES: readonly Expected[] = [
     rules: 17,
   },
   {
-    params: { country: "DE", gross: "45000" },
+    params: { country: "DE", gross: "45000", size: "31" },
     netAnnual: 2_964_250,
     netPerPayPeriod: 247_021,
     netMonthlyEquivalent: 247_021,
@@ -90,7 +90,7 @@ const FIXTURES: readonly Expected[] = [
     rules: 16,
   },
   {
-    params: { country: "DE", gross: "60000", steuerklasse: "III", churchMember: "yes", region: "BY" },
+    params: { country: "DE", gross: "60000", steuerklasse: "III", churchMember: "yes", region: "BY", size: "31" },
     netAnnual: 4_174_224,
     netPerPayPeriod: 347_852,
     netMonthlyEquivalent: 347_852,
@@ -123,30 +123,30 @@ const FIXTURES: readonly Expected[] = [
     rules: 15,
   },
   {
-    params: { country: "FR", gross: "45000" },
-    netAnnual: 3_255_381,
-    netPerPayPeriod: 271_282,
-    netMonthlyEquivalent: 271_282,
+    params: { country: "FR", gross: "45000", pasRatePercent: "8.2" },
+    netAnnual: 3_259_576,
+    netPerPayPeriod: 271_631,
+    netMonthlyEquivalent: 271_631,
     taxableIncome: 3_321_364,
     employerCost: 6_204_420,
-    taxWedgePpm: 475_313,
-    marginalPpm: 429_840,
-    rules: 26,
+    taxWedgePpm: 474_636,
+    marginalPpm: 275_660,
+    rules: 27,
   },
   {
-    params: { country: "FR", gross: "30000", foyer: "couple", children: "2" },
-    netAnnual: 2_374_792,
-    netPerPayPeriod: 197_899,
-    netMonthlyEquivalent: 197_899,
+    params: { country: "FR", gross: "30000", foyer: "couple", children: "2", pasRatePercent: "8.2" },
+    netAnnual: 2_173_050,
+    netPerPayPeriod: 181_088,
+    netMonthlyEquivalent: 181_088,
     taxableIncome: 2_214_243,
     employerCost: 3_762_780,
-    taxWedgePpm: 368_873,
-    marginalPpm: 208_400,
-    rules: 26,
+    taxWedgePpm: 422_488,
+    marginalPpm: 275_650,
+    rules: 27,
   },
 ];
 
-describe("the interface must not move a cent", () => {
+describe("versioned URL-to-result contracts", () => {
   for (const fixture of FIXTURES) {
     const name = `${fixture.params["country"]} ${fixture.params["gross"]}${
       Object.keys(fixture.params).length > 2 ? " (+ options)" : ""
@@ -171,7 +171,7 @@ describe("the interface must not move a cent", () => {
       }
       expect(Math.round(result.rates.marginalRate * 1e6)).toBe(fixture.marginalPpm);
       expect(result.rates.marginalRatePolicy).toBe(
-        profile.country === "DE" || profile.country === "ES"
+        profile.country === "DE" || profile.country === "ES" || profile.country === "FR"
           ? "hold_external_inputs"
           : "recompute",
       );
@@ -198,5 +198,43 @@ describe("Italian compound locality", () => {
       comune: "ROMA",
     });
     expect(formValuesOf(profile)).toMatchObject({ location: "LAZIO:ROMA" });
+  });
+});
+
+describe("exact declared percentages", () => {
+  it("preserves the URL decimal spelling until the country adapter validates it", () => {
+    const profile = profileFromParams({
+      country: "ES",
+      gross: "45000",
+      aeatWithholdingRate: "21.050000",
+    });
+
+    expect(profile.countryOptions?.["aeatWithholdingRate"]).toBe("21.050000");
+    expect(formValuesOf(profile).aeatWithholdingRate).toBe("21.050000");
+  });
+
+  it.each(["1.2345600", "1e0"])("rejects non-canonical employer rate %s before calculation", (rate) => {
+    const profile = profileFromParams({
+      country: "IT",
+      gross: "45000",
+      inailRatePercent: rate,
+    });
+
+    expect(resolveAdapter("IT").validate(profile).ok).toBe(false);
+  });
+});
+
+describe("period-average copy", () => {
+  it.each([
+    ["it", /media/i],
+    ["en", /average/i],
+    ["de", /durchschnitt/i],
+    ["fr", /moyenne/i],
+    ["es", /promedio/i],
+  ] as const)("labels %s output as a projection average", (locale, expected) => {
+    expect(message(locale as Locale, "netPerPeriod", { periods: 12 })).toMatch(expected);
+    expect(message(locale as Locale, "resultAnnouncement", { period: "x", annual: "y" })).toMatch(
+      expected,
+    );
   });
 });

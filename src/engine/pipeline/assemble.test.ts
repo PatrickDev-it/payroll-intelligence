@@ -112,3 +112,89 @@ describe("marginal rate policy", () => {
     expect(result.rates.marginalRate).toBeNull();
   });
 });
+
+describe("payroll tax semantics", () => {
+  it.each([undefined, "annual_settlement_estimate" as const])(
+    "refuses a top-level employee tax with role %s",
+    (taxRole) => {
+      const computation = employee(1_000, 10_000);
+      const { taxRole: _existingRole, ...withoutRole } = computation.taxes[0]!;
+      const line: CalculationLine =
+        taxRole === undefined ? withoutRole : { ...withoutRole, taxRole };
+
+      expect(() =>
+        assembleCalculation({
+          profile,
+          rules,
+          employee: { ...computation, taxes: [line] },
+          employer,
+          recomputeEmployee: () => employee(2_000, 20_000),
+          notes: [],
+        }),
+      ).toThrow(/must declare taxRole "payroll_withholding"/);
+    },
+  );
+
+  it("allows an annual settlement estimate only as explanatory child", () => {
+    const computation = employee(1_000, 10_000);
+    const annualEstimate: CalculationLine = {
+      ...computation.taxes[0]!,
+      id: "TEST.ANNUAL",
+      taxRole: "annual_settlement_estimate",
+    };
+    const payrollTax = { ...computation.taxes[0]!, children: [annualEstimate] };
+
+    expect(() =>
+      assembleCalculation({
+        profile,
+        rules,
+        employee: { ...computation, taxes: [payrollTax] },
+        employer,
+        recomputeEmployee: () => employee(2_000, 20_000),
+        notes: [],
+      }),
+    ).not.toThrow();
+  });
+
+  it("refuses an annual estimate attached outside a payroll tax", () => {
+    const computation = employee(1_000, 10_000);
+    const annualEstimate: CalculationLine = {
+      ...computation.taxes[0]!,
+      id: "TEST.ANNUAL",
+      taxRole: "annual_settlement_estimate",
+    };
+    const { taxRole: _taxRole, ...taxLineWithoutRole } = computation.taxes[0]!;
+    const explanatoryEmployerLine: CalculationLine = {
+      ...taxLineWithoutRole,
+      id: "TEST.EMPLOYER.INFO",
+      amount: fromCents(0, "EUR"),
+      children: [annualEstimate],
+    };
+
+    expect(() =>
+      assembleCalculation({
+        profile,
+        rules,
+        employee: computation,
+        employer: { ...employer, otherCosts: [explanatoryEmployerLine] },
+        recomputeEmployee: () => employee(2_000, 20_000),
+        notes: [],
+      }),
+    ).toThrow(/annual settlement estimate .* is outside a payroll tax/);
+  });
+
+  it("refuses totals that diverge from their signed top-level lines", () => {
+    const computation = employee(1_000, 10_000);
+
+    expect(() =>
+      assembleCalculation({
+        profile,
+        rules,
+        employee: { ...computation, totalTaxes: zero("EUR") },
+        employer,
+        recomputeEmployee: () => employee(2_000, 20_000),
+        notes: [],
+      }),
+    ).toThrow(/employee tax total/);
+  });
+});

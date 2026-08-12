@@ -43,9 +43,9 @@ reviewable as rule and output diffs rather than opaque UI edits.
 | Country | Employee side | Employer side | Important boundary |
 | --- | --- | --- | --- |
 | Italy | INPS, IRPEF, deductions, regional and municipal surtaxes | INPS, INAIL, TFR and contractual funds | IVS ceiling applicability must be confirmed above €122,295 |
-| Germany | Social insurance and modelled BMF wage-tax classes | Social insurance and declared company rates | Classes V/VI and private health insurance are outside the current model |
+| Germany | Social insurance and BMF-PAP-checked wage-tax classes I-IV | Social insurance, conditional U1 and declared company rates | Classes V/VI, Faktorverfahren and private health insurance are outside the current model |
 | Spain | Social security and employer-supplied AEAT withholding | Social security and declared AT/EP rate | Annual IRPF estimate is explanatory and separate from payroll withholding |
-| France | Employee contributions and declared PAS withholding | Employer contributions, AT/MP and declared mobility rate | Final 2026 income-tax parameters remain subject to year-end legislation |
+| France | Employee contributions and declared PAS withholding | Employer contributions, AT/MP and declared mobility rate | The annual comparison uses the 2026 scale for 2025 income; the 2026-income scale is not enacted yet |
 
 Country documentation, sources and model limits are available in [`docs/`](docs/README.md).
 

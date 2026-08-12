@@ -16,7 +16,9 @@ Il motore non genera adempimenti e non sostituisce il payroll provider.
 
 - Steuerklasse I-IV; V e VI rifiutate.
 - Assicurazione pubblica assunta; sopra la JAEG viene mostrato un avviso sulla PKV.
-- Zusatzbeitrag, infortuni e U2 dipendono da cassa e datore.
+- Zusatzbeitrag, infortuni e U2 dipendono da cassa e datore; gli override esatti sono accettati.
+- U1 è calcolata solo con conteggio AAG ≤30 e aliquota Krankenkasse dichiarata; altrimenti è assente.
+- I quattro vettori BMF verificano il percorso annuale stabile delle classi I-IV, non Faktorverfahren o ELStAM aggiuntive.
 - Kinderfreibeträge completi non modellati.
 
 ## Spagna
@@ -29,8 +31,9 @@ Il motore non genera adempimenti e non sostituisce il payroll provider.
 ## Francia
 
 - RGDU usa lo SMIC al 1° gennaio e working time dichiarato.
-- Barème sui redditi 2026 provvisorio fino alla norma definitiva.
-- Mutuelle, prévoyance, AT/MP e mobilité esatti dipendono dallo stabilimento.
+- Il confronto annuale usa il barème 2026 sui redditi 2025; quello applicabile ai redditi 2026 non è ancora emanato.
+- Mutuelle e prévoyance salariali entrano solo se dichiarate come importi annui esatti; quote datoriali escluse.
+- AT/MP e mobilité esatti dipendono dallo stabilimento.
 - Assenze e ingressi/uscite nell'anno non sono ancora modellati.
 
 ## Regola di sicurezza

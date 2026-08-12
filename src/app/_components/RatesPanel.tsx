@@ -14,6 +14,12 @@ import { useI18n } from "./I18nProvider.tsx";
 export function RatesPanel({ result }: { result: PayrollCalculation }) {
   const { locale, t } = useI18n();
   const { rates } = result;
+  const marginalHelp =
+    rates.marginalRatePolicy === "hold_external_inputs"
+      ? t("marginalRateHeldHelp")
+      : rates.marginalRatePolicy === "unavailable"
+        ? t("marginalRateUnavailableHelp")
+        : t("marginalRateHelp");
 
   const items = [
     {
@@ -69,7 +75,7 @@ export function RatesPanel({ result }: { result: PayrollCalculation }) {
           </p>
         </div>
         <p className="type-meta mt-[var(--space-tight)] text-accent-ink">
-          {t("marginalRateHelp")}
+          {marginalHelp}
         </p>
       </div>
     </section>

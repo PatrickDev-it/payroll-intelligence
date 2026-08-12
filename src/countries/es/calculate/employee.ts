@@ -22,7 +22,13 @@ import type { EmployeeProfile } from "@engine/model/employee-profile.ts";
 import type { RuleSet } from "@engine/model/rule.ts";
 import type { Money } from "@engine/money/money.ts";
 import type { EmployeeComputation } from "@engine/pipeline/assemble.ts";
-import { applyRule, derivedLine, formulaParam, ruleOf } from "@engine/pipeline/helpers.ts";
+import {
+  applyDeclaredPercentageRule,
+  applyRule,
+  derivedLine,
+  formulaParam,
+  ruleOf,
+} from "@engine/pipeline/helpers.ts";
 import {
   add,
   clampAtZero,
@@ -32,7 +38,6 @@ import {
   subtract,
   sum,
   zero,
-  fromCents,
 } from "@engine/money/money.ts";
 import { applyPrimitive } from "@engine/primitives/apply.ts";
 import { MINUS, amt } from "@engine/primitives/format.ts";
@@ -96,28 +101,38 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
 
   const estimatedLiability = add(estatal.amount, autonomica.amount);
   const ratePercent = aeatWithholdingRateOf(profile);
-  const rateBasisPoints = Math.round(ratePercent * 100);
-  const withholding = fromCents(Math.round((gross.cents * rateBasisPoints) / 10_000), currency);
+  const withholding = applyDeclaredPercentageRule(
+    rules,
+    "ES.IRPF.RETENCION.AEAT",
+    gross,
+    ratePercent,
+    {
+      label: "Ritenuta IRPF in nómina (AEAT)",
+      taxRole: "payroll_withholding",
+    },
+  );
   const liabilityComparison = derivedLine(
     "ES.IRPF.LIABILITY_ESTIMATE",
-    "Stima dell'imposta annuale finale (non è la ritenuta)",
+    "Stima parziale dell'imposta annuale (non è la ritenuta)",
     negate(estimatedLiability),
     `${amt(estatal.amount)} (estatal) + ${amt(autonomica.amount)} (autonómica); ` +
-      "dato di confronto, non sottratto dal cedolino",
+      "confronto su reddito di lavoro, mínimo personale e scale statale/autonomica; " +
+      "esclude figli, ascendenti, disabilità e deduzioni autonomiche; non sottratto dalla nómina",
     [estatal.ruleId, autonomica.ruleId],
     estatal.confidence,
     [estatal.line, autonomica.line],
+    { taxRole: "annual_settlement_estimate" },
   );
-  const taxes = [
-    derivedLine(
-      "ES.IRPF.RETENCION",
-      "Ritenuta IRPF in nómina (AEAT)",
-      negate(withholding),
-      `${amt(gross)} × ${ratePercent.toFixed(2).replace(".", ",")}% (aliquota AEAT dichiarata)`,
-      ["ES.IRPF.RETENCION.AEAT"],
-      ruleOf(rules, "ES.IRPF.RETENCION.AEAT").verification.status,
-      [liabilityComparison],
-    ),
+  const taxes: CalculationLine[] = [
+    {
+      ...withholding.line,
+      id: "ES.IRPF.RETENCION",
+      formula: withholding.line.formula.replace(
+        "tasso aziendale dichiarato",
+        "aliquota AEAT dichiarata",
+      ),
+      children: [liabilityComparison],
+    },
   ];
 
   const deductionLines: CalculationLine[] = [
@@ -147,11 +162,11 @@ export function computeEmployee(profile: EmployeeProfile, rules: RuleSet): Emplo
     totalContributions,
     taxableIncome: baseLiquidable,
     taxes,
-    totalTaxes: withholding,
+    totalTaxes: withholding.amount,
     // Spain pays no cash supplement through payroll.
     credits: [],
     totalCredits: zero(currency),
-    netAnnual: subtract(subtract(gross, totalContributions), withholding),
+    netAnnual: subtract(subtract(gross, totalContributions), withholding.amount),
   };
 }
 

@@ -1,7 +1,19 @@
 # Francia 2026
 
 **Motore eseguibile · confidenza complessiva experimental** per AT/MP, versement mobilité,
-mutuelle/prévoyance e per il barème definitivo sui redditi 2026 non ancora approvato.
+quote datoriali di mutuelle/prévoyance e per il barème definitivo sui redditi 2026 non ancora
+approvato.
+
+## PAS e imposta annuale non sono la stessa cosa
+
+Il netto payroll sottrae il prélèvement à la source applicando al `net imposable` il tasso PAS
+attivo dichiarato dall'utente. Il tasso è quello trasmesso dalla DGFiP al datore e non viene
+ricostruito dal quoziente familiare. Il risultato è annualizzato: non pretende di riprodurre
+arrotondamenti o cambi di tasso di ogni singolo mese.
+
+Il barème 2026, legalmente applicabile ai redditi 2025, resta una stima annuale annidata e non
+riduce il netto una seconda volta. Il foyer distingue `single`, `couple` e `parent_isole`; un
+parent isolé con un figlio ha due parts e usa il tetto dedicato di €4.262 per il primo figlio.
 
 ## RGDU verificata
 
@@ -17,5 +29,6 @@ fra gli aumenti di gennaio e giugno.
 ## Perimetro
 
 Regime generale o Alsace-Moselle, 12 mensilità, anno completo, un datore. Cadre, foyer, figli,
-dimensione azienda, AT/MP e mobilité sono input. Assenze, mutuelle, prévoyance e contratti di
-categoria non vengono inventati.
+dimensione azienda, AT/MP e mobilité sono input. Le quote salariali annue esatte e deducibili di
+mutuelle e prévoyance possono essere dichiarate; se assenti non viene applicato alcun default.
+Assenze, quote datoriali e accordi di categoria non vengono inventati.

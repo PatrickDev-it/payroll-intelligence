@@ -9,13 +9,6 @@ import type { RuleSet } from "@engine/model/rule.ts";
 import { computeEmployee } from "./employee.ts";
 import { computeEmployer } from "./employer.ts";
 
-const NOTES: readonly string[] = [
-  "Anno solare intero, un solo datore di lavoro, solo redditi da lavoro dipendente.",
-  "Il barème applicato è quello della legge di bilancio 2026: quello che si applicherà davvero ai redditi 2026 sarà votato a dicembre 2026.",
-  "La RGDU usa lo SMIC al 1° gennaio 2026 (1.820 × 12,02 €), riproporzionato per il tempo di lavoro, e si azzera a 3 SMIC.",
-  "Mutuelle, prévoyance e accordi di categoria non sono conteggiati; il tasso AT/MP e il versement mobilité dipendono dallo stabilimento.",
-];
-
 export function calculateFrance(profile: EmployeeProfile, rules: RuleSet): PayrollCalculation {
   return assembleCalculation({
     profile,
@@ -23,8 +16,21 @@ export function calculateFrance(profile: EmployeeProfile, rules: RuleSet): Payro
     employee: computeEmployee(profile, rules),
     employer: computeEmployer(profile, rules),
     recomputeEmployee: (stepped) => computeEmployee(stepped, rules),
-    notes: NOTES,
+    marginalRatePolicy: "hold_external_inputs",
+    notes: notesFor(profile),
   });
+}
+
+function notesFor(profile: EmployeeProfile): readonly string[] {
+  const mutuelleProvided = profile.countryOptions?.mutuelleEmployeeAnnual !== undefined;
+  const prevoyanceProvided = profile.countryOptions?.prevoyanceEmployeeAnnual !== undefined;
+  return [
+    "Anno solare intero, un solo datore di lavoro, solo redditi da lavoro dipendente.",
+    "Il PAS è una proiezione annualizzata del tasso dichiarato sul net imposable; non riproduce gli arrotondamenti e i cambi di tasso di ogni singolo mese.",
+    "La stima annuale usa il barème 2026 legalmente applicabile ai redditi 2025; il barème definitivo dei redditi 2026 non è ancora emanato e la stima non riduce il netto payroll.",
+    "La RGDU usa lo SMIC al 1° gennaio 2026 (1.820 × 12,02 €), riproporzionato per il tempo di lavoro, e si azzera a 3 SMIC.",
+    `${mutuelleProvided ? "Mutuelle salariale esatta inclusa" : "Mutuelle salariale non conteggiata"}; ${prevoyanceProvided ? "prévoyance salariale esatta inclusa" : "prévoyance salariale non conteggiata"}. Quote datoriali, accordi di categoria, tasso AT/MP e versement mobilité restano specifici dello stabilimento.`,
+  ];
 }
 
 export { computeEmployee } from "./employee.ts";

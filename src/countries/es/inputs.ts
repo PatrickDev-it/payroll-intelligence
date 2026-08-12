@@ -69,9 +69,9 @@ export function spanishInputs(_profile?: Partial<EmployeeProfile>): readonly Inp
       group: "profile",
       min: 0,
       max: 100,
-      help: "Percentuale di ritenuta 2026 restituita dal servizio ufficiale AEAT per questo lavoratore. È obbligatoria perché la ritenuta della nómina non coincide con la stima dell'imposta annuale finale.",
+      help: "Percentuale di ritenuta 2026 restituita dal servizio ufficiale AEAT per questo lavoratore, con al massimo due decimali come TIPO ufficiale. È obbligatoria perché la ritenuta della nómina non coincide con la stima parziale dell'imposta annuale.",
       example: "Se il calcolo AEAT restituisce 21,05%, inserisci 21,05: su 45.000 € la ritenuta annua è 9.472,50 €.",
-      source: "Agencia Tributaria — Servicio de cálculo de retenciones 2026 e Algoritmo 2026.",
+      source: "Agencia Tributaria — Algoritmo de cálculo de retenciones 2026, pp. 33 e 35 (TIPO e IMPORTE).",
     },
     {
       field: "payPeriods",

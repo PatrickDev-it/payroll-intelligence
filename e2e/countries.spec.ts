@@ -27,7 +27,7 @@ const CASES = [
     advanced: ["#field-zusatzbeitrag"],
     foreign: ["#field-ccnl", "#field-location"],
     line: "amount-DE.LOHNSTEUER.TARIF",
-    query: "",
+    query: "&size=31",
   },
   {
     code: "ES",
@@ -44,8 +44,8 @@ const CASES = [
     own: ["#field-foyer", "#field-statut"],
     advanced: ["#field-atmpRiskClass"],
     foreign: ["#field-ccnl", "#field-steuerklasse"],
-    line: "amount-FR.IR",
-    query: "",
+    line: "amount-FR.PAS.DECLARED",
+    query: "&pasRatePercent=8.2",
   },
 ] as const;
 
@@ -81,6 +81,8 @@ test("switching country replaces the whole input set, live", async ({ page }) =>
   await expect(page.locator("#field-steuerklasse")).toBeVisible();
   await expect(page.locator("#field-ccnl")).toHaveCount(0);
   await expect(page).toHaveURL(/\?lang=it$/);
+  await expect(page.getByTestId("net-annual")).toHaveCount(0);
+  await page.locator("#field-size").fill("31");
   await expect(page.getByTestId("net-annual")).toBeVisible();
   await page.reload();
   await expect(page.locator("#field-country")).toHaveAttribute("data-value", "DE");
@@ -88,7 +90,7 @@ test("switching country replaces the whole input set, live", async ({ page }) =>
 });
 
 test("the German tax line shows the polynomial it came from, not a bracket", async ({ page }) => {
-  await page.goto("/?country=DE&gross=45000");
+  await page.goto("/?country=DE&gross=45000&size=31");
 
   const row = page.getByTestId("line-DE.LOHNSTEUER.TARIF");
   await row.locator(":scope > summary").click();

@@ -19,6 +19,7 @@ export function referenceProfile(grossAnnualEuros: number): EmployeeProfile {
     age: 30,
     countryOptions: {
       statut: "non_cadre",
+      pasRatePercent: "8.2",
       foyer: "single",
       children: 0,
       atmpRiskClass: "office",

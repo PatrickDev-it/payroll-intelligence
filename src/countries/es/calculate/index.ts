@@ -10,11 +10,11 @@ import { computeEmployee } from "./employee.ts";
 import { computeEmployer } from "./employer.ts";
 
 const NOTES: readonly string[] = [
-  "Anno solare intero, un solo datore di lavoro, solo redditi da lavoro dipendente.",
+  "Contratto di calcolo: remunerazione stabile per l'intero anno solare, un solo datore di lavoro e soli redditi da lavoro dipendente.",
   "Nessun mínimo per figli o ascendenti, nessuna deduzione autonomica, nessuna disabilità.",
-  "Le basi contributive sono annualizzate: esatto a stipendio costante, approssimato quando una paga straordinaria supera da sola il massimale mensile.",
+  "Le basi contributive sono annualizzate: esatte con remunerazione mensile stabile; non rappresentano paghe straordinarie o componenti irregolari che superano da sole il massimale mensile.",
   "Il premio AT/EP dipende dal codice CNAE dell'azienda; Navarra e Paesi Baschi hanno regime forale proprio e non vengono calcolati.",
-  "Il netto usa la percentuale di ritenuta restituita da AEAT; la scala statale e autonomica resta un confronto sul debito annuale e non viene sottratta due volte.",
+  "Il netto usa la percentuale di ritenuta esterna restituita da AEAT e mantenuta invariata nelle simulazioni marginali; la scala statale e autonomica resta un confronto parziale sul debito annuale e non viene sottratta due volte.",
 ];
 
 export function calculateSpain(profile: EmployeeProfile, rules: RuleSet): PayrollCalculation {

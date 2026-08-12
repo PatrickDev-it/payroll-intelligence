@@ -11,13 +11,17 @@ registerAllCountries();
 
 const CANARIES = [
   { country: "IT", params: { country: "IT", gross: "45000" }, netAnnual: 2_996_647 },
-  { country: "DE", params: { country: "DE", gross: "45000" }, netAnnual: 2_964_250 },
+  { country: "DE", params: { country: "DE", gross: "45000", size: "31" }, netAnnual: 2_964_250 },
   {
     country: "ES",
     params: { country: "ES", gross: "45000", aeatWithholdingRate: "21.05" },
     netAnnual: 3_260_250,
   },
-  { country: "FR", params: { country: "FR", gross: "45000" }, netAnnual: 3_255_381 },
+  {
+    country: "FR",
+    params: { country: "FR", gross: "45000", pasRatePercent: "8.2" },
+    netAnnual: 3_259_576,
+  },
 ] as const;
 
 export const dynamic = "force-dynamic";
